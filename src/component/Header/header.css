@@ -1,0 +1,32 @@
+.header-bar {
+  height: 70px;
+  width: 100%;
+  padding: 10px;
+}
+.logo-title {
+  font-size: 60px;
+  font-family: "Phosphate-Inline";
+  padding: 0px;
+  color: #000;
+}
+@font-face {
+  font-family: "Phosphate-Inline";
+  src: url("../../assets/font/PhosphateInline.ttf");
+}
+.header-btn {
+  margin-top: 10px;
+}
+.header-connect-btn {
+  background-color: rgba(255, 0, 0, 0.699) !important;
+  color: #fff !important;
+}
+
+.header-connect-btn:hover {
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.877) !important;
+}
+.header-disconnect-btn {
+  background-color: rgba(11, 238, 49, 0.959) !important;
+}
+.header-disconnect-btn:hover {
+  box-shadow: 0 0 15px rgba(11, 238, 49, 0.959) !important;
+}

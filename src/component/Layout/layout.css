@@ -1,54 +1,20 @@
-.header-bar {
-	height: 70px;
-	background-color: rgba(85, 85, 85, 0.815) !important;
-	width: 100%;
-	padding: 10px;
-}
-.logo-title {
-	font-size: 60px;
-	font-family: "Phosphate-Inline";
-	padding: 0px;
-	color: #000;
-}
-@font-face {
-	font-family: "Phosphate-Inline";
-	src: url("../../assets/font/PhosphateInline.ttf");
-}
-.header-btn {
-	margin-top: 10px;
-}
-.header-connect-btn {
-	background-color: rgba(255, 0, 0, 0.699) !important;
-	color: #fff !important;
-}
-
-.header-connect-btn:hover {
-	box-shadow: 0 0 15px rgba(255, 0, 0, 0.877) !important;
-}
-.header-disconnect-btn {
-	background-color: rgba(11, 238, 49, 0.959) !important;
-}
-.header-disconnect-btn:hover {
-	box-shadow: 0 0 15px rgba(11, 238, 49, 0.959) !important;
-}
 .layout-back {
-	background: linear-gradient(#fafafa, #dd7b2af1);
-	min-height: 86vh;
-	height: auto;
-	width: 100%;
+  min-height: 86vh;
+  height: auto;
+  width: 100%;
 }
 table {
-	border: solid 3px rgb(9, 104, 71);
-	border-radius: 10px;
+  border: solid 3px rgb(9, 104, 71);
+  border-radius: 10px;
 }
 thead th {
-	border: solid 2px rgb(241, 241, 241);
-	padding: 8px;
-	color: #fff;
-	background-color: rgb(9, 104, 71);
+  border: solid 2px rgb(241, 241, 241);
+  padding: 8px;
+  color: #fff;
+  background-color: rgb(9, 104, 71);
 }
 td {
-	background-color: rgba(9, 104, 71, 0.356);
-	border: solid 2px rgb(9, 104, 71);
-	padding: 8px;
+  background-color: rgba(9, 104, 71, 0.356);
+  border: solid 2px rgb(9, 104, 71);
+  padding: 8px;
 }
