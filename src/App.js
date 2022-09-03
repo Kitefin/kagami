@@ -1,34 +1,18 @@
-import "./styles.css"
-import { useMoralis } from "react-moralis"
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom"
 import Dashboard from "./component/Dashboard/Dashboard"
 import Header from "./component/Header/Header"
 import Layout from "./component/Layout/Layout"
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from "react-router-dom"
+import Home from "./pages/Home"
+import "./styles.css"
 
 export default function App() {
-  const { isAuthenticated } = useMoralis()
-
-  //   const location = useLocation()
-  //   const navigate = useNavigate()
-
-  //   if (!isAuthenticated && location.pathname && location.pathname !== "/") {
-  //     console.log("HERE")
-  //     navigate("")
-  //   }
-  //   console.dir(location)
-
   return (
     <div className="App">
       <Header />
 
       <Routes>
-        <Route path="/" element={<Dashboard />}></Route>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/dashboard" element={<Dashboard />}></Route>
         <Route path="/layout" element={<Layout />}></Route>
       </Routes>
     </div>
