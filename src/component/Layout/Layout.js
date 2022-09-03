@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from '@material-ui/core';
+import { Table } from '@mui/material';
 import TableScrollbar from 'react-table-scrollbar';
 import './layout.css';
 

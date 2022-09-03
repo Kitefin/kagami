@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   IconButton,
   Input,
@@ -7,12 +6,19 @@ import {
   ListItem,
   ListItemText,
   Typography,
-} from "@material-ui/core"
+} from "@mui/material"
 import AddIcon from "@mui/icons-material/Add"
-import { ListItemButton } from "@mui/material"
-import React, { useState } from "react"
-import Modal from "../Modal"
 import RemoveIcon from "@mui/icons-material/Remove"
+import React, { useState } from "react"
+import Modal from "../Modal/Modal"
+import {
+  MarginAutoBox,
+  MarginTopBox,
+  ModalBoxParent,
+  ModalButton,
+  ModalInputBox,
+  ScrollBox,
+} from "./Styled"
 
 const initState = {
   name: "",
@@ -78,37 +84,25 @@ export default function CreateCluster() {
 
   return (
     <>
-      <Button
+      <ModalButton
         variant="contained"
+        color="grey"
         onClick={() => setIsCreateModalVisible(true)}
-        style={{
-          marginTop: 20,
-          marginLeft: "20%",
-          borderRadius: "50%",
-          height: 200,
-        }}
       >
         Create New Wallet Cluster
-      </Button>
+      </ModalButton>
 
       <Modal
         open={isCreateModalVisible}
         onClose={() => setIsCreateModalVisible(false)}
         height="80%"
       >
-        <Box style={{ height: "100%" }}>
+        <ModalBoxParent>
           <Typography variant="h6" component="h6">
             Create Cluster
           </Typography>
 
-          <Box
-            style={{
-              marginTop: 20,
-              display: "flex",
-              flexDirection: "column",
-              height: "100%",
-            }}
-          >
+          <ModalInputBox>
             <Input
               placeholder="Cluster name"
               value={newCluster.name}
@@ -116,7 +110,7 @@ export default function CreateCluster() {
               error={error.name}
             />
 
-            <Box style={{ marginTop: 20 }}>
+            <MarginTopBox>
               <Input
                 placeholder="Add Wallet address"
                 value={newCluster.walletAddress}
@@ -129,9 +123,9 @@ export default function CreateCluster() {
               <IconButton color="primary" onClick={addWalletAddressToCluster}>
                 <AddIcon />
               </IconButton>
-            </Box>
+            </MarginTopBox>
 
-            <Box style={{ marginTop: 20, overflowY: "auto" }}>
+            <ScrollBox>
               <Typography variant="h6" component="h6">
                 Wallets in Cluster
               </Typography>
@@ -153,18 +147,16 @@ export default function CreateCluster() {
                   )
                 })}
               </List>
-            </Box>
+            </ScrollBox>
 
-            <Box style={{ marginBottom: 20, marginTop: "auto" }}>
-              <Button onClick={create} color="primary">
-                Create
-              </Button>
-              <Button onClick={cancel} color="error">
+            <MarginAutoBox>
+              <Button onClick={create}>Create</Button>
+              <Button onClick={cancel} color="secondary">
                 Cancel
               </Button>
-            </Box>
-          </Box>
-        </Box>
+            </MarginAutoBox>
+          </ModalInputBox>
+        </ModalBoxParent>
       </Modal>
     </>
   )

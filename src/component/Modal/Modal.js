@@ -1,6 +1,6 @@
-import { Box, Modal as MUIModal } from "@material-ui/core"
+import { Box, Modal as MUIModal } from "@mui/material"
 import React from "react"
-import { colors } from "../utils/constants"
+import { colors } from "../../utils/constants"
 
 export default function Modal({ onClose, open, children, height }) {
   const boxStyle = {

@@ -1,9 +1,10 @@
-import { Button } from "@material-ui/core"
+import { Box, Button } from "@mui/material"
 import React from "react"
 import { useMoralis } from "react-moralis"
 import { useNavigate } from "react-router-dom"
 import CreateCluster from "../component/Cluster/CreateCluster"
 import PageWrapper from "../component/PageWrapper"
+import { grey } from "@mui/material/colors"
 
 export default function Home() {
   const { isAuthenticated } = useMoralis()
@@ -19,17 +20,17 @@ export default function Home() {
 
       {!isAuthenticated && <div>Please connect to your wallet.</div>}
 
-      <div>
+      <Box>
         <Button
           variant="contained"
+          color="grey"
           onClick={() => navigateTo("/layout")}
-          style={{ marginTop: 20 }}
         >
           Go to Layout
         </Button>
 
         <CreateCluster />
-      </div>
+      </Box>
     </PageWrapper>
   )
 }

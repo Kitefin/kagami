@@ -5,7 +5,7 @@ import {
   IconButton,
   Toolbar,
   Typography,
-} from "@material-ui/core"
+} from "@mui/material"
 import React from "react"
 import { useMoralis } from "react-moralis"
 import { useNavigate } from "react-router-dom"
@@ -24,7 +24,7 @@ function Header() {
   const connectBtn = (
     <Button
       variant="contained"
-      className="header-connect-btn"
+      color="deepOrange"
       onClick={() => authenticate({ signingMessage: "Connect to Kagami" })}
     >
       <b>CONNECT</b>
@@ -32,11 +32,7 @@ function Header() {
   )
 
   const disconnectBtn = (
-    <Button
-      variant="contained"
-      className="header-disconnect-btn "
-      onClick={() => logout()}
-    >
+    <Button variant="contained" color="green" onClick={() => logout()}>
       <b>DISCONNECT</b>
     </Button>
   )
@@ -60,14 +56,7 @@ function Header() {
               <Typography
                 variant="h6"
                 sx={{ flexGrow: 1 }}
-                style={{
-                  color: "white",
-                  fontSize: "1.6rem",
-                  padding: 0,
-                  margin: 0,
-                  // fontFamily: "Phosphate-Inline",
-                }}
-                // className="logo-title"
+                className="logo-title"
               >
                 KAGAMI
               </Typography>
