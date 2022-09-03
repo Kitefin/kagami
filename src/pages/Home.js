@@ -3,6 +3,7 @@ import React from "react"
 import { useMoralis } from "react-moralis"
 import { useNavigate } from "react-router-dom"
 import CreateCluster from "../component/Cluster/CreateCluster"
+import PageWrapper from "../component/PageWrapper"
 
 export default function Home() {
   const { isAuthenticated } = useMoralis()
@@ -13,7 +14,7 @@ export default function Home() {
   }
 
   return (
-    <>
+    <PageWrapper>
       <h2>Home</h2>
 
       {!isAuthenticated && <div>Please connect to your wallet.</div>}
@@ -29,6 +30,6 @@ export default function Home() {
 
         <CreateCluster />
       </div>
-    </>
+    </PageWrapper>
   )
 }

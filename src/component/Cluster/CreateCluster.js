@@ -155,7 +155,7 @@ export default function CreateCluster() {
               </List>
             </Box>
 
-            <Box style={{ marginBottom: 20 }}>
+            <Box style={{ marginBottom: 20, marginTop: "auto" }}>
               <Button onClick={create} color="primary">
                 Create
               </Button>

@@ -1,10 +1,16 @@
+import {
+  AppBar,
+  Button,
+  Grid,
+  IconButton,
+  Toolbar,
+  Typography,
+} from "@material-ui/core"
 import React from "react"
 import { useMoralis } from "react-moralis"
-import { Button, AppBar, Toolbar, Grid } from "@material-ui/core"
-
-import "./header.css"
-import { colors } from "../../utils/constants"
 import { useNavigate } from "react-router-dom"
+import { colors } from "../../utils/constants"
+import "./header.css"
 
 var userAddress
 function Header() {
@@ -38,7 +44,7 @@ function Header() {
   return (
     <AppBar
       position="static"
-      className="header-bar"
+      // className="header-bar"
       style={{ backgroundColor: colors.main }}
     >
       <Toolbar>
@@ -46,12 +52,26 @@ function Header() {
           justifyContent="space-between" // Add it here :)
           container
         >
-          <Grid
-            item
-            onClick={() => navigate("/")}
-            style={{ cursor: "pointer" }}
-          >
-            <span className="logo-title">KAGAMI</span>
+          <Grid item>
+            <IconButton
+              onClick={() => navigate("/")}
+              style={{ cursor: "pointer" }}
+            >
+              <Typography
+                variant="h6"
+                sx={{ flexGrow: 1 }}
+                style={{
+                  color: "white",
+                  fontSize: "1.6rem",
+                  padding: 0,
+                  margin: 0,
+                  // fontFamily: "Phosphate-Inline",
+                }}
+                // className="logo-title"
+              >
+                KAGAMI
+              </Typography>
+            </IconButton>
           </Grid>
 
           <Grid item>
