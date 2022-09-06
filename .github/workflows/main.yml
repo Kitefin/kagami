@@ -28,14 +28,16 @@ jobs:
           run: npm run build
 
         - name: Deploy
-          uses: reggionick/s3-deploy@v3
+          uses: actions/download-artifact@v2
           with:
-            folder: build
-            bucket: ${{ secrets.S3_BUCKET }}
-            bucket-region: ${{ secrets.S3_BUCKET_REGION }}
-            dist-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
-            invalidation: /
-            delete-removed: true
-            no-cache: true
-            private: true
-            filesToInclude: ".*/*,*/*,**"
+            name: build
+
+        - name: Configure AWS Credentials
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+           aws-region: ${{ secrets.S3_BUCKET_REGION }}
+
+        - name: Deploy to S3 Bucket
+          run: aws s3 sync ./ s3://kagami-dapp
