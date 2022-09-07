@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Layout() { 
 	const classes = useStyles();
-	const [alertOpen, setAlertOpen] = React.useState(true);
+	const [alertOpen, setAlertOpen] = React.useState(false);
 
 	const create_Alert = () => {
 		 setAlertOpen(true);
@@ -32,7 +32,7 @@ function Layout() {
 	};
 
 	const createAlertBtn = (
-		<Button variant="contained" className="header-createalert-btn " onClick={() => create_Alert()}>
+		<Button variant="contained" className="header-createalertopen-btn" onClick={() => create_Alert()}>
 			<b>CREATE ALERT</b>
 		</Button>
 	);
@@ -54,7 +54,7 @@ function Layout() {
 			>
         		<Fade in={alertOpen}>
           			<div className={classes.paper}> 
-						<CreateAlert></CreateAlert>
+						<CreateAlert alertClose={()=>alertClose()}></CreateAlert>
           			</div>
         		</Fade>
       		</Modal>

@@ -7,18 +7,23 @@ import './layout.css';
 const icon = <CheckBoxOutlineBlank fontSize="small" />;
 const checkedIcon = <CheckBox fontSize="small" />; 
  
-  
-
-  function CreateAlert() { 
-
+function CreateAlert({alertClose}) { 
 	const types = [
 		{ title: 'Limits', id: 1 },
 		{ title: 'Allow-lists', id: 2 },
 		{ title: 'Exclusion-lists', id: 3 },     
 	];
 
-	const [type, setType] = useState(types[0]);
-	const [descs, setDescs] = useState(set_Descs(types[0]));
+	const descs = [
+		{ title: 'Maximum of 500 ETH per transaction', id: 1 },
+		{ title: 'Maximum of 5000 ETH per day', id: 2 },
+		{ title: 'Alerts if value of total assets in wallets exceeds a threshold', id: 3 }, 
+		{ title: 'Approved counterparts and smart contracts', id: 4 }, 
+		{ title: 'Minimum of 20 ETH per month (team wages)', id: 5 },  
+	];	 
+
+	const [type, set_Type] = useState(types[0]);
+	const [desc, set_Desc] = useState(descs[0]);
  
 	console.log(descs);
 
@@ -27,8 +32,14 @@ const checkedIcon = <CheckBox fontSize="small" />;
 	}
 
 	const createAlertBtn = (
-		<Button variant="contained" className="header-createalert-btn " onClick={() => create_Alert()}>
-			<b>CREATE ALERT</b>
+		<Button variant="contained" className="header-createalert-btn" onClick={() => create_Alert()}>
+			<b className="text-white">Create</b>
+		</Button>
+	);  
+
+	const cancelBtn = (
+		<Button variant="contained" className="header-createalert-btn" onClick={ alertClose}>
+			<b className="text-white">Cancel</b>
 		</Button>
 	); 
 
@@ -39,33 +50,26 @@ const checkedIcon = <CheckBox fontSize="small" />;
 			getOptionLabel={(option) => option.title}
 			style={{ width: 300 }}
 			renderInput={(params) => <TextField {...params} label="Alert Type" variant="outlined" />}
-			onChange={(event, value) => setType(value)} 
+			onChange={(event, value) => set_Type(value)} 
 		/>
    	);
 	
-	function set_Descs (type) {
-		var typeId = type.id;
-		switch(typeId)
-		{
-			case 1: return 
-				[
-					{title: 'Maximum of 500 ETH per transaction', id: 1},
-					{title: 'Alerts if value of total assets in wallets exceeds a threshold', id: 2}
-				];
-			case 2: return [{title: 'Approved counterparts and smart contracts', id: 1}];
-			case 3: return [{title: 'Minimum of 20 ETH per month (team wages)', id: 1}];
-		}
-	}
+	// function set_Descs (type) {
+	// 	var typeId = type.id;
+	// 	switch(typeId)
+	// 	{
+	// 		case 1: return 
+	// 			[
+	// 				{title: 'Maximum of 500 ETH per transaction', id: 1},
+	// 				{title: 'Alerts if value of total assets in wallets exceeds a threshold', id: 2}
+	// 			];
+	// 		case 2: return [{title: 'Approved counterparts and smart contracts', id: 1}];
+	// 		case 3: return [{title: 'Minimum of 20 ETH per month (team wages)', id: 1}];
+	// 	}
+	// }
 	
 	// var descs = getDescriptionByType(type);
-	// const descs = [
-	// 	{ title: 'Maximum of 500 ETH per transaction', id: 1 },
-	// 	{ title: 'Maximum of 5000 ETH per day', id: 2 },
-	// 	{ title: 'Alerts if value of total assets in wallets exceeds a threshold', id: 3 }, 
-	// 	{ title: 'Approved counterparts and smart contracts', id: 4 }, 
-	// 	{ title: 'Minimum of 20 ETH per month (team wages)', id: 5 },  
-	// ];	
-  
+	
 	const ComboDesc = (
 		<Autocomplete
 			id="combo-box-demo"
@@ -73,7 +77,7 @@ const checkedIcon = <CheckBox fontSize="small" />;
 			getOptionLabel={(option) => option.title}
 			style={{ width: 300 }}
 			renderInput={(params) => <TextField {...params} label="Alert Description" variant="outlined" />}
-			onChange={(event, value) => set_Descs(value)} 
+			onChange={(event, value) => set_Desc(value)} 
 		/>
 	);
 
@@ -96,13 +100,12 @@ const checkedIcon = <CheckBox fontSize="small" />;
 	);
    
 	const availableRecipients = [
-		{ title: 'The Shawshank Redemption', id: 1 },
-		{ title: 'The Godfather', id: 2 },
-		{ title: 'The Godfather: Part II', id: 3 },
-		{ title: 'The Dark Knight', id: 4 },
-		{ title: '12 Angry Men', id: 5 },
-		{ title: "Schindler's List", id: 6 },
-		{ title: 'Pulp Fiction', id: 7 }, 
+		{ title: 'You', id: 1 },
+		{ title: '@rogerTHAT', id: 2 },
+		{ title: '@hana', id: 3 },
+		{ title: '@raggedJ', id: 4 },
+		{ title: '@grosveynor', id: 5 },
+		{ title: "@seasonH", id: 6 }
 	];
 
 	const HookRecipients = (
@@ -130,13 +133,18 @@ const checkedIcon = <CheckBox fontSize="small" />;
 	);
   
 	return (
-		<div className="text-center" >   
-			<h2 className="alert_title">Create Alert</h2>
+		<div className="text-center">   
+			<h2 className="alert_title">Set email alert for [pipe: cluster_name] Cluster</h2>
 			<div className="pt-2" >{ComboType}</div>
 			<div className="mt-3">{ComboDesc}</div>
 			<div className="mt-3">{ComboPort}</div>
 			<div className="mt-3">{HookRecipients}</div>
-			<div className="mt-3">{createAlertBtn}</div> 
+			<div className="mt-3">
+				<div>
+					{cancelBtn}&nbsp;
+					{createAlertBtn}
+				</div>
+			</div>
 		</div> 
 	);
 }
