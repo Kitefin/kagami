@@ -1,5 +1,5 @@
 import React, {useState} from 'react';   
-import { Button, Checkbox, TextField, Grid, InputLabel, OutlinedInput, InputAdornment } from '@material-ui/core'; 
+import { Button, Checkbox, TextField, Grid } from '@material-ui/core'; 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {CheckBoxOutlineBlank, CheckBox} from '@material-ui/icons';
 import './layout.css';
@@ -21,23 +21,56 @@ function CreateAlert({alertClose}) {
 		</Button>
 	); 
 
+	const TYPE_LIMITS = 1;
+	const TYPE_ALLOW_LISTS = 2;
+	const TYPE_EXCLUSION_LISTS = 3;  
+
 	const types = [
-		{ title: 'Limits', id: 1 },
-		{ title: 'Allow-lists', id: 2 },
-		{ title: 'Exclusion-lists', id: 3 },     
+		{ title: 'Limits', id: TYPE_LIMITS },
+		{ title: 'Allow-lists', id: TYPE_ALLOW_LISTS },
+		{ title: 'Exclusion-lists', id: TYPE_EXCLUSION_LISTS }
 	];
 
+	const CLUSTER_ALL_PROJECT_WALLETS = 1;
+	const CLUSTER_EXECUTIVE_CONTROLLED = 2;
+	const CLUSTER_JUNIOR_TRADERS = 3;
+	const CLUSTER_PROTFOLIO_MANAGERS = 4;
+	const CLUSTER_ACCOUTS_TEAMS = 5;
+
+	const portfolios = [
+		{ title: 'All Project Wallets', id: CLUSTER_ALL_PROJECT_WALLETS },
+		{ title: 'Executive Controlled', id: CLUSTER_EXECUTIVE_CONTROLLED },
+		{ title: 'Junior Traders', id: CLUSTER_JUNIOR_TRADERS },     
+		{ title: 'Portfolio Managers', id: CLUSTER_PROTFOLIO_MANAGERS },     
+		{ title: 'Accounts Team', id: CLUSTER_ACCOUTS_TEAMS },     
+	];
+
+	const DESC_MIN = 1;
+	const DESC_MAX = 2;
 	const minMaxs = [
-		{ title: 'Minimum', id: 1 },
-		{ title: 'Maximum', id: 2 },
+		{ title: 'Minimum', id: DESC_MIN },
+		{ title: 'Maximum', id: DESC_MAX },
 	];
 
+	const DESC_PER_TRANSACTION = 1;
+	const DESC_PER_DAY = 2;
+	const DESC_PER_WEEK = 3;
+	const DESC_PER_MONTH = 4;
 	const pers = [
-		{ title: 'Transaction', id: 1 },
-		{ title: 'Day', id: 2 },
-		{ title: 'Week', id: 3 },
-		{ title: 'Month', id: 4 },
+		{ title: 'Transaction', id: DESC_PER_TRANSACTION },
+		{ title: 'Day', id: DESC_PER_DAY },
+		{ title: 'Week', id: DESC_PER_WEEK },
+		{ title: 'Month', id: DESC_PER_MONTH },
 	]; 
+
+	const availableRecipients = [
+		{ title: 'You', id: 1 },
+		{ title: '@rogerTHAT', id: 2 },
+		{ title: '@hana', id: 3 },
+		{ title: '@raggedJ', id: 4 },
+		{ title: '@grosveynor', id: 5 },
+		{ title: "@seasonH", id: 6 }
+	];
 
 	const [type, set_Type] = useState(null);
 	const [desc, set_Desc] = useState(null);
@@ -50,34 +83,37 @@ function CreateAlert({alertClose}) {
 	const setDesc = (desc) => {
 		console.log(desc);
 		set_Desc(desc);
-		if(desc.id === 1 || desc.id === 4)
+		if(desc.id === TYPE_DESC_MINMAX_AMOUNT_PER || desc.id === TPYE_DESC_4)
 			set_DescDetail(true);
 		else set_DescDetail(false);
 	}
 
+	const TYPE_DESC_MINMAX_AMOUNT_PER = 1;
+	const TPYE_DESC_2 = 2;
+	const TPYE_DESC_3 = 3;
+	const TPYE_DESC_4 = 4;
+
 	const setType = (type) => {
 		set_Type(type);
-		if(type.id === 1)
+		if(type.id === TYPE_LIMITS)
 		{
 			var descs_ = [
-				{ title: '<Min/Max> of <Amount> ETH per <transaction/time>', id: 1 },
-				// { title: 'Maximum of 5000 ETH per day', id: 2 },
-				{ title: 'Alerts if value of total assets in wallets exceeds a threshold', id: 2 }
+				{ title: '<Min/Max> of <Amount> ETH per <transaction/time>', id: TYPE_DESC_MINMAX_AMOUNT_PER }, 
+				{ title: 'Notifications if value of total assets in wallets exceeds a threshold', id: TPYE_DESC_2 }
 			];
 			set_Descs(descs_);
 		}
-		else if(type.id === 2)
+		else if(type.id === TYPE_ALLOW_LISTS)
 		{
 			var descs_ = [
-				{ title: 'Approved counterparts and smart contracts', id: 3 }, 
+				{ title: 'Approved counterparts and smart contracts', id: TPYE_DESC_3 }, 
 			];
 			set_Descs(descs_);
-		}
-		
-		else if(type.id === 3)
+		}		
+		else if(type.id === TYPE_EXCLUSION_LISTS)
 		{
 			var descs_ = [
-				{ title: 'Minimum of 20 ETH per month (team wages)', id: 4 },  
+				{ title: 'Minimum of 20 ETH per month (team wages)', id: TPYE_DESC_4 },  
 			];
 			set_Descs(descs_);
 		} 
@@ -98,7 +134,7 @@ function CreateAlert({alertClose}) {
 		/>
    	); 
 	 
-	   const ComboDescMinMax = (
+	const ComboDescMinMax = (
 		<Autocomplete
 			id="combo-box-demo"
 			options={minMaxs}			 
@@ -158,15 +194,7 @@ function CreateAlert({alertClose}) {
 			: null}
 		</>
 	);
-
-	const portfolios = [
-		{ title: 'All Project Wallets', id: 1 },
-		{ title: 'Executive Controlled', id: 2 },
-		{ title: 'Junior Traders', id: 3 },     
-		{ title: 'Portfolio Managers', id: 4 },     
-		{ title: 'Accounts Team', id: 5 },     
-	];
-	   
+ 
 	const ComboPort = (
 			<Autocomplete
 				id="combo-box-demo"
@@ -177,16 +205,7 @@ function CreateAlert({alertClose}) {
 				renderInput={(params) => <TextField {...params} label="Notification Portfoloio Name" variant="outlined" />}
 			/>
 	);
-   
-	const availableRecipients = [
-		{ title: 'You', id: 1 },
-		{ title: '@rogerTHAT', id: 2 },
-		{ title: '@hana', id: 3 },
-		{ title: '@raggedJ', id: 4 },
-		{ title: '@grosveynor', id: 5 },
-		{ title: "@seasonH", id: 6 }
-	];
-
+    
 	const HookRecipients = (
 		<Autocomplete
 		  multiple
