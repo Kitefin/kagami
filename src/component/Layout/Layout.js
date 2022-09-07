@@ -1,13 +1,81 @@
-import React from 'react';
-import { Table } from '@material-ui/core';
+import React from 'react'; 
+import { Button, Table, Grid, Modal, Backdrop, Fade } from '@material-ui/core';
 import TableScrollbar from 'react-table-scrollbar';
+import { makeStyles } from '@material-ui/core/styles'; 
+import CreateAlert from './CreateAlert';
 import './layout.css';
 
-function Layout() {
+const useStyles = makeStyles((theme) => ({
+	modal: {
+	  display: 'flex',
+	  alignItems: 'center',
+	  justifyContent: 'center', 
+	},
+	paper: {
+	  backgroundColor: theme.palette.background.paper,	 
+	  borderRadius: '10px',
+	  boxShadow: theme.shadows[5],	   
+	  width: '80%'
+	},
+  }));
+
+function Layout() { 
+	const classes = useStyles();
+	const [alertOpen, setAlertOpen] = React.useState(true);
+
+	const create_Alert = () => {
+		 setAlertOpen(true);
+	}
+
+	const alertClose = () => {
+		setAlertOpen(false);
+	};
+
+	const createAlertBtn = (
+		<Button variant="contained" className="header-createalert-btn " onClick={() => create_Alert()}>
+			<b>CREATE ALERT</b>
+		</Button>
+	);
+
 	return (
 		<div className="layout-back">
-			<h2>YOUR CLUSTERS</h2>
-			<TableScrollbar>
+			 
+			 <Modal
+        		// aria-labelledby="transition-modal-title"
+				// aria-describedby="transition-modal-description"
+				className={classes.modal}
+				open={alertOpen}
+				onClose={alertClose}
+				closeAfterTransition
+				BackdropComponent={Backdrop}
+				BackdropProps={{
+				timeout: 500,
+				}}
+			>
+        		<Fade in={alertOpen}>
+          			<div className={classes.paper}> 
+						<CreateAlert></CreateAlert>
+          			</div>
+        		</Fade>
+      		</Modal>
+
+			
+			<Grid
+				justify="space-between" // Add it here :)
+				container
+				spacing={24}
+			>
+				<Grid item> </Grid>
+				<Grid item>
+					<div className="header-alert-btn">{ createAlertBtn }</div>				 
+				</Grid>
+				<Grid item> </Grid>
+			</Grid>
+			
+			 
+			<div>
+				<h2>YOUR CLUSTERS</h2>
+				<TableScrollbar>
 				<Table>
 					<tbody>
 						<tr>
@@ -75,10 +143,12 @@ function Layout() {
 						</tr>
 					</tbody>
 				</Table>
-			</TableScrollbar>
-			<h3>YOUR ALERTS</h3>
-			<TableScrollbar>
-				<Table>
+				</TableScrollbar>
+			</div>
+			<div>
+				<h3>YOUR ALERTS</h3>
+				<TableScrollbar>
+					<Table>
 					<thead>
 						<tr>
 							<th style={{ minWidth: '120px' }}>Type</th>
@@ -132,8 +202,9 @@ function Layout() {
 							<td style={{ backgroundColor: '#00ff30' }}>Edit Alert</td>
 						</tr>
 					</tbody>
-				</Table>
-			</TableScrollbar>
+					</Table>
+				</TableScrollbar>
+			</div>
 		</div>
 	);
 }

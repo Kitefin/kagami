@@ -9,6 +9,11 @@
   "main": "src/index.js",
   "dependencies": {
     "@material-ui/core": "4.12.4",
+    "@material-ui/icons": "^4.11.3",
+    "@material-ui/lab": "^4.0.0-alpha.61",
+    "@walletconnect/web3-provider": "^1.8.0",
+    "@web3auth/web3auth": "^2.0.2",
+    "magic-sdk": "7.0.0",
     "moralis": "1.7.0",
     "react": "18.0.0",
     "react-dom": "18.0.0",
