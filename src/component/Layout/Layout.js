@@ -38,7 +38,7 @@ function Layout() {
 	);
 
 	return (
-		<div className="layout-back">
+		<div className="layout-back p-5">
 			 
 			 <Modal
         		// aria-labelledby="transition-modal-title"
@@ -73,7 +73,7 @@ function Layout() {
 			</Grid>
 			
 			 
-			<div>
+			<div className="m-5">
 				<h2>YOUR CLUSTERS</h2>
 				<TableScrollbar>
 				<Table>
@@ -145,7 +145,7 @@ function Layout() {
 				</Table>
 				</TableScrollbar>
 			</div>
-			<div>
+			<div className="m-5">
 				<h3>YOUR ALERTS</h3>
 				<TableScrollbar>
 					<Table>

@@ -8,6 +8,18 @@ const icon = <CheckBoxOutlineBlank fontSize="small" />;
 const checkedIcon = <CheckBox fontSize="small" />; 
  
 function CreateAlert({alertClose}) { 
+	const createAlertBtn = (
+		<Button variant="contained" className="header-createalert-btn" onClick={() => create_Alert()}>
+			<b className="text-white">Create</b>
+		</Button>
+	);  
+
+	const cancelBtn = (
+		<Button variant="contained" className="header-createalert-btn" onClick={ alertClose}>
+			<b className="text-white">Cancel</b>
+		</Button>
+	); 
+
 	const types = [
 		{ title: 'Limits', id: 1 },
 		{ title: 'Allow-lists', id: 2 },
@@ -25,57 +37,42 @@ function CreateAlert({alertClose}) {
 	const [type, set_Type] = useState(types[0]);
 	const [desc, set_Desc] = useState(descs[0]);
  
-	console.log(descs);
+	// console.log(descs);
 
 	const create_Alert = () => {
-		 console.log(type)
-	}
-
-	const createAlertBtn = (
-		<Button variant="contained" className="header-createalert-btn" onClick={() => create_Alert()}>
-			<b className="text-white">Create</b>
-		</Button>
-	);  
-
-	const cancelBtn = (
-		<Button variant="contained" className="header-createalert-btn" onClick={ alertClose}>
-			<b className="text-white">Cancel</b>
-		</Button>
-	); 
+		 //console.log(type)
+	} 
 
     const ComboType = (
 		<Autocomplete
 			id="combo-box-demo"
 			options={types}
 			getOptionLabel={(option) => option.title}
-			style={{ width: 300 }}
+			// style={{ width: 300 }}
 			renderInput={(params) => <TextField {...params} label="Alert Type" variant="outlined" />}
 			onChange={(event, value) => set_Type(value)} 
 		/>
-   	);
+   	); 
 	
-	// function set_Descs (type) {
-	// 	var typeId = type.id;
-	// 	switch(typeId)
-	// 	{
-	// 		case 1: return 
-	// 			[
-	// 				{title: 'Maximum of 500 ETH per transaction', id: 1},
-	// 				{title: 'Alerts if value of total assets in wallets exceeds a threshold', id: 2}
-	// 			];
-	// 		case 2: return [{title: 'Approved counterparts and smart contracts', id: 1}];
-	// 		case 3: return [{title: 'Minimum of 20 ETH per month (team wages)', id: 1}];
-	// 	}
-	// }
-	
-	// var descs = getDescriptionByType(type);
-	
+	const getDisableDesc = (option) => {		 
+
+		if(type && type.id === 1)
+		{
+			if(option.id !== 5 && option.id !== 6)
+			{
+				console.log(option.id);
+				return false;
+			}
+			else return true;
+		}
+		// else return true; 
+	}
+
 	const ComboDesc = (
 		<Autocomplete
-			id="combo-box-demo"
-			options={descs}
-			getOptionLabel={(option) => option.title}
-			style={{ width: 300 }}
+			id="disabled-options-demo"
+			options={descs} 
+			getOptionLabel={(option) => option.title} 
 			renderInput={(params) => <TextField {...params} label="Alert Description" variant="outlined" />}
 			onChange={(event, value) => set_Desc(value)} 
 		/>
@@ -94,7 +91,7 @@ function CreateAlert({alertClose}) {
 				id="combo-box-demo"
 				options={portfolios}
 				getOptionLabel={(option) => option.title}
-				style={{ width: 300 }}
+				// style={{ width: 300 }}
 				renderInput={(params) => <TextField {...params} label="Alert Portfoloio Name" variant="outlined" />}
 			/>
 	);
@@ -134,15 +131,17 @@ function CreateAlert({alertClose}) {
   
 	return (
 		<div className="text-center">   
-			<h2 className="alert_title">Set email alert for [pipe: cluster_name] Cluster</h2>
-			<div className="pt-2" >{ComboType}</div>
-			<div className="mt-3">{ComboDesc}</div>
-			<div className="mt-3">{ComboPort}</div>
-			<div className="mt-3">{HookRecipients}</div>
-			<div className="mt-3">
-				<div>
-					{cancelBtn}&nbsp;
-					{createAlertBtn}
+			<h4 className="alert_title">Set email alert for [pipe: cluster_name] Cluster</h4>
+			<div className="p-5">
+				<div className="pt-3" >{ComboType}</div>
+				<div className="mt-3">{ComboDesc}</div>
+				<div className="mt-3">{ComboPort}</div>
+				<div className="mt-3">{HookRecipients}</div>
+				<div className="mt-3 pb-3">
+					<div>
+						{cancelBtn}&nbsp;&nbsp;&nbsp;&nbsp;
+						{createAlertBtn}
+					</div>
 				</div>
 			</div>
 		</div> 

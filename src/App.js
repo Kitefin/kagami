@@ -1,4 +1,7 @@
+// import './bootstrap.min.css';
+
 import './styles.css';
+
 import { useMoralis } from 'react-moralis';
 import Dashboard from './component/Dashboard/Dashboard';
 import Header from './component/Layout/Header';
