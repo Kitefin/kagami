@@ -37,8 +37,7 @@ function CreateAlert({alertClose}) {
 		{ title: 'Day', id: 2 },
 		{ title: 'Week', id: 3 },
 		{ title: 'Month', id: 4 },
-	];
-  
+	]; 
 
 	const [type, set_Type] = useState(null);
 	const [desc, set_Desc] = useState(null);
@@ -51,8 +50,9 @@ function CreateAlert({alertClose}) {
 	const setDesc = (desc) => {
 		console.log(desc);
 		set_Desc(desc);
-		if(desc.id === 1)
+		if(desc.id === 1 || desc.id === 4)
 			set_DescDetail(true);
+		else set_DescDetail(false);
 	}
 
 	const setType = (type) => {
@@ -69,7 +69,7 @@ function CreateAlert({alertClose}) {
 		else if(type.id === 2)
 		{
 			var descs_ = [
-				{ title: 'Approved counterparts and smart contracts', id: 4 }, 
+				{ title: 'Approved counterparts and smart contracts', id: 3 }, 
 			];
 			set_Descs(descs_);
 		}
@@ -77,7 +77,7 @@ function CreateAlert({alertClose}) {
 		else if(type.id === 3)
 		{
 			var descs_ = [
-				{ title: 'Minimum of 20 ETH per month (team wages)', id: 5 },  
+				{ title: 'Minimum of 20 ETH per month (team wages)', id: 4 },  
 			];
 			set_Descs(descs_);
 		} 
@@ -93,7 +93,7 @@ function CreateAlert({alertClose}) {
 			options={types}
 			// defaultValue={types[0]}
 			getOptionLabel={(option) => option.title} 
-			renderInput={(params) => <TextField {...params} label="Alert Type" variant="outlined" />}
+			renderInput={(params) => <TextField {...params} label="Notification Type" variant="outlined" />}
 			onChange={(event, value) => setType(value)} 
 		/>
    	); 
@@ -133,7 +133,7 @@ function CreateAlert({alertClose}) {
 				id="disabled-options-demo"
 				options={descs} 
 				getOptionLabel={(option) => option.title} 
-				renderInput={(params) => <TextField {...params} label="Alert Description" variant="outlined" />}
+				renderInput={(params) => <TextField {...params} label="Notification Description" variant="outlined" />}
 				onChange={(event, value) => setDesc(value)} 
 				// defaultValue={descs[0]}
 			/>
@@ -174,7 +174,7 @@ function CreateAlert({alertClose}) {
 				// defaultValue={portfolios[0]}
 				getOptionLabel={(option) => option.title}
 				// style={{ width: 300 }}
-				renderInput={(params) => <TextField {...params} label="Alert Portfoloio Name" variant="outlined" />}
+				renderInput={(params) => <TextField {...params} label="Notification Portfoloio Name" variant="outlined" />}
 			/>
 	);
    
@@ -213,7 +213,7 @@ function CreateAlert({alertClose}) {
   
 	return (
 		<div className="text-center">   
-			<h4 className="alert_title">Set email alert for [pipe: cluster_name] Cluster</h4>
+			<h4 className="alert_title">Set email Notification for [pipe: cluster_name] Cluster</h4>
 			<div className="p-5">
 				<div className="pt-3" >{ComboType}</div>
 				<div className="mt-3">{ComboDesc}</div>

@@ -33,7 +33,7 @@ function Layout() {
 
 	const createAlertBtn = (
 		<Button variant="contained" className="header-createalertopen-btn" onClick={() => create_Alert()}>
-			<b>CREATE ALERT</b>
+			<b>CREATE NOTIFICATION</b>
 		</Button>
 	);
 
@@ -146,7 +146,7 @@ function Layout() {
 				</TableScrollbar>
 			</div>
 			<div className="m-5">
-				<h3>YOUR ALERTS</h3>
+				<h3>YOUR NOTIFICATIONS</h3>
 				<TableScrollbar>
 					<Table>
 					<thead>
@@ -164,42 +164,42 @@ function Layout() {
 							<td>Maximum of 500 ETH per transaction</td>
 							<td>All Project Wallets</td>
 							<td>You, @rogerTHAT, @hana</td>
-							<td style={{ backgroundColor: '#00ff30' }}>Edit Alert</td>
+							<td style={{ backgroundColor: '#00ff30' }}>Edit Notification</td>
 						</tr>
 						<tr>
 							<td>Limits</td>
 							<td>Maximum of 5000 ETH per day</td>
 							<td>All Project Wallets</td>
 							<td>You, @rogerTHAT, @risk404</td>
-							<td style={{ backgroundColor: '#00ff30' }}>Edit Alert</td>
+							<td style={{ backgroundColor: '#00ff30' }}>Edit Notification</td>
 						</tr>
 						<tr>
 							<td>Limits</td>
 							<td>Maximum of 2500 ETH per day</td>
 							<td>Executive Controlled</td>
 							<td>You, @rogerTHAT, @raggedJ</td>
-							<td style={{ backgroundColor: '#00ff30' }}>Edit Alert</td>
+							<td style={{ backgroundColor: '#00ff30' }}>Edit Notification</td>
 						</tr>
 						<tr>
 							<td>Limits</td>
 							<td>Alerts if value of total assets in wallets exceeds a threshold</td>
 							<td>Junior Traders</td>
 							<td>You, @rogerTHAT</td>
-							<td style={{ backgroundColor: '#00ff30' }}>Edit Alert</td>
+							<td style={{ backgroundColor: '#00ff30' }}>Edit Notification</td>
 						</tr>
 						<tr>
 							<td>Allow-lists</td>
 							<td>Approved counterparts and smart contracts</td>
 							<td>Portfolio Managers</td>
 							<td>You, @grosveynor</td>
-							<td style={{ backgroundColor: '#00ff30' }}>Edit Alert</td>
+							<td style={{ backgroundColor: '#00ff30' }}>Edit Notification</td>
 						</tr>
 						<tr>
 							<td>Exclusion-lists</td>
 							<td>Minimum of 20 ETH per month (team wages)</td>
 							<td>Accounts Team</td>
 							<td>You, @seasonH</td>
-							<td style={{ backgroundColor: '#00ff30' }}>Edit Alert</td>
+							<td style={{ backgroundColor: '#00ff30' }}>Edit Notification</td>
 						</tr>
 					</tbody>
 					</Table>
