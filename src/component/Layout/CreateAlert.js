@@ -8,6 +8,7 @@ const icon = <CheckBoxOutlineBlank fontSize="small" />;
 const checkedIcon = <CheckBox fontSize="small" />; 
  
 function CreateAlert({alertClose}) { 
+	
 	const createAlertBtn = (
 		<Button variant="contained" className="header-createalert-btn" onClick={() => create_Alert()}>
 			<b className="text-white">Create</b>
@@ -26,7 +27,7 @@ function CreateAlert({alertClose}) {
 		{ title: 'Exclusion-lists', id: 3 },     
 	];
 
-	const descs = [
+	var descs_ = [
 		{ title: 'Maximum of 500 ETH per transaction', id: 1 },
 		{ title: 'Maximum of 5000 ETH per day', id: 2 },
 		{ title: 'Alerts if value of total assets in wallets exceeds a threshold', id: 3 }, 
@@ -35,9 +36,39 @@ function CreateAlert({alertClose}) {
 	];	 
 
 	const [type, set_Type] = useState(types[0]);
-	const [desc, set_Desc] = useState(descs[0]);
+	const [desc, set_Desc] = useState(descs_);
+	const [descs, set_Descs] = useState(descs_);
  
 	// console.log(descs);
+
+	const setType = (type) => {
+		set_Type(type);
+		if(type.id === 1)
+		{
+			descs_ = [
+				{ title: 'Maximum of 500 ETH per transaction', id: 1 },
+				{ title: 'Maximum of 5000 ETH per day', id: 2 },
+				{ title: 'Alerts if value of total assets in wallets exceeds a threshold', id: 3 }
+			];
+			set_Descs(descs_);
+		}
+		else if(type.id === 2)
+		{
+			descs_ = [
+				{ title: 'Approved counterparts and smart contracts', id: 4 }, 
+			];
+			set_Descs(descs_);
+		}
+		
+		else if(type.id === 3)
+		{
+			descs_ = [
+				{ title: 'Minimum of 20 ETH per month (team wages)', id: 5 },  
+			];
+			set_Descs(descs_);
+		}
+		
+	}
 
 	const create_Alert = () => {
 		 //console.log(type)
@@ -47,27 +78,12 @@ function CreateAlert({alertClose}) {
 		<Autocomplete
 			id="combo-box-demo"
 			options={types}
-			getOptionLabel={(option) => option.title}
-			// style={{ width: 300 }}
+			getOptionLabel={(option) => option.title} 
 			renderInput={(params) => <TextField {...params} label="Alert Type" variant="outlined" />}
-			onChange={(event, value) => set_Type(value)} 
+			onChange={(event, value) => setType(value)} 
 		/>
    	); 
-	
-	const getDisableDesc = (option) => {		 
-
-		if(type && type.id === 1)
-		{
-			if(option.id !== 5 && option.id !== 6)
-			{
-				console.log(option.id);
-				return false;
-			}
-			else return true;
-		}
-		// else return true; 
-	}
-
+	 
 	const ComboDesc = (
 		<Autocomplete
 			id="disabled-options-demo"
@@ -124,7 +140,7 @@ function CreateAlert({alertClose}) {
 			</React.Fragment>
 		  )} 
 		  renderInput={(params) => (
-			<TextField {...params} variant="outlined" label="Checkboxes" placeholder="Favorites" />
+			<TextField {...params} variant="outlined" label="Recipients" placeholder="Favorites" />
 		  )}
 		/>
 	);
