@@ -38,14 +38,7 @@ function CreateAlert({alertClose}) {
 		{ title: 'Week', id: 3 },
 		{ title: 'Month', id: 4 },
 	];
-
-	// var descs_ = [
-	// 	{ title: 'Maximum of 500 ETH per transaction', id: 1 },
-	// 	{ title: 'Maximum of 5000 ETH per day', id: 2 },
-	// 	{ title: 'Alerts if value of total assets in wallets exceeds a threshold', id: 3 }, 
-	// 	{ title: 'Approved counterparts and smart contracts', id: 4 }, 
-	// 	{ title: 'Minimum of 20 ETH per month (team wages)', id: 5 },  
-	// ];	 
+  
 
 	const [type, set_Type] = useState(null);
 	const [desc, set_Desc] = useState(null);
@@ -67,9 +60,9 @@ function CreateAlert({alertClose}) {
 		if(type.id === 1)
 		{
 			var descs_ = [
-				{ title: 'Maximum of 500 ETH per transaction', id: 1 },
-				{ title: 'Maximum of 5000 ETH per day', id: 2 },
-				{ title: 'Alerts if value of total assets in wallets exceeds a threshold', id: 3 }
+				{ title: '<Min/Max> of <Amount> ETH per <transaction/time>', id: 1 },
+				// { title: 'Maximum of 5000 ETH per day', id: 2 },
+				{ title: 'Alerts if value of total assets in wallets exceeds a threshold', id: 2 }
 			];
 			set_Descs(descs_);
 		}
@@ -145,21 +138,21 @@ function CreateAlert({alertClose}) {
 				// defaultValue={descs[0]}
 			/>
 			{descDetail ? (
-				<div>
-					<p>Detail Setting</p>
-						<Grid
-							justify="space-between"
-							container
-							spacing={24}
-						>
-							<Grid item> {ComboDescMinMax} </Grid>
-							<Grid item> of </Grid>
-							<Grid item> {InputAmount} </Grid>
-							<Grid item> ETH per </Grid>
-							<Grid item> {ComboDescPer} </Grid>
-						</Grid>
-					 
-					
+				<div className="p-3">
+					<h2>Detail Setting</h2>
+					<div className="px-5 pr-5">
+					<Grid
+						justify="space-between"
+						container
+						spacing={24}
+					>
+						<Grid item xs={2}> {ComboDescMinMax} </Grid>
+						<Grid item className="mt-3"> of </Grid>
+						<Grid item xs={2}> {InputAmount} </Grid>
+						<Grid item className="mt-3"> ETH per </Grid>
+						<Grid item xs={3}> {ComboDescPer} </Grid>
+					</Grid> 
+					</div>
 				</div>
 			)
 			: null}
