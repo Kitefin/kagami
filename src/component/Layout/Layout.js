@@ -1,10 +1,12 @@
-import React from 'react'; 
-import { Button, Table, Grid, Modal, Backdrop, Fade } from '@material-ui/core';
+ 
+ 
 import TableScrollbar from 'react-table-scrollbar';
 import { makeStyles } from '@material-ui/core/styles'; 
+import React from 'react';   
+import {Button, Table, Grid } from '@material-ui/core'; 
+import {CheckBoxOutlineBlank, CheckBox} from '@material-ui/icons';  
+import './layout.css'; 
 import CreateAlert from './CreateAlert';
-import Welcome from './Welcome';
-import './layout.css';
 
 const useStyles = makeStyles((theme) => ({
 	modal: {
@@ -29,47 +31,40 @@ const useStyles = makeStyles((theme) => ({
 
 function Layout() { 
 	const classes = useStyles();
-	const [alertOpen, setAlertOpen] = React.useState(false);
+	const [open, setOpen] = React.useState(false); 
+
+	  const handleClickOpen = () => () => {
+		setOpen(true); 
+	  };
 	
-
-	const create_Alert = () => {
-		 setAlertOpen(true);
-	}
-
-	const alertClose = () => {
-		setAlertOpen(false);
-	};
+	  const handleClose = () => {
+		setOpen(false);
+	  };
  
-	const createAlertBtn = (
-		<Button variant="contained" className="header-createalertopen-btn" onClick={() => create_Alert()}>
+	  const descriptionElementRef = React.useRef(null);
+	  React.useEffect(() => {
+		if (open) {
+		  const { current: descriptionElement } = descriptionElementRef;
+		  if (descriptionElement !== null) {
+			descriptionElement.focus();
+		  }
+		}
+	  }, [open]);
+
+	const openCreateAlertBtn = (
+		<Button variant="contained" className="header-createalertopen-btn" onClick={handleClickOpen()}>
 			<b>CREATE NOTIFICATION</b>
 		</Button>
 	);
 
+	
+	
+
 	return (
-		<div className="layout-back p-5">
-			 
-			 <Modal
-        		// aria-labelledby="transition-modal-title"
-				// aria-describedby="transition-modal-description"
-				className={classes.modal}
-				open={alertOpen}
-				onClose={alertClose}
-				closeAfterTransition
-				BackdropComponent={Backdrop}
-				BackdropProps={{
-				timeout: 500,
-				}}
-			>
-        		<Fade in={alertOpen}>
-          			<div className={classes.paper}> 
-						<CreateAlert alertClose={()=>alertClose()}></CreateAlert>
-          			</div>
-        		</Fade>
-      		</Modal> 
-
-
-		 
+		<div className="layout-back p-5"> 
+			<CreateAlert open={open} alertClose={handleClose} />
+			
+			
 			<Grid
 				justify="space-between" // Add it here :)
 				container
@@ -77,7 +72,7 @@ function Layout() {
 			>
 				<Grid item> </Grid>
 				<Grid item>
-					<div className="header-alert-btn">{ createAlertBtn }</div>				 
+					<div className="header-alert-btn">{ openCreateAlertBtn }</div>				 
 				</Grid>
 				<Grid item> </Grid>
 			</Grid>
