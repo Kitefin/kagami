@@ -57,8 +57,7 @@ function Layout() {
 						<CreateAlert alertClose={()=>alertClose()}></CreateAlert>
           			</div>
         		</Fade>
-      		</Modal>
-
+      		</Modal> 
 			
 			<Grid
 				justify="space-between" // Add it here :)

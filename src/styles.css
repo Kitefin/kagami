@@ -9,3 +9,15 @@
 .MuiSwitch-track {
 	background-color: #e52d27 !important;
 }
+
+.bg_normal {
+	background-color: #dc3d90;
+	margin-top: -50px;
+	font-size: xx-large
+}
+
+.text_bg {
+	color: #dc3d90;
+	color: #000;
+}
+

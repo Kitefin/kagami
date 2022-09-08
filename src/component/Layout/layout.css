@@ -1,14 +1,15 @@
 .header-bar {
 	height: 70px;
-	background-color: rgba(85, 85, 85, 0.815) !important;
+	background-color: rgba(212, 17, 119, 0.815) !important;
 	width: 100%;
 	padding: 10px;
+	 
 }
 .logo-title {
 	font-size: 60px;
 	font-family: "Phosphate-Inline";
 	padding: 0px;
-	color: #000;
+	color: #fff;
 }
 @font-face {
 	font-family: "Phosphate-Inline";
@@ -23,8 +24,8 @@
 }
 
 .header-connect-btn {
-	background-color: rgba(255, 0, 0, 0.699) !important;
-	color: #fff !important;
+	background-color: rgba(241, 241, 241, 0.899) !important;
+	color: #000 !important;
 }
 
 .header-connect-btn:hover {
