@@ -5,7 +5,7 @@ import './styles.css';
 import { useMoralis } from 'react-moralis';
 import Dashboard from './component/Dashboard/Dashboard';
 import Header from './component/Layout/Header';
-import Layout from './component/Layout/Layout';
+import Welcome from './component/Layout/Welcome';
 
 export default function App() {
 	const { isAuthenticated } = useMoralis();
@@ -13,7 +13,7 @@ export default function App() {
 	return (
 		<div className="App">
 			<Header />
-			{!isAuthenticated ? <Dashboard /> : <Layout />}
+			{!isAuthenticated ? <Dashboard /> : <Welcome />}
 		</div>
 	);
 }

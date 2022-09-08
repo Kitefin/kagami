@@ -3,6 +3,7 @@ import { Button, Table, Grid, Modal, Backdrop, Fade } from '@material-ui/core';
 import TableScrollbar from 'react-table-scrollbar';
 import { makeStyles } from '@material-ui/core/styles'; 
 import CreateAlert from './CreateAlert';
+import Welcome from './Welcome';
 import './layout.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -12,16 +13,24 @@ const useStyles = makeStyles((theme) => ({
 	  justifyContent: 'center', 
 	},
 	paper: {
-	  backgroundColor: theme.palette.background.paper,	 
-	  borderRadius: '10px',
-	  boxShadow: theme.shadows[5],	   
-	  width: '80%'
-	},
+		backgroundColor: theme.palette.background.paper,	 
+		borderRadius: '10px',
+		boxShadow: theme.shadows[5],	   
+		width: '80%'
+	  },
+
+	  paper2: {
+		backgroundColor: theme.palette.background.paper,	 
+		borderRadius: '10px',
+		boxShadow: theme.shadows[5],	   
+		width: '50%',
+	  }, 
   }));
 
 function Layout() { 
 	const classes = useStyles();
 	const [alertOpen, setAlertOpen] = React.useState(false);
+	
 
 	const create_Alert = () => {
 		 setAlertOpen(true);
@@ -30,7 +39,7 @@ function Layout() {
 	const alertClose = () => {
 		setAlertOpen(false);
 	};
-
+ 
 	const createAlertBtn = (
 		<Button variant="contained" className="header-createalertopen-btn" onClick={() => create_Alert()}>
 			<b>CREATE NOTIFICATION</b>
@@ -58,7 +67,9 @@ function Layout() {
           			</div>
         		</Fade>
       		</Modal> 
-			
+
+
+		 
 			<Grid
 				justify="space-between" // Add it here :)
 				container
