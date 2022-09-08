@@ -39,7 +39,7 @@ function Header() {
 					</Grid>
 
 					<Grid item>
-						<div className="header-btn">{isAuthenticated ? disconnectBtn : connectBtn}</div>
+						<div className="mt-2">{isAuthenticated ? disconnectBtn : connectBtn}</div>
 					</Grid>
 				</Grid>
 			</Toolbar>

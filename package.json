@@ -1,43 +1,24 @@
 {
-  "name": "react",
+  "name": "project",
   "version": "1.0.0",
-  "description": "React example starter project",
-  "keywords": [
-    "react",
-    "starter"
-  ],
-  "main": "src/index.js",
-  "dependencies": {
-    "@material-ui/core": "4.12.4",
-    "@material-ui/icons": "^4.11.3",
-    "@material-ui/lab": "^4.0.0-alpha.61",
-    "@walletconnect/web3-provider": "^1.8.0",
-    "@web3auth/web3auth": "^2.0.2",
-    "magic-sdk": "7.0.0",
-    "moralis": "1.7.0",
-    "react": "18.0.0",
-    "react-dom": "18.0.0",
-    "react-icons": "4.3.1",
-    "react-moralis": "1.3.5",
-    "react-router-dom": "6.3.0",
-    "react-scripts": "4.0.0",
-    "react-table-scrollbar": "^0.1.11",
-    "web3": "^1.7.4"
-  },
-  "devDependencies": {
-    "@babel/runtime": "7.13.8",
-    "typescript": "4.1.3"
-  },
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "svr": "npm start --prefix svr",
+    "cli": "npm start --prefix cli",
+    "dev": "concurrently \"npm run svr\" \"npm run cli\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix cli && npm run build --prefix cli"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kitefin/kagami.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kitefin/kagami/issues"
+  },
+  "homepage": "https://github.com/Kitefin/kagami#readme"
 }

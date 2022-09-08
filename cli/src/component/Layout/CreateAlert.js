@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 	 
   }));
 
-function CreateAlert({open, alertClose}) { 
+function CreateAlert({open, dlgClose}) { 
 	 const classes = useStyles();
 	 
 	const create_Alert = () => {
@@ -254,7 +254,7 @@ function CreateAlert({open, alertClose}) {
 		<Dialog 
 			className={classes.modal}
 			open={open}
-			onClose={alertClose}
+			onClose={dlgClose}
 			scroll={'paper'}  
 		>
 		<DialogTitle className="alert_title">Set email Notification for [pipe: cluster_name] Cluster</DialogTitle>
@@ -275,7 +275,7 @@ function CreateAlert({open, alertClose}) {
 			</div>
 		</DialogContent> 
 			<div className="text-center p-2">
-				<Button variant="contained" className="header-createalert-btn" onClick={ alertClose }>
+				<Button variant="contained" className="header-createalert-btn" onClick={ dlgClose }>
 					<b className="text-white">Cancel</b>
 				</Button> &nbsp;&nbsp;&nbsp;&nbsp;
 				<Button variant="contained" className="header-createalert-btn" onClick={() => create_Alert()}>

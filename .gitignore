@@ -1,2 +1,4 @@
-/node_modules
-.package-lock.json
+cli/node_modules
+svr/node_modules
+cli/.package-lock.json
+svr/.package-lock.json

@@ -3,16 +3,26 @@ import React from 'react';
 import {Button, Table, Grid } from '@material-ui/core';  
 import './layout.css'; 
 import CreateAlert from './CreateAlert';
+import CreateCluster from './CreateCluster';
   
 function Layout() {  
 	const [open, setOpen] = React.useState(false); 
+	const [open2, setOpen2] = React.useState(false); 
 
-	  const handleClickOpen = () => () => {
+	const handleClickOpen = () => () => {
 		setOpen(true); 
 	  };
 	
 	  const handleClose = () => {
 		setOpen(false);
+	  };
+
+	  const handleClickOpen2 = () => () => {
+		setOpen2(true); 
+	  };
+	
+	  const handleClose2 = () => {
+		setOpen2(false);
 	  };
  
 	  const descriptionElementRef = React.useRef(null);
@@ -25,26 +35,39 @@ function Layout() {
 		}
 	  }, [open]);
 
-	const openCreateAlertBtn = (
-		<Button variant="contained" className="header-createalertopen-btn" onClick={handleClickOpen()}>
+	  const openCreateAlertBtn = (
+		<Button variant="contained" className="create_alert_open_btn" onClick={handleClickOpen()}>
 			<b>CREATE NOTIFICATION</b>
 		</Button>
 	);
 
+	const openCreateClusterBtn = (
+		<Button variant="contained" className="create_cluster_open_btn" onClick={handleClickOpen2()}>
+			<b>CREATE CLUSTER</b>
+		</Button>
+	);
+
+
 	return (
 		<div className="layout-back p-5"> 
-			<CreateAlert open={open} alertClose={handleClose} />
+			<CreateAlert open={open} dlgClose={handleClose} />
+			<CreateCluster open={open2} dlgClose={handleClose2} />
 			
 			<Grid
 				justify="space-between" // Add it here :)
 				container
 				spacing={24}
 			>
-				<Grid item> </Grid>
+				<Grid item xs={4}> </Grid>
+				<Grid item> 
+					<div className="mt-1">{ openCreateClusterBtn }</div>					
+				</Grid> 
+				
 				<Grid item>
-					<div className="header-alert-btn">{ openCreateAlertBtn }</div>				 
+					<div className="mt-1">{ openCreateAlertBtn }</div> 
 				</Grid>
-				<Grid item> </Grid>
+				
+				<Grid item xs={4}> </Grid>
 			</Grid>
 			
 			 

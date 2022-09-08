@@ -14,14 +14,8 @@
 @font-face {
 	font-family: "Phosphate-Inline";
 	src: url("../../assets/font/PhosphateInline.ttf");
-}
-.header-btn {
-	margin-top: 10px;
-}
-
-.header-alert-btn {
-	margin-top: 10px;
-}
+} 
+ 
 
 .header-connect-btn {
 	background-color: rgba(241, 241, 241, 0.899) !important;
@@ -38,13 +32,23 @@
 	box-shadow: 0 0 15px rgba(11, 238, 49, 0.959) !important;
 }
 
-.header-createalertopen-btn {
+.create_alert_open_btn {
 	background-color: rgba(238, 121, 11, 0.959) !important;
 }
 
-.header-createalertopen-btn:hover {
-	background-color: rgba(238, 121, 11, 0.959) !important;
+.create_alert_open_btn:hover {
+	background-color: rgba(207, 117, 32, 0.959) !important;
 }
+
+.create_cluster_open_btn {
+	background-color: rgba(16, 192, 95, 0.959) !important;
+}
+
+.create_cluster_open_btn:hover {
+	background-color: rgba(28, 172, 93, 0.959) !important;
+}
+
+
 
 
 .header-createalert-btn {
