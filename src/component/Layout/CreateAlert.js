@@ -1,18 +1,14 @@
 
-import TableScrollbar from 'react-table-scrollbar';
+
 import { makeStyles } from '@material-ui/core/styles'; 
 import React, {useState} from 'react';   
-import {Button, Table, Grid, Modal, Backdrop, Fade, Checkbox, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core'; 
+import {Button, Grid, Checkbox, TextField, Dialog, DialogContent, DialogTitle } from '@material-ui/core'; 
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import {CheckBoxOutlineBlank, CheckBox} from '@material-ui/icons'; 
-
-import './layout.css';
-
+import {CheckBoxOutlineBlank, CheckBox} from '@material-ui/icons';  
+import './layout.css'; 
 const icon = <CheckBoxOutlineBlank fontSize="small" />;
 const checkedIcon = <CheckBox fontSize="small" />; 
-
-import './layout.css'; 
-
+ 
 const useStyles = makeStyles((theme) => ({
 	modal: {
 	  display: 'flex',
@@ -23,30 +19,19 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: theme.palette.background.paper,	 
 		borderRadius: '10px',
 		boxShadow: theme.shadows[5],	   
-		width: '80%'
+		width: '100%'
 	  },
 
-	  paper2: {
-		backgroundColor: theme.palette.background.paper,	 
-		borderRadius: '10px',
-		boxShadow: theme.shadows[5],	   
-		width: '50%',
-	  }, 
+	 
   }));
 
 function CreateAlert({open, alertClose}) { 
 	 const classes = useStyles();
-	console.log(open)
-	console.log(alertClose)
-  
-	
-
+	 
 	const create_Alert = () => {
 		//console.log(type)
    } 
 
-
-   
 	const TYPE_LIMITS = 1;
 	const TYPE_ALLOW_LISTS = 2;
 	const TYPE_EXCLUSION_LISTS = 3;  
@@ -148,8 +133,7 @@ function CreateAlert({open, alertClose}) {
 	}
  
 
-    const ComboType = ( 
-
+    const ComboType = (  
 		<Autocomplete
         options = {types}
     	getOptionLabel = {(option) => option.title}
@@ -207,16 +191,16 @@ function CreateAlert({open, alertClose}) {
 			{descDetail ? (
 				<div className="p-3">
 					<h2>Detail Setting</h2>
-					<div className="px-5 pr-5">
+					<div className="px-1 pr-1">
 					<Grid
 						justify="space-between"
 						container
-						spacing={24}
+						spacing={48}
 					>
-						<Grid item xs={2}> {ComboDescMinMax} </Grid>
-						<Grid item className="mt-3"> of </Grid>
+						<Grid item xs={3}> {ComboDescMinMax} </Grid>
+						<Grid item className="mt-4"> of </Grid>
 						<Grid item xs={2}> {InputAmount} </Grid>
-						<Grid item className="mt-3"> ETH per </Grid>
+						<Grid item className="mt-4"> ETH per </Grid>
 						<Grid item xs={3}> {ComboDescPer} </Grid>
 					</Grid> 
 					</div>
@@ -260,34 +244,34 @@ function CreateAlert({open, alertClose}) {
 		  )}
 		/>
 	); 
-	
+
 	return (
 		<Dialog 
-				className={classes.modal}
-				open={open}
-				onClose={alertClose}
-				scroll={'paper'}  
-			>
-				<DialogTitle className="alert_title">Set email Notification for [pipe: cluster_name] Cluster</DialogTitle>
-        		<DialogContent dividers={true}> 
-					<div className="text-center">    
-						<div className="p-5">
-							<div className="pt-3" >{ComboType}</div>
-							<div className="mt-3">{ComboDesc}</div>
-							<div className="mt-3">{ComboPort}</div>
-							<div className="mt-3">{HookRecipients}</div> 
-						</div>
-					</div>
-        		</DialogContent> 
-				<div className="text-center p-2">
-					<Button variant="contained" className="header-createalert-btn" onClick={ alertClose }>
-						<b className="text-white">Cancel</b>
-					</Button> &nbsp;&nbsp;&nbsp;&nbsp;
-					<Button variant="contained" className="header-createalert-btn" onClick={() => create_Alert()}>
-						<b className="text-white">Create</b>
-					</Button> 
-				</div>   
-      		</Dialog> 
+			className={classes.modal}
+			open={open}
+			onClose={alertClose}
+			scroll={'paper'}  
+		>
+		<DialogTitle className="alert_title">Set email Notification for [pipe: cluster_name] Cluster</DialogTitle>
+		<DialogContent dividers={true}> 
+			<div className="text-center">    
+				<div className="p-3">
+					<div className="pt-3" >{ComboType}</div>
+					<div className="mt-3">{ComboDesc}</div>
+					<div className="mt-3">{ComboPort}</div>
+					<div className="mt-3">{HookRecipients}</div> 
+				</div>
+			</div>
+		</DialogContent> 
+			<div className="text-center p-2">
+				<Button variant="contained" className="header-createalert-btn" onClick={ alertClose }>
+					<b className="text-white">Cancel</b>
+				</Button> &nbsp;&nbsp;&nbsp;&nbsp;
+				<Button variant="contained" className="header-createalert-btn" onClick={() => create_Alert()}>
+					<b className="text-white">Create</b>
+				</Button> 
+			</div>   
+		</Dialog> 
 	);
 }
 

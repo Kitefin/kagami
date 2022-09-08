@@ -1,36 +1,10 @@
- 
- 
-import TableScrollbar from 'react-table-scrollbar';
-import { makeStyles } from '@material-ui/core/styles'; 
+import TableScrollbar from 'react-table-scrollbar'; 
 import React from 'react';   
-import {Button, Table, Grid } from '@material-ui/core'; 
-import {CheckBoxOutlineBlank, CheckBox} from '@material-ui/icons';  
+import {Button, Table, Grid } from '@material-ui/core';  
 import './layout.css'; 
 import CreateAlert from './CreateAlert';
-
-const useStyles = makeStyles((theme) => ({
-	modal: {
-	  display: 'flex',
-	  alignItems: 'center',
-	  justifyContent: 'center', 
-	},
-	paper: {
-		backgroundColor: theme.palette.background.paper,	 
-		borderRadius: '10px',
-		boxShadow: theme.shadows[5],	   
-		width: '80%'
-	  },
-
-	  paper2: {
-		backgroundColor: theme.palette.background.paper,	 
-		borderRadius: '10px',
-		boxShadow: theme.shadows[5],	   
-		width: '50%',
-	  }, 
-  }));
-
-function Layout() { 
-	const classes = useStyles();
+  
+function Layout() {  
 	const [open, setOpen] = React.useState(false); 
 
 	  const handleClickOpen = () => () => {
@@ -57,13 +31,9 @@ function Layout() {
 		</Button>
 	);
 
-	
-	
-
 	return (
 		<div className="layout-back p-5"> 
 			<CreateAlert open={open} alertClose={handleClose} />
-			
 			
 			<Grid
 				justify="space-between" // Add it here :)

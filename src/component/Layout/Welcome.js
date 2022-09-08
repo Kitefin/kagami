@@ -2,6 +2,7 @@ import React from 'react';
 import imgWelcome from '../../assets/img/welcome.png';
 import './layout.css';  
 import { Button, Table, Grid, Modal, Backdrop, Fade } from '@material-ui/core';
+import {Checkbox, TextField, Dialog, DialogContent, DialogTitle, DialogActions } from '@material-ui/core'; 
 import { makeStyles } from '@material-ui/core/styles'; 
 import Layout from './Layout';
 
@@ -35,33 +36,18 @@ function Welcome() {
   
 	if(welcomeOpen)
 	return (
-		<Modal 
+		<Dialog 
 			className={classes.modal}
 			open={welcomeOpen}
 			onClose={wcClose}
-			closeAfterTransition
-			BackdropComponent={Backdrop}
-			BackdropProps={{
-			timeout: 500,
-		}}
-	>
-		<Fade in={welcomeOpen}>
-			  <div className={classes.paper2}> 
-			  <div className="text-center">   
-			<h1 className="p-4">Welcome to KAGAMI</h1>
-			<div className="p-2">
+		>  
+			<div className='text-center p-5'>
+				<h1>Welcome to KAGAMI</h1>
 				<div className="pt-3" ><img src={imgWelcome} /></div>
 				<div className="p-5">Let's add wallets to create clusters and alerts</div> 
-				<div className="mt-3 pb-5">
-					<div>
-						{cancelBtn} 
-					</div>
-				</div>
-			</div>
-		</div> 
-			  </div>
-		</Fade>
-	  </Modal>  
+				{cancelBtn} 
+			</div> 
+	  </Dialog>  
 	);
 	else return <Layout/>
 }
