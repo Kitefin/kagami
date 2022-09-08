@@ -22,3 +22,16 @@
 	background-color: blue;
 }
 
+.group {
+	border: dashed .5px rgb(9, 104, 71);
+	border-radius: 10px;
+	padding: 10px; 
+	padding-bottom: 20px;
+	padding-top: 20px;
+}
+
+.group_title {
+	float: left;
+	background-color: white;
+	margin-top: -30px;
+}

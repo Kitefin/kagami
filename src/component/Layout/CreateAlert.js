@@ -4,8 +4,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import React, {useState} from 'react';   
 import {Button, Grid, Checkbox, TextField, Dialog, DialogContent, DialogTitle } from '@material-ui/core'; 
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import {CheckBoxOutlineBlank, CheckBox} from '@material-ui/icons';  
+import {CheckBoxOutlineBlank, CheckBox, Group} from '@material-ui/icons';  
+import GroupDiv from "../common/GroupDiv";
 import './layout.css'; 
+
 const icon = <CheckBoxOutlineBlank fontSize="small" />;
 const checkedIcon = <CheckBox fontSize="small" />; 
  
@@ -139,12 +141,11 @@ function CreateAlert({open, alertClose}) {
     	getOptionLabel = {(option) => option.title}
         id="controlled-demo"
         value={type}
-        onChange={(event, newValue) => {
-          setType(newValue);
-        }}
+        onChange={(event, newValue) => { setType(newValue); }}
         renderInput={(params) => (
-          <TextField {...params} label="Notification Type" variant="standard" />
+          <TextField {...params} label="" variant="standard" />
         )}
+		style={{width: '80%', marginLeft: '10%'}}
       />
 
    	); 
@@ -184,26 +185,28 @@ function CreateAlert({open, alertClose}) {
 				id="disabled-options-demo"
 				options={descs} 
 				getOptionLabel={(option) => option.title} 
-				renderInput={(params) => <TextField {...params} label="Notification Description" variant="standard" />}
+				renderInput={(params) => <TextField {...params} label="" variant="standard" />}
 				onChange={(event, value) => setDesc(value)} 
 				// defaultValue={descs[0]}
+				style={{width: '80%', marginLeft: '10%'}}
 			/>
 			{descDetail ? (
 				<div className="p-3">
-					<h2>Detail Setting</h2>
-					<div className="px-1 pr-1">
-					<Grid
-						justify="space-between"
-						container
-						spacing={48}
-					>
-						<Grid item xs={3}> {ComboDescMinMax} </Grid>
-						<Grid item className="mt-4"> of </Grid>
-						<Grid item xs={2}> {InputAmount} </Grid>
-						<Grid item className="mt-4"> ETH per </Grid>
-						<Grid item xs={3}> {ComboDescPer} </Grid>
-					</Grid> 
-					</div>
+					<GroupDiv title="Detail Setting" comp={
+						<div className="px-1 pr-1">
+						<Grid
+							justify="space-between"
+							container
+							spacing={48}
+						>
+							<Grid item xs={3}> {ComboDescMinMax} </Grid>
+							<Grid item className="mt-4"> of </Grid>
+							<Grid item xs={2}> {InputAmount} </Grid>
+							<Grid item className="mt-4"> ETH per </Grid>
+							<Grid item xs={3}> {ComboDescPer} </Grid>
+						</Grid> 
+						</div>
+					} /> 
 				</div>
 			)
 			: null}
@@ -217,7 +220,8 @@ function CreateAlert({open, alertClose}) {
 				// defaultValue={portfolios[0]}
 				getOptionLabel={(option) => option.title}
 				// style={{ width: 300 }}
-				renderInput={(params) => <TextField {...params} label="Notification Portfoloio Name" variant="standard" />}
+				renderInput={(params) => <TextField {...params} label="" variant="standard" />}
+				style={{width: '80%', marginLeft: '10%'}}
 			/>
 	);
     
@@ -240,8 +244,9 @@ function CreateAlert({open, alertClose}) {
 			</React.Fragment>
 		  )} 
 		  renderInput={(params) => (
-			<TextField {...params} variant="standard" label="Recipients" placeholder="Favorites" />
+			<TextField {...params} variant="standard" label="" placeholder="" />
 		  )}
+		  style={{width: '80%', marginLeft: '10%'}}
 		/>
 	); 
 
@@ -255,11 +260,17 @@ function CreateAlert({open, alertClose}) {
 		<DialogTitle className="alert_title">Set email Notification for [pipe: cluster_name] Cluster</DialogTitle>
 		<DialogContent dividers={true}> 
 			<div className="text-center">    
-				<div className="p-3">
-					<div className="pt-3" >{ComboType}</div>
-					<div className="mt-3">{ComboDesc}</div>
-					<div className="mt-3">{ComboPort}</div>
-					<div className="mt-3">{HookRecipients}</div> 
+				<div className="px-3 pr-3">
+					<GroupDiv title='Select Notification Type' comp={ComboType} />
+					<div className='mt-4'>
+						<GroupDiv title='Select Notification Description' comp={ComboDesc} />
+					</div>  
+					<div className="mt-4">
+						<GroupDiv title='Select Notification Portfolio Name' comp={ComboPort} /> 
+					</div>
+					<div className="mt-4">
+						<GroupDiv title='Select Notification Recipients' comp={HookRecipients} /> 
+					</div> 
 				</div>
 			</div>
 		</DialogContent> 
