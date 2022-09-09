@@ -118,7 +118,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 	const [descDetail, set_DescDetail] = useState(false); 
  
 	const setDesc = (desc) => {
-		// console.log(desc);
+		console.log(desc);
 		set_Desc(desc);
 		if(desc.id === TYPE_DESC_MINMAX_AMOUNT_PER || desc.id === TPYE_DESC_4)
 			set_DescDetail(true);
