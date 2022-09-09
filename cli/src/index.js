@@ -12,9 +12,9 @@ const APP_ID = "Ra5TzI8AtWDIYG7k88juzx3zhEr6YZ8ghVUx8F34";
 const SERVER_URL = "https://yi52hrws3oqw.usemoralis.com:2053/server";
 
 root.render(
-  <StrictMode>
+  // <StrictMode>
     <MoralisProvider appId={APP_ID} serverUrl={SERVER_URL}>
       <App />
     </MoralisProvider>
-  </StrictMode>
+  // </StrictMode>
 );

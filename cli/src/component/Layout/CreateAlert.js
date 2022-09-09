@@ -217,9 +217,9 @@ function CreateAlert({open, dlgClose, clusters}) {
 					<GroupDiv title="Detail Setting" comp={
 						<div className="px-1 pr-1">
 						<Grid
-							justify="space-between"
+							justifyContent="space-between"
 							container
-							spacing={48}
+							spacing={0} //48
 						>
 							<Grid item xs={3}> {ComboDescMinMax} </Grid>
 							<Grid item className="mt-4"> of </Grid>

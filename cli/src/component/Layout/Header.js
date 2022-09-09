@@ -30,9 +30,9 @@ function Header() {
 		<AppBar position="static" className="header-bar">
 			<Toolbar>
 				<Grid
-					justify="space-between" // Add it here :)
+					justifyContent="space-between" // Add it here :)
 					container
-					spacing={24}
+					spacing={0} //24
 				>
 					<Grid item>
 						<span className="navbar-start logo-title">KAGAMI</span>

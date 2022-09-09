@@ -102,9 +102,9 @@ function Layout() {
 			<CreateCluster open={open2} dlgClose={handleClose2} />
 			
 			<Grid
-				justify="space-between" // Add it here :)
+				justifyContent="space-between" // Add it here :)
 				container
-				spacing={24}
+				spacing={0} //24
 			>
 				<Grid item xs={4}> </Grid>
 				<Grid item> 
