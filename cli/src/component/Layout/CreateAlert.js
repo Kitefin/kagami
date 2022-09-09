@@ -1,13 +1,10 @@
-
-
 import { makeStyles } from '@material-ui/core/styles'; 
 import React, {useEffect, useState} from 'react';   
 import {Button, Grid, Checkbox, TextField, Dialog, DialogContent, DialogTitle } from '@material-ui/core'; 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {CheckBoxOutlineBlank, CheckBox, Group} from '@material-ui/icons';  
 import GroupDiv from "../common/GroupDiv";
-import './layout.css'; 
-
+import './layout.css';
 const icon = <CheckBoxOutlineBlank fontSize="small" />;
 const checkedIcon = <CheckBox fontSize="small" />; 
  
@@ -22,15 +19,38 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: '10px',
 		boxShadow: theme.shadows[5],	   
 		width: '100%'
-	  },
-
-	 
+	  }	 
   }));
 
 function CreateAlert({open, dlgClose, clusters}) { 
+	// console.log(clusters);
+	
+	// const portfolios = [
+	// 	{ title: 'All Project Wallets', id: CLUSTER_ALL_PROJECT_WALLETS },
+	// 	{ title: 'Executive Controlled', id: CLUSTER_EXECUTIVE_CONTROLLED },
+	// 	{ title: 'Junior Traders', id: CLUSTER_JUNIOR_TRADERS },     
+	// 	{ title: 'Portfolio Managers', id: CLUSTER_PROTFOLIO_MANAGERS },     
+	// 	{ title: 'Accounts Team', id: CLUSTER_ACCOUTS_TEAMS },     
+	// ];
 
-	 const classes = useStyles();
-	 
+	let portfolios = [];
+	
+	if(clusters && Object(clusters).length > 0) {
+		for(var i in clusters)
+		{
+			const cluster = clusters[i];
+			const portfolio = {
+				title: cluster.name,
+				id: cluster._id,
+				// id: i
+			}
+			portfolios.push(portfolio);
+		} 
+		console.log(portfolios)
+	}
+	  
+	const classes = useStyles();
+
 	const create_Alert = () => {
 		//console.log(type)
    } 
@@ -50,20 +70,15 @@ function CreateAlert({open, dlgClose, clusters}) {
 	const CLUSTER_JUNIOR_TRADERS = 3;
 	const CLUSTER_PROTFOLIO_MANAGERS = 4;
 	const CLUSTER_ACCOUTS_TEAMS = 5;
+ 
 
-	useEffect(() => {  
-		console.log(clusters);
-		}, []);
- 	
-		
-
-	const portfolios = [
-		{ title: 'All Project Wallets', id: CLUSTER_ALL_PROJECT_WALLETS },
-		{ title: 'Executive Controlled', id: CLUSTER_EXECUTIVE_CONTROLLED },
-		{ title: 'Junior Traders', id: CLUSTER_JUNIOR_TRADERS },     
-		{ title: 'Portfolio Managers', id: CLUSTER_PROTFOLIO_MANAGERS },     
-		{ title: 'Accounts Team', id: CLUSTER_ACCOUTS_TEAMS },     
-	];
+	// const portfolios = [
+	// 	{ title: 'All Project Wallets', id: CLUSTER_ALL_PROJECT_WALLETS },
+	// 	{ title: 'Executive Controlled', id: CLUSTER_EXECUTIVE_CONTROLLED },
+	// 	{ title: 'Junior Traders', id: CLUSTER_JUNIOR_TRADERS },     
+	// 	{ title: 'Portfolio Managers', id: CLUSTER_PROTFOLIO_MANAGERS },     
+	// 	{ title: 'Accounts Team', id: CLUSTER_ACCOUTS_TEAMS },     
+	// ];
 
 	const DESC_MIN = 1;
 	const DESC_MAX = 2;
@@ -100,10 +115,10 @@ function CreateAlert({open, dlgClose, clusters}) {
 	const [minMax, set_MinMax] = useState(null);
 	const [amount, set_Amount] = useState(null);
 	const [per, set_Per] = useState(null);
-	const [descDetail, set_DescDetail] = useState(false);
+	const [descDetail, set_DescDetail] = useState(false); 
  
 	const setDesc = (desc) => {
-		console.log(desc);
+		// console.log(desc);
 		set_Desc(desc);
 		if(desc.id === TYPE_DESC_MINMAX_AMOUNT_PER || desc.id === TPYE_DESC_4)
 			set_DescDetail(true);
