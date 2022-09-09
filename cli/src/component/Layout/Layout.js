@@ -1,13 +1,39 @@
 import TableScrollbar from 'react-table-scrollbar'; 
-import React from 'react';   
+import React, {useEffect, useState} from 'react';   
 import {Button, Table, Grid } from '@material-ui/core';  
 import './layout.css'; 
 import CreateAlert from './CreateAlert';
 import CreateCluster from './CreateCluster';
+import axios from 'axios'; 
+const NODE_URL = "http://localhost:5000"; 
   
 function Layout() {  
-	const [open, setOpen] = React.useState(false); 
-	const [open2, setOpen2] = React.useState(false); 
+	const [open, setOpen] = useState(false); 
+	const [open2, setOpen2] = useState(false); 
+	const [clusters, set_clusters] = useState([]);
+	const [clusterTrs, setClusterTrs] = useState(undefined);
+  
+	const getClusters = async() => {
+		const url = NODE_URL + "/api/cluster/";
+		try{
+			// console.log(url); 
+			const res = await axios.get(url);  
+	
+			// console.log(res)
+			// set_clusters(); 
+			getClustersTbl(res.data);
+			// alert(JSON.stringify( res.data )); 
+		}
+		catch(err) {
+			console.log(err) 
+		} 
+	  }
+
+	  
+  useEffect(() => {  
+    getClusters();  
+	
+	}, []); 
 
 	const handleClickOpen = () => () => {
 		setOpen(true); 
@@ -47,10 +73,32 @@ function Layout() {
 		</Button>
 	);
 
+	const getClustersTbl = (clusters) => {
+		set_clusters(clusters);
+		let trs = [];
+		// console.log(clusters);
+		for(var i in clusters)
+		{
+			const cluster = clusters[i];
+			const tr = (
+			<tr>
+				<td>{cluster.name}</td>
+				<td>{cluster.description}</td>
+				<td>{cluster.addresses.length}</td>
+				<td>7 Alerts</td>
+				<td style={{ minWidth: '140px', backgroundColor: 'rgb(9, 154, 0)', color: 'white' }}>
+								Edit cluster
+				</td>
+			</tr>);
+			trs.push(tr);
+		}
+		setClusterTrs(trs);
+	}
+	
 
 	return (
 		<div className="layout-back p-5"> 
-			<CreateAlert open={open} dlgClose={handleClose} />
+			<CreateAlert open={open} dlgClose={handleClose} clusters={clusters} />
 			<CreateCluster open={open2} dlgClose={handleClose2} />
 			
 			<Grid
@@ -69,14 +117,25 @@ function Layout() {
 				
 				<Grid item xs={4}> </Grid>
 			</Grid>
-			
 			 
 			<div className="m-5">
 				<h2>YOUR CLUSTERS</h2>
 				<TableScrollbar>
 				<Table>
-					<tbody>
+				<thead>
 						<tr>
+							<th style={{ minWidth: '200px' }}>Cluser Name</th>
+							<th style={{ minWidth: '300px' }}>CLuster Description</th>
+							<th style={{ minWidth: '150px' }}>Wallets Count</th>
+							<th style={{ minWidth: '150px' }}>ALerts Count</th>
+							<th style={{ minWidth: '140px' }} />
+						</tr>
+					</thead>
+
+					<tbody>
+						{clusterTrs}
+						
+						{/* <tr>
 							<td style={{ minWidth: '200px' }}>All Project Wallets</td>
 							<td style={{ minWidth: '300px' }}>All wallets controlled by our company</td>
 							<td style={{ minWidth: '150px' }}>125 wallets</td>
@@ -138,7 +197,7 @@ function Layout() {
 							<td style={{ minWidth: '140px', backgroundColor: 'rgb(9, 154, 0)', color: 'white' }}>
 								Edit cluster
 							</td>
-						</tr>
+						</tr> */}
 					</tbody>
 				</Table>
 				</TableScrollbar>

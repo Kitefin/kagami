@@ -21,16 +21,11 @@ function CreateCluster({open, dlgClose}) {
 		}
 		console.log(cluster);
 		create(cluster);
+
+		dlgClose();
     }
 
-	const create = async (cluster) => {  
-
-		// const api = axios.create({
-		// 	baseURL: '/api',
-		// 	headers: {
-		// 	  'Content-Type': 'application/json'
-		// 	}
-		//   });
+	const create = async (cluster) => {   
 
 		const url = NODE_URL + "/api/cluster/";
 		try{

@@ -30,8 +30,8 @@ router.post( '/', async(req, res) => {
 // @access   Private
 router.get('/', async (req, res) => {
   try {
-    const posts = await Post.find().sort({ date: -1 });
-    res.json(posts);
+    const clusters = await Cluster.find();
+    res.json(clusters);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

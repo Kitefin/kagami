@@ -1,7 +1,7 @@
 
 
 import { makeStyles } from '@material-ui/core/styles'; 
-import React, {useState} from 'react';   
+import React, {useEffect, useState} from 'react';   
 import {Button, Grid, Checkbox, TextField, Dialog, DialogContent, DialogTitle } from '@material-ui/core'; 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {CheckBoxOutlineBlank, CheckBox, Group} from '@material-ui/icons';  
@@ -27,7 +27,8 @@ const useStyles = makeStyles((theme) => ({
 	 
   }));
 
-function CreateAlert({open, dlgClose}) { 
+function CreateAlert({open, dlgClose, clusters}) { 
+
 	 const classes = useStyles();
 	 
 	const create_Alert = () => {
@@ -49,6 +50,12 @@ function CreateAlert({open, dlgClose}) {
 	const CLUSTER_JUNIOR_TRADERS = 3;
 	const CLUSTER_PROTFOLIO_MANAGERS = 4;
 	const CLUSTER_ACCOUTS_TEAMS = 5;
+
+	useEffect(() => {  
+		console.log(clusters);
+		}, []);
+ 	
+		
 
 	const portfolios = [
 		{ title: 'All Project Wallets', id: CLUSTER_ALL_PROJECT_WALLETS },
@@ -216,10 +223,8 @@ function CreateAlert({open, dlgClose}) {
 	const ComboPort = (
 			<Autocomplete
 				id="combo-box-demo"
-				options={portfolios}
-				// defaultValue={portfolios[0]}
-				getOptionLabel={(option) => option.title}
-				// style={{ width: 300 }}
+				options={portfolios} 
+				getOptionLabel={(option) => option.title} 
 				renderInput={(params) => <TextField {...params} label="" variant="standard" />}
 				style={{width: '80%', marginLeft: '10%'}}
 			/>
