@@ -14,12 +14,12 @@ const useStyles = makeStyles((theme) => ({
 	  alignItems: 'center',
 	  justifyContent: 'center', 
 	},
-	paper: {
-		backgroundColor: theme.palette.background.paper,	 
-		borderRadius: '10px',
-		boxShadow: theme.shadows[5],	   
-		width: '100%'
-	  }	 
+	// paper: {
+	// 	backgroundColor: theme.palette.background.paper,	 
+	// 	borderRadius: '10px',
+	// 	boxShadow: theme.shadows[5],	   
+	// 	width: '100%'
+	//   }	 
   }));
 
 function CreateAlert({open, dlgClose, clusters}) { 
@@ -46,7 +46,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 			}
 			portfolios.push(portfolio);
 		} 
-		console.log(portfolios)
+		// console.log(portfolios)
 	}
 	  
 	const classes = useStyles();

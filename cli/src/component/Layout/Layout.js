@@ -15,14 +15,10 @@ function Layout() {
   
 	const getClusters = async() => {
 		const url = NODE_URL + "/api/cluster/";
-		try{
-			// console.log(url); 
-			const res = await axios.get(url);  
-	
-			// console.log(res)
-			// set_clusters(); 
-			getClustersTbl(res.data);
-			// alert(JSON.stringify( res.data )); 
+		const {userAddress} = localStorage;
+		try{ 
+			const res = await axios.get(url, {userAddress: userAddress});  
+			getClustersTbl(res.data); 
 		}
 		catch(err) {
 			console.log(err) 
@@ -80,14 +76,18 @@ function Layout() {
 		for(var i in clusters)
 		{
 			const cluster = clusters[i];
+			const {name, description, addresses, _id} = cluster;
 			const tr = (
 			<tr>
-				<td>{cluster.name}</td>
-				<td>{cluster.description}</td>
-				<td>{cluster.addresses.length}</td>
-				<td>7 Alerts</td>
+				<td>{name}</td>
+				<td>{description}</td>
+				<td>{addresses.length}</td>
+				<td>7 Alerts (need to work)</td>
 				<td style={{ minWidth: '140px', backgroundColor: 'rgb(9, 154, 0)', color: 'white' }}>
-								Edit cluster
+					
+					<Button variant="contained" onClick={handleClickOpen()}>
+						<b>Edit cluster</b>
+					</Button>
 				</td>
 			</tr>);
 			trs.push(tr);
@@ -106,16 +106,16 @@ function Layout() {
 				container
 				spacing={0} //24
 			>
-				<Grid item xs={4}> </Grid>
+				<Grid item xs={2}> </Grid>
 				<Grid item> 
-					<div className="mt-1">{ openCreateClusterBtn }</div>					
+				 { openCreateClusterBtn } 				
 				</Grid> 
 				
 				<Grid item>
-					<div className="mt-1">{ openCreateAlertBtn }</div> 
+					 { openCreateAlertBtn } 
 				</Grid>
 				
-				<Grid item xs={4}> </Grid>
+				<Grid item xs={2}> </Grid>
 			</Grid>
 			 
 			<div className="m-5">
@@ -125,7 +125,7 @@ function Layout() {
 				<thead>
 						<tr>
 							<th style={{ minWidth: '200px' }}>Cluser Name</th>
-							<th style={{ minWidth: '300px' }}>CLuster Description</th>
+							<th style={{ minWidth: '300px' }}>Cluster Description</th>
 							<th style={{ minWidth: '150px' }}>Wallets Count</th>
 							<th style={{ minWidth: '150px' }}>ALerts Count</th>
 							<th style={{ minWidth: '140px' }} />

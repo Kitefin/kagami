@@ -87,6 +87,7 @@ td {
 }
 
 .alert_title {
+	text-align: center;
 	background-color: #d41177;
 	color: white;
 	margin: 0; 

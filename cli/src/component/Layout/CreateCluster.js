@@ -3,25 +3,34 @@ import {Button, TextField, Dialog, DialogContent, DialogTitle, IconButton } from
 import AddIcon from '@material-ui/icons/Add';
 import GroupDiv from "../common/GroupDiv";
 import axios from 'axios'; 
+import { makeStyles } from '@material-ui/core/styles'; 
 const NODE_URL = "http://localhost:5000"; 
-import './layout.css'; 
- 
+import './layout.css';
+
+const useStyles = makeStyles((theme) => ({
+	modal: {
+	  display: 'flex',
+	  alignItems: 'center',
+	  justifyContent: 'center', 
+	} 
+  }));
+
 function CreateCluster({open, dlgClose}) { 
-	
+	const classes = useStyles();
 	const [name, set_Name] = useState('');
 	const [desc, set_Desc] = useState('');   
 	const [address, set_Address] = useState('');   
 	const [addresses, set_Addresses] = useState([]);   
 
-	const create_Cluster = () => {
+	const create_Cluster = () => {		 
 		const cluster = {
 			name: name,
 			desc: desc,
-			addresses: addresses
+			addresses: addresses,
+			userAddress: localStorage.userAddress
 		}
 		console.log(cluster);
-		create(cluster);
-
+		create(cluster); 
 		dlgClose();
     }
 
@@ -29,8 +38,8 @@ function CreateCluster({open, dlgClose}) {
 
 		const url = NODE_URL + "/api/cluster/";
 		try{
-			console.log(url);
-			console.log(cluster);
+			// console.log(url);
+			// console.log(cluster);
 			const res = await axios.post(url, cluster);  
 			alert(JSON.stringify( res.data )); 
 		}
@@ -91,8 +100,7 @@ function CreateCluster({open, dlgClose}) {
 				<AddIcon />
 			</IconButton>
 			<br/>
-			<div>
-				{/* <p>{address}</p> */}
+			<div> 
 				{ addressesDisplay() }
 			</div>		
 		</div>
@@ -100,6 +108,7 @@ function CreateCluster({open, dlgClose}) {
 
 	return (
 		<Dialog  
+			className={classes.modal}
 			open={open}
 			onClose={dlgClose}
 			scroll={'paper'}    

@@ -8,6 +8,7 @@ function Header() {
 	const { authenticate, isAuthenticated, user, logout } = useMoralis();
 	if (isAuthenticated) {
 		userAddress = user.get('ethAddress');
+		localStorage.userAddress = userAddress;
 	}
 
 	const connectBtn = (

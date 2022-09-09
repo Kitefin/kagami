@@ -10,13 +10,23 @@ const checkObjectId = require('../../middleware/checkObjectId');
  
 // @desc     Create a post 
 router.post( '/', async(req, res) => {
+  const {name, desc, addresses, userAddress} = req.body;
     try { 
+      let cluster = await Cluster.findOne({ name: name, userAddress: userAddress });
+
+      if (cluster) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'Cluster Name already exists' }] });
+      }
+
       const newCluster = new Cluster({ 
-        name: req.body.name,
-        description: req.body.desc,
-        addresses: req.body.addresses
+        name: name,
+        description: desc,
+        addresses: addresses,
+        userAddress: userAddress
       }); 
-      const cluster = await newCluster.save(); 
+      cluster = await newCluster.save(); 
       res.json(cluster);
     } catch (err) {
       console.error(err.message);
@@ -25,12 +35,10 @@ router.post( '/', async(req, res) => {
   }
 );
 
-// @route    GET api/posts
-// @desc     Get all posts
-// @access   Private
+// @route    GET clusters 
 router.get('/', async (req, res) => {
   try {
-    const clusters = await Cluster.find();
+    const clusters = await Cluster.find(req.body.userAddress);
     res.json(clusters);
   } catch (err) {
     console.error(err.message);
