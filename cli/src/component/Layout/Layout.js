@@ -4,14 +4,17 @@ import {Button, Table, Grid } from '@material-ui/core';
 import './layout.css'; 
 import CreateAlert from './CreateAlert';
 import CreateCluster from './CreateCluster';
+import EditCluster from './EditCluster';
 import axios from 'axios'; 
 const NODE_URL = "http://localhost:5000"; 
   
 function Layout() {  
-	const [open, setOpen] = useState(false); 
+	const [open1, setOpen1] = useState(false); 
 	const [open2, setOpen2] = useState(false); 
+	const [open3, setOpen3] = useState(false); 
 	const [clusters, set_clusters] = useState([]);
 	const [clusterTrs, setClusterTrs] = useState(undefined);
+	const [edit_id, set_edit_id] = useState('');
   
 	const getClusters = async() => {
 		const url = NODE_URL + "/api/cluster/";
@@ -23,48 +26,56 @@ function Layout() {
 		catch(err) {
 			console.log(err) 
 		} 
-	  }
-
+	}
 	  
   useEffect(() => {  
-    getClusters();  
-	
-	}, []); 
+    getClusters();	
+	}, null); 
 
-	const handleClickOpen = () => () => {
-		setOpen(true); 
+	const handleClickOpen1 = () => {
+		setOpen1(true); 
 	  };
 	
-	  const handleClose = () => {
-		setOpen(false);
+	  const handleClose1 = () => {
+		setOpen1(false);
 	  };
 
-	  const handleClickOpen2 = () => () => {
+	  const handleClickOpen2 = () => {
 		setOpen2(true); 
 	  };
 	
 	  const handleClose2 = () => {
 		setOpen2(false);
 	  };
+
+	  const handleClose3 = () => {
+		getClusters();	
+		setOpen3(false); 
+	  }; 
+
+	  const onEditCluster = (_id) => {
+		set_edit_id(_id);
+		setOpen3(true);
+	  }
  
 	  const descriptionElementRef = React.useRef(null);
 	  React.useEffect(() => {
-		if (open) {
+		if (open1) {
 		  const { current: descriptionElement } = descriptionElementRef;
 		  if (descriptionElement !== null) {
 			descriptionElement.focus();
 		  }
 		}
-	  }, [open]);
+	  }, [open1]);
 
 	  const openCreateAlertBtn = (
-		<Button variant="contained" className="create_alert_open_btn" onClick={handleClickOpen()}>
+		<Button variant="contained" className="create_alert_open_btn" onClick={() =>handleClickOpen1()}>
 			<b>CREATE NOTIFICATION</b>
 		</Button>
 	);
 
 	const openCreateClusterBtn = (
-		<Button variant="contained" className="create_cluster_open_btn" onClick={handleClickOpen2()}>
+		<Button variant="contained" className="create_cluster_open_btn" onClick={()=>handleClickOpen2()}>
 			<b>CREATE CLUSTER</b>
 		</Button>
 	);
@@ -85,7 +96,7 @@ function Layout() {
 				<td>7 Alerts (need to work)</td>
 				<td style={{ minWidth: '140px', backgroundColor: 'rgb(9, 154, 0)', color: 'white' }}>
 					
-					<Button variant="contained" onClick={handleClickOpen()}>
+					<Button variant="contained" onClick={() => onEditCluster(_id)}>
 						<b>Edit cluster</b>
 					</Button>
 				</td>
@@ -95,11 +106,11 @@ function Layout() {
 		setClusterTrs(trs);
 	}
 	
-
 	return (
 		<div className="layout-back p-5"> 
-			<CreateAlert open={open} dlgClose={handleClose} clusters={clusters} />
+			<CreateAlert open={open1} dlgClose={handleClose1} clusters={clusters} />
 			<CreateCluster open={open2} dlgClose={handleClose2} />
+			<EditCluster open={open3} dlgClose={handleClose3} id={edit_id}/>
 			
 			<Grid
 				justifyContent="space-between" // Add it here :)

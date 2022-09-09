@@ -1,4 +1,4 @@
-import React, {useState} from 'react';   
+import React, {useState, useEffect} from 'react';   
 import {Button, TextField, Dialog, DialogContent, DialogTitle, IconButton } from '@material-ui/core'; 
 import AddIcon from '@material-ui/icons/Add';
 import GroupDiv from "../common/GroupDiv";
@@ -14,32 +14,71 @@ const useStyles = makeStyles((theme) => ({
 	  justifyContent: 'center', 
 	} 
   }));
+ 
+function EditCluster({open, dlgClose, id}) { 
+	
+	const getClusterById = async() => {
+		const url = NODE_URL + `/api/cluster/${id}`;  
+		try{ 
+			const res = await axios.get(url); 
+			const {name, description, addresses} = res.data;
+			 
+			set_Name(name);
+			set_Desc(description);
+			set_Addresses(addresses);
+		}
+		catch(err) {
+			console.log(err) 
+		} 
+	} 
+	  
+  useEffect(() => {  
+	if(id !== undefined && id !== '')
+	{
+		// alert(id)
+    	getClusterById();	
+	}
+	},[id]); 
 
-function CreateCluster({open, dlgClose}) { 
 	const classes = useStyles();
 	const [name, set_Name] = useState('');
 	const [desc, set_Desc] = useState('');   
 	const [address, set_Address] = useState('');   
 	const [addresses, set_Addresses] = useState([]);   
 
-	const create_Cluster = () => {		 
+	const on_edit_Cluster = () => {		 
 		const cluster = {
+			id: id,
 			name: name,
 			desc: desc,
 			addresses: addresses,
 			userAddress: localStorage.userAddress
-		}
-		console.log(cluster);
-		create(cluster); 
+		} 
+		edit_cluster(cluster); 
 		dlgClose();
     }
 
-	const create = async (cluster) => {   
+	const on_delete_Cluster = () => { 
+		delete_cluster(); 
+		dlgClose();
+    } 
+  
+	const delete_cluster = async () => { 
+		alert(id);   
+		const url = NODE_URL + `/api/cluster/${id}`;
+		try{ 
+			const res = await axios.delete(url, id);  
+			alert(JSON.stringify( res.data )); 
+		}
+		catch(err) {
+			console.log(err) 
+		} 
+	  }
 
-		const url = NODE_URL + "/api/cluster/";
-		try{
-			// console.log(url);
-			// console.log(cluster);
+	  const edit_cluster = async (cluster) => { 
+		console.log(cluster);   
+		const url = NODE_URL + "/api/cluster/edit";
+		try{ 
 			const res = await axios.post(url, cluster);  
 			// alert(JSON.stringify( res.data )); 
 		}
@@ -47,13 +86,15 @@ function CreateCluster({open, dlgClose}) {
 			console.log(err) 
 		} 
 	  }
+
 	
 
 	const ClusterName = (   
 		<TextField 
 			id="standard-basic" 
 		  label="" 
-		  variant="standard"  
+		  variant="standard"
+		  value={name}
 		  onChange={(e) => { set_Name(e.target.value); }}	
 		  /> 
 	);  
@@ -62,7 +103,8 @@ function CreateCluster({open, dlgClose}) {
 		<TextField 
 		id="standard-basic" 
 		label="" 
-		variant="standard"  
+		variant="standard"
+		value={desc}
 		onChange={ e => { set_Desc(e.target.value); }}	
 		/>  
 	);
@@ -88,12 +130,10 @@ function CreateCluster({open, dlgClose}) {
 	}
  
 	const AddWalletAddress = ( 
-		<div className='px-4'>
-			
+		<div className='px-4'>			
 			<div> 
 				{ addressesDisplay() }
-			</div>	
-
+			</div>
 			<TextField 
 				id="standard-basic" 
 				label="" 
@@ -115,7 +155,7 @@ function CreateCluster({open, dlgClose}) {
 			onClose={dlgClose}
 			scroll={'paper'}    
 		> 
-		<DialogTitle className="alert_title">Create Cluster</DialogTitle>
+		<DialogTitle className="alert_title">Edit Cluster</DialogTitle>
 		<DialogContent dividers={true}> 
 			<div className="text-center px-5 pr-5">    
 				<div className="px-3 pr-3">
@@ -133,12 +173,15 @@ function CreateCluster({open, dlgClose}) {
 				<Button variant="contained" className="header-createalert-btn" onClick={ dlgClose }>
 					<b className="text-white">Cancel</b>
 				</Button> &nbsp;&nbsp;&nbsp;&nbsp;
-				<Button variant="contained" className="header-createalert-btn" onClick={() => create_Cluster()}>
-					<b className="text-white">Create</b>
+				<Button variant="contained" className="header-createalert-btn" onClick={() => on_edit_Cluster()}>
+					<b className="text-white">Edit</b>
+				</Button> 
+				<Button variant="contained" className="header-createalert-btn" onClick={() => on_delete_Cluster()}>
+					<b className="text-white">Delete</b>
 				</Button> 
 			</div> 
 		</Dialog> 
 	);
 }
 
-export default CreateCluster;
+export default EditCluster;

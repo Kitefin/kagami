@@ -12,10 +12,10 @@ export default function IconButtonSizes() {
       <IconButton aria-label="delete" size="small">
         <DeleteIcon fontSize="small" />
       </IconButton>
-      <IconButton aria-label="delete" size="large">
+      <IconButton aria-label="delete" size="medium">
         <DeleteIcon />
       </IconButton>
-      <IconButton aria-label="delete" size="large">
+      <IconButton aria-label="delete" size="medium">
         <DeleteIcon fontSize="inherit" />
       </IconButton>
     </Stack>

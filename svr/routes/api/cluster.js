@@ -3,9 +3,9 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator');
 //const auth = require('../../middleware/auth');
 
-const Post = require('../../models/Post');
+// const Post = require('../../models/Post');
 const Cluster = require('../../models/Cluster');
-const User = require('../../models/User');
+// const User = require('../../models/User');
 const checkObjectId = require('../../middleware/checkObjectId');
  
 // @desc     Create a post 
@@ -35,6 +35,23 @@ router.post( '/', async(req, res) => {
   }
 );
 
+// @desc     Edit a post 
+router.post( '/edit', async(req, res) => {
+  const {name, desc, addresses, userAddress, id} = req.body; 
+      await Cluster.findByIdAndUpdate(id, { name: name, description: desc, addresses: addresses, userAddress: userAddress }, function (err, docs) {
+          if (err){
+            // console.error(err.message);
+            res.status(500).send('Server Error');
+          }
+          else{
+              // console.log("Updated User : ", docs);
+              res.json(docs);
+          }
+      });  
+  }
+);
+
+
 // @route    GET clusters 
 router.get('/', async (req, res) => {
   try {
@@ -46,18 +63,17 @@ router.get('/', async (req, res) => {
   }
 });
 
-// @route    GET api/posts/:id
-// @desc     Get post by ID
-// @access   Private
-router.get('/:id', checkObjectId('id'), async (req, res) => {
+// @route    GET api/cluster/:id 
+router.get('/:id',  async (req, res) => {
+   
   try {
-    const post = await Post.findById(req.params.id);
+    const cluster = await Cluster.findById(req.params.id);
 
-    if (!post) {
+    if (!cluster) {
       return res.status(404).json({ msg: 'Post not found' });
     }
 
-    res.json(post);
+    res.json(cluster);
   } catch (err) {
     console.error(err.message);
 
@@ -68,20 +84,15 @@ router.get('/:id', checkObjectId('id'), async (req, res) => {
 // @route    DELETE api/posts/:id
 // @desc     Delete a post
 // @access   Private
-router.delete('/:id', [checkObjectId('id')], async (req, res) => {
+router.delete('/:id',  async (req, res) => { //[checkObjectId('id')],
   try {
-    const post = await Post.findById(req.params.id);
+    const cluster = await Cluster.findById(req.params.id);
 
-    if (!post) {
+    if (!cluster) {
       return res.status(404).json({ msg: 'Post not found' });
     }
-
-    // Check user
-    if (post.user.toString() !== req.user.id) {
-      return res.status(401).json({ msg: 'User not authorized' });
-    }
-
-    await post.remove();
+  
+    await cluster.remove();
 
     res.json({ msg: 'Post removed' });
   } catch (err) {
