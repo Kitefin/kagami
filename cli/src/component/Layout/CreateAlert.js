@@ -295,12 +295,22 @@ function CreateAlert({open, dlgClose, clusters}) {
 			</div>
 		</DialogContent> 
 			<div className="text-center p-2">
+			<Grid justifyContent="space-between" // Add it here :)
+				container
+				spacing={0}>
+					<Grid item xs={2}></Grid>
+					<Grid item>
 				<Button variant="contained" className="header-createalert-btn" onClick={ dlgClose }>
 					<b className="text-white">Cancel</b>
-				</Button> &nbsp;&nbsp;&nbsp;&nbsp;
+				</Button>
+				</Grid>
+				<Grid item xs={2}>
 				<Button variant="contained" className="header-createalert-btn" onClick={() => create_Alert()}>
 					<b className="text-white">Create</b>
 				</Button> 
+				</Grid>
+				<Grid item xs={2}></Grid>
+				</Grid>
 			</div>   
 		</Dialog> 
 	);

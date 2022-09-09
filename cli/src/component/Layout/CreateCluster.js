@@ -1,5 +1,5 @@
 import React, {useState} from 'react';   
-import {Button, TextField, Dialog, DialogContent, DialogTitle, IconButton } from '@material-ui/core'; 
+import {Button, TextField, Dialog, DialogContent, DialogTitle, IconButton, Grid } from '@material-ui/core'; 
 import AddIcon from '@material-ui/icons/Add';
 import GroupDiv from "../common/GroupDiv";
 import axios from 'axios'; 
@@ -130,12 +130,22 @@ function CreateCluster({open, dlgClose}) {
 			</div>
 		</DialogContent> 
 			<div className="text-center p-2">
-				<Button variant="contained" className="header-createalert-btn" onClick={ dlgClose }>
-					<b className="text-white">Cancel</b>
-				</Button> &nbsp;&nbsp;&nbsp;&nbsp;
-				<Button variant="contained" className="header-createalert-btn" onClick={() => create_Cluster()}>
-					<b className="text-white">Create</b>
-				</Button> 
+				<Grid justifyContent="space-between"  
+					container
+					spacing={0}>
+					<Grid item xs={2}></Grid>
+					<Grid item> 
+						<Button variant="contained" className="header-createalert-btn" onClick={ dlgClose }>
+							<b className="text-white">Cancel</b>
+						</Button> 
+					</Grid>
+					<Grid item>
+						<Button variant="contained" className="header-createalert-btn" onClick={() => create_Cluster()}>
+							<b className="text-white">Create</b>
+						</Button> 
+					</Grid>
+					<Grid item xs={2}></Grid>
+				</Grid>
 			</div> 
 		</Dialog> 
 	);

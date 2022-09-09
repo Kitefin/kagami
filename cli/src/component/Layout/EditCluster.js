@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';   
-import {Button, TextField, Dialog, DialogContent, DialogTitle, IconButton } from '@material-ui/core'; 
+import {Button, TextField, Dialog, DialogContent, DialogTitle, IconButton, Grid } from '@material-ui/core'; 
 import AddIcon from '@material-ui/icons/Add';
 import GroupDiv from "../common/GroupDiv";
 import axios from 'axios'; 
@@ -64,11 +64,11 @@ function EditCluster({open, dlgClose, id}) {
     } 
   
 	const delete_cluster = async () => { 
-		alert(id);   
+   
 		const url = NODE_URL + `/api/cluster/${id}`;
 		try{ 
 			const res = await axios.delete(url, id);  
-			alert(JSON.stringify( res.data )); 
+		  
 		}
 		catch(err) {
 			console.log(err) 
@@ -170,15 +170,27 @@ function EditCluster({open, dlgClose, id}) {
 			</div>
 		</DialogContent> 
 			<div className="text-center p-2">
-				<Button variant="contained" className="header-createalert-btn" onClick={ dlgClose }>
-					<b className="text-white">Cancel</b>
-				</Button> &nbsp;&nbsp;&nbsp;&nbsp;
-				<Button variant="contained" className="header-createalert-btn" onClick={() => on_edit_Cluster()}>
-					<b className="text-white">Edit</b>
-				</Button> 
-				<Button variant="contained" className="header-createalert-btn" onClick={() => on_delete_Cluster()}>
-					<b className="text-white">Delete</b>
-				</Button> 
+				<Grid justifyContent="space-between" // Add it here :)
+				container
+				spacing={0}>
+					<Grid item xs={2}></Grid>
+					<Grid item>
+						<Button variant="contained" className="header-createalert-btn" onClick={ dlgClose }>
+							<b className="text-white">Cancel</b>
+						</Button>
+					</Grid>
+					<Grid item>
+						<Button variant="contained" className="header-createalert-btn" onClick={() => on_edit_Cluster()}>
+							<b className="text-white">Edit</b>
+						</Button> 
+					</Grid>
+					<Grid item> 
+						<Button variant="contained" className="header-createalert-btn" onClick={() => on_delete_Cluster()}>
+							<b className="text-white">Delete</b>
+						</Button> 
+					</Grid>
+					<Grid item xs={2}></Grid>
+				</Grid>
 			</div> 
 		</Dialog> 
 	);
