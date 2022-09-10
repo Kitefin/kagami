@@ -7,8 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "svr": "npm start --prefix svr",
     "cli": "npm start --prefix cli",
-    "dev": "concurrently \"npm run svr\" \"npm run cli\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix cli && npm run build --prefix cli"
+    "dev": "concurrently \"npm run svr\" \"npm run cli\""
   },
   "repository": {
     "type": "git",
@@ -20,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/Kitefin/kagami/issues"
   },
-  "homepage": "https://github.com/Kitefin/kagami#readme"
+  "homepage": "https://github.com/Kitefin/kagami#readme",
+  "dependencies": {
+    "concurrently": "^7.4.0"
+  }
 }
