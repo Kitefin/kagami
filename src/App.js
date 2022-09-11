@@ -2,7 +2,7 @@ import { Route, Routes, useLocation, useNavigate } from "react-router-dom"
 import Dashboard from "./component/Dashboard/Dashboard"
 import Header from "./component/Header/Header"
 import Layout from "./component/Layout/Layout"
-import Home from "./pages/Home"
+import Landing from "./pages/Landing"
 import "./styles.css"
 
 export default function App() {
@@ -11,7 +11,7 @@ export default function App() {
       <Header />
 
       <Routes>
-        <Route path="/" element={<Home />}></Route>
+        <Route path="/" element={<Landing />}></Route>
         <Route path="/dashboard" element={<Dashboard />}></Route>
         <Route path="/layout" element={<Layout />}></Route>
       </Routes>

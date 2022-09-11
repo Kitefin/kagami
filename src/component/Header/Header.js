@@ -24,7 +24,7 @@ function Header() {
   const connectBtn = (
     <Button
       variant="contained"
-      color="deepOrange"
+      color="grey"
       onClick={() => authenticate({ signingMessage: "Connect to Kagami" })}
     >
       <b>CONNECT</b>
@@ -32,7 +32,7 @@ function Header() {
   )
 
   const disconnectBtn = (
-    <Button variant="contained" color="green" onClick={() => logout()}>
+    <Button variant="contained" color="grey" onClick={() => logout()}>
       <b>DISCONNECT</b>
     </Button>
   )
