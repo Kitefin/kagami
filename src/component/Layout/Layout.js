@@ -1,10 +1,9 @@
 import TableScrollbar from 'react-table-scrollbar'; 
 import React, {useEffect, useState} from 'react';   
-import {Button, Table, Grid } from '@material-ui/core';  
-import './layout.css'; 
-import CreateAlert from './CreateAlert';
-import CreateCluster from './CreateCluster';
-import EditCluster from './EditCluster';
+import {Button, Table, Grid } from '@material-ui/core';   
+import CreateAlert from './Notification/CreateAlert';
+import CreateCluster from './Cluster/CreateCluster';
+import EditCluster from './Cluster/EditCluster';
 import axios from 'axios'; 
 const NODE_URL = "http://localhost:5000"; 
   
@@ -89,7 +88,7 @@ function Layout() {
 			const cluster = clusters[i];
 			const {name, description, addresses, _id} = cluster;
 			const tr = (
-			<tr>
+			<tr key={Number(i)}>
 				<td>{name}</td>
 				<td>{description}</td>
 				<td>{addresses.length}</td>

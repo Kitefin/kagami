@@ -1,5 +1,3 @@
-// import './bootstrap.min.css';
-
 import './styles.css';
 
 import { useMoralis } from 'react-moralis';

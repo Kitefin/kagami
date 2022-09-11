@@ -3,9 +3,8 @@ import React, {useEffect, useState} from 'react';
 import {Button, Grid, Checkbox, TextField, Dialog, DialogContent, DialogTitle } from '@material-ui/core'; 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {CheckBoxOutlineBlank, CheckBox, Group} from '@material-ui/icons';  
-import GroupDiv from "../common/GroupDiv";
-import ComingSoon from "./ComingSoon";
-import './layout.css';
+import GroupDiv from "../../common/GroupDiv";
+import ComingSoon from "../../common/ComingSoon"; 
 const icon = <CheckBoxOutlineBlank fontSize="small" />;
 const checkedIcon = <CheckBox fontSize="small" />; 
  

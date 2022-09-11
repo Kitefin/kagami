@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';   
 import {Button, TextField, Dialog, DialogContent, DialogTitle, IconButton, Grid } from '@material-ui/core'; 
 import AddIcon from '@material-ui/icons/Add';
-import GroupDiv from "../common/GroupDiv";
+import GroupDiv from "../../common/GroupDiv";
+import CloseIcon from '@material-ui/icons/Close';
 import axios from 'axios'; 
 import { makeStyles } from '@material-ui/core/styles'; 
-const NODE_URL = "http://localhost:5000"; 
-import './layout.css';
+const NODE_URL = "http://localhost:5000";  
 
 const useStyles = makeStyles((theme) => ({
 	modal: {
@@ -21,8 +21,7 @@ function EditCluster({open, dlgClose, id}) {
 		const url = NODE_URL + `/api/cluster/${id}`;  
 		try{ 
 			const res = await axios.get(url); 
-			const {name, description, addresses} = res.data;
-			 
+			const {name, description, addresses} = res.data;			 
 			set_Name(name);
 			set_Desc(description);
 			set_Addresses(addresses);
@@ -34,8 +33,7 @@ function EditCluster({open, dlgClose, id}) {
 	  
   useEffect(() => {  
 	if(id !== undefined && id !== '')
-	{
-		// alert(id)
+	{ 
     	getClusterById();	
 	}
 	},[id]); 
@@ -44,90 +42,89 @@ function EditCluster({open, dlgClose, id}) {
 	const [name, set_Name] = useState('');
 	const [desc, set_Desc] = useState('');   
 	const [address, set_Address] = useState('');   
-	const [addresses, set_Addresses] = useState([]);   
+	const [addresses, set_Addresses] = useState([]);
 
-	const on_edit_Cluster = () => {		 
+	const edit_Cluster = async () => { 
 		const cluster = {
 			id: id,
 			name: name,
 			desc: desc,
 			addresses: addresses,
 			userAddress: localStorage.userAddress
-		} 
-		edit_cluster(cluster); 
-		dlgClose();
-    }
-
-	const on_delete_Cluster = () => { 
-		delete_cluster(); 
-		dlgClose();
-    } 
-  
-	const delete_cluster = async () => { 
-   
-		const url = NODE_URL + `/api/cluster/${id}`;
-		try{ 
-			const res = await axios.delete(url, id);  
-		  
-		}
-		catch(err) {
-			console.log(err) 
-		} 
-	  }
-
-	  const edit_cluster = async (cluster) => { 
-		console.log(cluster);   
+		} 		
 		const url = NODE_URL + "/api/cluster/edit";
 		try{ 
-			const res = await axios.post(url, cluster);  
-			// alert(JSON.stringify( res.data )); 
+			await axios.post(url, cluster);		
 		}
 		catch(err) {
 			console.log(err) 
-		} 
-	  }
-
-	
+		}
+		dlgClose(); 
+	}
+  
+	const delete_Cluster = async () => {    
+		const url = NODE_URL + `/api/cluster/${id}`;
+		try{ 
+			await axios.delete(url, id);		  
+		}
+		catch(err) { } 
+		dlgClose();
+	}
 
 	const ClusterName = (   
 		<TextField 
 			id="standard-basic" 
-		  label="" 
-		  variant="standard"
-		  value={name}
-		  onChange={(e) => { set_Name(e.target.value); }}	
+			label="" 
+		  	variant="standard"
+		  	value={name}
+		  	onChange={(e) => { set_Name(e.target.value); }}	
 		  /> 
 	);  
   
 	const ClusterDesc = (   
 		<TextField 
-		id="standard-basic" 
-		label="" 
-		variant="standard"
-		value={desc}
-		onChange={ e => { set_Desc(e.target.value); }}	
+			id="standard-basic" 
+			label="" 
+			variant="standard"
+			value={desc}
+			onChange={ e => { set_Desc(e.target.value); }}	
 		/>  
 	);
 	
-   const addAddress = ( ) => {
-	addresses.push(address);
-	set_Addresses(addresses);
-	console.log(addresses);
-	set_Address('')
-   }
+    const addAddress = () => {
+		const index = addresses.indexOf(address);
+		console.log(index)
+		if(index === -1)
+		{
+			addresses.push(address);
+			set_Addresses(addresses);
+		} 
+	}
+
+	const deleteAddress = (address_) => { 
+		var index = addresses.indexOf(address_);
+		addresses.splice(index, 1); 
+		set_Addresses(addresses);  
+	}
         
 	const addressesDisplay = () => {
-		let ps = [];
-		ps.push(<p>{address}</p>)
-		 
+		let ps = [];	 
 		for(let i in addresses)
 		{
 			const address_ = addresses[i];
-			const p = <p>{address_}</p>; 
-			ps.push(p)
+			const div = (
+			<div key={Number(i) + 1}>
+				<span >{address_}</span> 
+				<IconButton aria-label="delete" size="medium" onClick={() => { deleteAddress(address_) }}>
+					<CloseIcon />
+				</IconButton>
+				<br/>
+			</div>); 
+			ps.push(div)
 		}
 		return ps;
 	}
+       
  
 	const AddWalletAddress = ( 
 		<div className='px-4'>			
@@ -143,8 +140,7 @@ function EditCluster({open, dlgClose, id}) {
 			/>	
 			<IconButton aria-label="delete" size="medium" onClick={() => { addAddress() }}>
 				<AddIcon />
-			</IconButton>
-				
+			</IconButton>				
 		</div>
 	);
 
@@ -180,12 +176,12 @@ function EditCluster({open, dlgClose, id}) {
 						</Button>
 					</Grid>
 					<Grid item>
-						<Button variant="contained" className="header-createalert-btn" onClick={() => on_edit_Cluster()}>
+						<Button variant="contained" className="header-createalert-btn" onClick={() => edit_Cluster()}>
 							<b className="text-white">Edit</b>
 						</Button> 
 					</Grid>
 					<Grid item> 
-						<Button variant="contained" className="header-createalert-btn" onClick={() => on_delete_Cluster()}>
+						<Button variant="contained" className="header-createalert-btn" onClick={() => delete_Cluster()}>
 							<b className="text-white">Delete</b>
 						</Button> 
 					</Grid>

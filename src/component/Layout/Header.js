@@ -1,7 +1,6 @@
 import React from 'react';
 import { useMoralis } from 'react-moralis';
-import { Button, AppBar, Toolbar, Grid } from '@material-ui/core';
-import './layout.css';
+import { Button, AppBar, Toolbar, Grid } from '@material-ui/core'; 
 
 var userAddress;
 function Header() {

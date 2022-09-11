@@ -1,53 +1,33 @@
 import React, {useState} from 'react';   
 import {Button, TextField, Dialog, DialogContent, DialogTitle, IconButton, Grid } from '@material-ui/core'; 
 import AddIcon from '@material-ui/icons/Add';
-import GroupDiv from "../common/GroupDiv";
-import axios from 'axios'; 
-import { makeStyles } from '@material-ui/core/styles'; 
-const NODE_URL = "http://localhost:5000"; 
-import './layout.css';
-
-const useStyles = makeStyles((theme) => ({
-	modal: {
-	  display: 'flex',
-	  alignItems: 'center',
-	  justifyContent: 'center', 
-	} 
-  }));
-
-function CreateCluster({open, dlgClose}) { 
-	const classes = useStyles();
+import CloseIcon from '@material-ui/icons/Close';
+import GroupDiv from "../../common/GroupDiv";
+import axios from 'axios';  
+const NODE_URL = "http://localhost:5000";  
+  
+function CreateCluster({open, dlgClose}) {  
 	const [name, set_Name] = useState('');
 	const [desc, set_Desc] = useState('');   
 	const [address, set_Address] = useState('');   
 	const [addresses, set_Addresses] = useState([]);   
-
-	const create_Cluster = () => {		 
+ 
+	const create_Cluster = async () => {    
 		const cluster = {
 			name: name,
 			desc: desc,
 			addresses: addresses,
 			userAddress: localStorage.userAddress
-		}
-		console.log(cluster);
-		create(cluster); 
-		dlgClose();
-    }
-
-	const create = async (cluster) => {   
-
+		} 
 		const url = NODE_URL + "/api/cluster/";
-		try{
-			// console.log(url);
-			// console.log(cluster);
-			const res = await axios.post(url, cluster);  
-			// alert(JSON.stringify( res.data )); 
+		try { 
+			await axios.post(url, cluster);   
 		}
 		catch(err) {
 			console.log(err) 
 		} 
-	  }
-	
+		dlgClose();
+	} 
 
 	const ClusterName = (   
 		<TextField 
@@ -67,33 +47,45 @@ function CreateCluster({open, dlgClose}) {
 		/>  
 	);
 	
-   const addAddress = ( ) => {
-	addresses.push(address);
-	set_Addresses(addresses);
-	console.log(addresses);
-	set_Address('')
-   }
+    const addAddress = () => {
+		const index = addresses.indexOf(address);
+		console.log(index)
+		if(index === -1)
+		{
+			addresses.push(address);
+			set_Addresses(addresses);
+		} 
+	}
+
+	const deleteAddress = (address_) => { 
+		var index = addresses.indexOf(address_);
+		addresses.splice(index, 1); 
+		set_Addresses(addresses);  
+	}
         
 	const addressesDisplay = () => {
-		let ps = [];
-		ps.push(<p>{address}</p>)
-		 
+		let ps = [];	 
 		for(let i in addresses)
 		{
 			const address_ = addresses[i];
-			const p = <p>{address_}</p>; 
-			ps.push(p)
+			const div = (
+			<div key={Number(i) + 1}>
+				<span >{address_}</span> 
+				<IconButton aria-label="delete" size="medium" onClick={() => { deleteAddress(address_) }}>
+					<CloseIcon />
+				</IconButton>
+				<br/>
+			</div>); 
+			ps.push(div)
 		}
 		return ps;
 	}
  
 	const AddWalletAddress = ( 
-		<div className='px-4'>
-			
+		<div className='px-4'>			
 			<div> 
 				{ addressesDisplay() }
-			</div>	
-
+			</div>
 			<TextField 
 				id="standard-basic" 
 				label="" 
@@ -101,16 +93,14 @@ function CreateCluster({open, dlgClose}) {
 				onChange={ e => { set_Address(e.target.value); }}	
 				className='px-2'
 			/>	
-			<IconButton aria-label="delete" size="medium" onClick={() => { addAddress() }}>
+			<IconButton aria-label="add" size="medium" onClick={() => { addAddress() }}>
 				<AddIcon />
-			</IconButton>
-				
+			</IconButton>				
 		</div>
 	);
 
 	return (
-		<Dialog  
-			className={classes.modal}
+		<Dialog   
 			open={open}
 			onClose={dlgClose}
 			scroll={'paper'}    
