@@ -4,6 +4,7 @@ import {Button, Grid, Checkbox, TextField, Dialog, DialogContent, DialogTitle } 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {CheckBoxOutlineBlank, CheckBox, Group} from '@material-ui/icons';  
 import GroupDiv from "../common/GroupDiv";
+import ComingSoon from "./ComingSoon";
 import './layout.css';
 const icon = <CheckBoxOutlineBlank fontSize="small" />;
 const checkedIcon = <CheckBox fontSize="small" />; 
@@ -53,6 +54,8 @@ function CreateAlert({open, dlgClose, clusters}) {
 
 	const create_Alert = () => {
 		//console.log(type)
+		dlgClose();
+		handleClickOpen2();
    } 
 
 	const TYPE_LIMITS = 1;
@@ -70,8 +73,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 	const CLUSTER_JUNIOR_TRADERS = 3;
 	const CLUSTER_PROTFOLIO_MANAGERS = 4;
 	const CLUSTER_ACCOUTS_TEAMS = 5;
- 
-
+  
 	// const portfolios = [
 	// 	{ title: 'All Project Wallets', id: CLUSTER_ALL_PROJECT_WALLETS },
 	// 	{ title: 'Executive Controlled', id: CLUSTER_EXECUTIVE_CONTROLLED },
@@ -156,7 +158,6 @@ function CreateAlert({open, dlgClose, clusters}) {
 		} 
 	}
  
-
     const ComboType = (  
 		<Autocomplete
         options = {types}
@@ -270,8 +271,19 @@ function CreateAlert({open, dlgClose, clusters}) {
 		/>
 	); 
 
+	const [open2, setOpen2] = useState(false); 
+	const handleClickOpen2 = () => {
+		setOpen2(true); 
+	  };
+	
+	  const dlgClose2 = () => {
+		setOpen2(false);
+	  };
+
 	return (
-		<Dialog 
+		<>
+			<ComingSoon open={open2} dlgClose={dlgClose2} title="Coming Soon!" content="it wiil be added code after database completed " btnText="OK" />
+			<Dialog 
 			className={classes.modal}
 			open={open}
 			onClose={dlgClose}
@@ -312,7 +324,8 @@ function CreateAlert({open, dlgClose, clusters}) {
 				<Grid item xs={2}></Grid>
 				</Grid>
 			</div>   
-		</Dialog> 
+			</Dialog> 
+		</>
 	);
 }
 

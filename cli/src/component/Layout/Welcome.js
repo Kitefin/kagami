@@ -1,8 +1,7 @@
 import React from 'react';     
 import imgWelcome from '../../assets/img/welcome.png';
-import './layout.css';  
-import { Button, Table, Grid, Modal, Backdrop, Fade } from '@material-ui/core';
-import {Checkbox, TextField, Dialog, DialogContent, DialogTitle, DialogActions } from '@material-ui/core'; 
+import './layout.css';
+import { Dialog, Button } from '@material-ui/core'; 
 import { makeStyles } from '@material-ui/core/styles'; 
 import Layout from './Layout';
 

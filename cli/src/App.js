@@ -8,7 +8,7 @@ import Header from './component/Layout/Header';
 import Welcome from './component/Layout/Welcome';
 
 export default function App() {
-	const { isAuthenticated } = useMoralis();
+	const { isAuthenticated } = useMoralis(); 
 
 	return (
 		<div className="App">

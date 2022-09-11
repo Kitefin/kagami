@@ -8,8 +8,9 @@ const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 
 
-const APP_ID = "Ra5TzI8AtWDIYG7k88juzx3zhEr6YZ8ghVUx8F34";
-const SERVER_URL = "https://yi52hrws3oqw.usemoralis.com:2053/server";
+const APP_ID = "glKSCAWH3oGNrzbG581lYX25mXu7qh84qCH4nd7d";
+const SERVER_URL = "https://hbnfhwab61xo.usemoralis.com:2053/server";
+const masterKey = "SGhkgqsHuTGvIojq1lLkzq068zX2k5nQF1SPZ8I7";
 
 root.render(
   // <StrictMode>
