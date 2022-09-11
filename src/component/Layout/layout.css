@@ -1,3 +1,4 @@
+
 .header-bar {
 	height: 70px;
 	background-color: rgba(212, 17, 119, 0.815) !important;
@@ -11,11 +12,11 @@
 	padding: 0px;
 	color: #fff;
 }
+
 @font-face {
 	font-family: "Phosphate-Inline";
 	src: url("../../assets/font/PhosphateInline.ttf");
 } 
- 
 
 .header-connect-btn {
 	background-color: rgba(241, 241, 241, 0.899) !important;
@@ -25,9 +26,11 @@
 .header-connect-btn:hover {
 	box-shadow: 0 0 15px rgba(255, 0, 0, 0.877) !important;
 }
+
 .header-disconnect-btn {
 	background-color: rgba(11, 238, 49, 0.959) !important;
 }
+
 .header-disconnect-btn:hover {
 	box-shadow: 0 0 15px rgba(11, 238, 49, 0.959) !important;
 }
@@ -48,9 +51,6 @@
 	background-color: rgba(28, 172, 93, 0.959) !important;
 }
 
-
-
-
 .header-createalert-btn {
 	background-color: rgba(96, 96, 96, 0.959) !important;
 	padding: 10% 30% 10% 30%;
@@ -61,25 +61,25 @@
 	background-color: rgba(150, 150, 150, 0.959) !important;
 }
 
-
-
-
 .layout-back {
 	background: linear-gradient(#fafafa, #dd7b2af1);
 	min-height: 86vh;
 	height: auto;
 	width: 100%;
 }
+
 table {
 	border: solid 3px rgb(9, 104, 71);
 	border-radius: 10px;
 }
+
 thead th {
 	border: solid 2px rgb(241, 241, 241);
 	padding: 8px;
 	color: #fff;
 	background-color: rgb(9, 104, 71);
 }
+
 td {
 	background-color: rgba(9, 104, 71, 0.356);
 	border: solid 2px rgb(9, 104, 71);
@@ -100,6 +100,7 @@ td {
 .text-white {
 	color: white;
 }
+
 .mt-0{margin-top:0!important}.mt-1{margin-top:.25rem!important}.mt-2{margin-top:.5rem!important}
   
   .mt-3{margin-top:1rem!important}.mt-4{margin-top:1.5rem!important}.mt-5{margin-top:3rem!important}.mt-auto{margin-top:auto!important}
@@ -122,7 +123,6 @@ td {
   .pb-2{padding-bottom:.5rem!important}.pb-3{padding-bottom:1rem!important}.pb-4{padding-bottom:1.5rem!important}.pb-5{padding-bottom:3rem!important}
   .ps-0{padding-left:0!important}.ps-1{padding-left:.25rem!important}.ps-2{padding-left:.5rem!important}.ps-3{padding-left:1rem!important}
   .ps-4{padding-left:1.5rem!important}.ps-5{padding-left:3rem!important}
-
   .w-25{width:25%!important}.w-50{width:50%!important}.w-75{width:75%!important}.w-100{width:100%!important}.w-auto{width:auto!important}
   .mw-100{max-width:100%!important}.vw-100{width:100vw!important}.min-vw-100{min-width:100vw!important}.h-25{height:25%!important}
   .h-50{height:50%!important}.h-75{height:75%!important}.h-100{height:100%!important}.h-auto{height:auto!important}

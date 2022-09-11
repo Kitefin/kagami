@@ -1,5 +1,4 @@
 node_modules
-cli/node_modules
-svr/node_modules
-cli/.package-lock.json
-svr/.package-lock.json
+yarn.lock
+package-lock.json
+*.rar
