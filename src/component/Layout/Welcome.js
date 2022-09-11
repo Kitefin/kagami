@@ -1,7 +1,7 @@
 import React from 'react';     
 import imgWelcome from '../../assets/img/welcome.png'; 
-import { Dialog, Button } from '@material-ui/core'; 
-import { makeStyles } from '@material-ui/core/styles'; 
+import { Button, Dialog } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import Layout from './Layout';
 
 const useStyles = makeStyles((theme) => ({
@@ -9,13 +9,7 @@ const useStyles = makeStyles((theme) => ({
 	  display: 'flex',
 	  alignItems: 'center',
 	  justifyContent: 'center', 
-	}, 
-	  paper2: {
-		backgroundColor: theme.palette.background.paper,	 
-		borderRadius: '10px',
-		boxShadow: theme.shadows[5],	   
-		width: '50%',
-	  }, 
+	},  
   }));
 
 function Welcome() {  

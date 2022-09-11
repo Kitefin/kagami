@@ -1,6 +1,7 @@
 import TableScrollbar from 'react-table-scrollbar'; 
 import React, {useEffect, useState} from 'react';   
-import {Button, Table, Grid } from '@material-ui/core';   
+import { Button, Table, Grid } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 import CreateAlert from './Notification/CreateAlert';
 import CreateCluster from './Cluster/CreateCluster';
 import EditCluster from './Cluster/EditCluster';
@@ -93,11 +94,13 @@ function Layout() {
 				<td>{description}</td>
 				<td>{addresses.length}</td>
 				<td>7 Alerts (need to work)</td>
-				<td style={{ minWidth: '140px', backgroundColor: 'rgb(9, 154, 0)', color: 'white' }}>
+				<td style={{ minWidth: '140px',  color: 'white', textAlign: 'center' }}>
 					
-					<Button variant="contained" onClick={() => onEditCluster(_id)}>
-						<b>Edit cluster</b>
+					<Button variant="contained" size="small" color="primary" startIcon={<EditIcon fontSize="small" />} onClick={() => onEditCluster(_id)}>
+						<b>Edit</b>
 					</Button>
+ 
+ 
 				</td>
 			</tr>);
 			trs.push(tr);

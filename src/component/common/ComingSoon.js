@@ -1,7 +1,6 @@
-import React from 'react';   
-import {Button, Dialog, DialogContent, DialogTitle } from '@material-ui/core'; 
-import { makeStyles } from '@material-ui/core/styles';   
-import Slide from '@material-ui/core/Slide';
+import React from 'react';
+import {Button, Dialog, DialogContent, DialogTitle, Slide } from '@mui/material'; 
+import { makeStyles } from '@mui/styles';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="left" ref={ref} {...props} />;

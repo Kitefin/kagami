@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMoralis } from 'react-moralis';
-import { Button, AppBar, Toolbar, Grid } from '@material-ui/core'; 
+import { Button, AppBar, Toolbar, Grid } from '@mui/material'; 
 
 var userAddress;
 function Header() {
@@ -22,7 +22,7 @@ function Header() {
 
 	const disconnectBtn = (
 		<Button variant="contained" className="header-disconnect-btn " onClick={() => logout()}>
-			<b>DISCONNECT</b>
+			<b className='text-black'>DISCONNECT</b>
 		</Button>
 	);
 

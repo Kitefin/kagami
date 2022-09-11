@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react';   
-import {Button, TextField, Dialog, DialogContent, DialogTitle, IconButton, Grid } from '@material-ui/core'; 
-import AddIcon from '@material-ui/icons/Add';
-import GroupDiv from "../../common/GroupDiv";
-import CloseIcon from '@material-ui/icons/Close';
+import React, {useState, useEffect} from 'react';  
+import { Button, TextField, Dialog, DialogContent, DialogTitle, IconButton, Grid } from '@mui/material'; 
+import { makeStyles } from '@mui/styles'; 
+import AddIcon from '@mui/icons-material/Add';
+
+import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios'; 
-import { makeStyles } from '@material-ui/core/styles'; 
+import GroupDiv from "../../common/GroupDiv";
 const NODE_URL = "http://localhost:5000";  
 
 const useStyles = makeStyles((theme) => ({

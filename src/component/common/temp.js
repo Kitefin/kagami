@@ -1,23 +1,31 @@
-import * as React from 'react';
-import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
+import React from 'react';
+import Button from '@mui/material/Button';
+import { SnackbarProvider, useSnackbar } from 'notistack';
 
-export default function IconButtonSizes() {
+function MyApp() {
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleClick = () => {
+    enqueueSnackbar('I love snacks.');
+  };
+
+  const handleClickVariant = (variant) => () => {
+    // variant could be success, error, warning, info, or default
+    enqueueSnackbar('This is a success message!', { variant });
+  };
+
   return (
-    <Stack direction="row" alignItems="center" spacing={1}>
-      <IconButton aria-label="delete" size="small">
-        <DeleteIcon fontSize="inherit" />
-      </IconButton>
-      <IconButton aria-label="delete" size="small">
-        <DeleteIcon fontSize="small" />
-      </IconButton>
-      <IconButton aria-label="delete" size="medium">
-        <DeleteIcon />
-      </IconButton>
-      <IconButton aria-label="delete" size="medium">
-        <DeleteIcon fontSize="inherit" />
-      </IconButton>
-    </Stack>
+    <React.Fragment>
+      <Button onClick={handleClick}>Show snackbar</Button>
+      <Button onClick={handleClickVariant('success')}>Show success snackbar</Button>
+    </React.Fragment>
+  );
+}
+
+export default function IntegrationNotistack() {
+  return (
+    <SnackbarProvider maxSnack={3}>
+      <MyApp />
+    </SnackbarProvider>
   );
 }

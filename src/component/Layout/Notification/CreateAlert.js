@@ -1,8 +1,7 @@
-import { makeStyles } from '@material-ui/core/styles'; 
+import { makeStyles } from '@mui/styles';
 import React, {useEffect, useState} from 'react';   
-import {Button, Grid, Checkbox, TextField, Dialog, DialogContent, DialogTitle } from '@material-ui/core'; 
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import {CheckBoxOutlineBlank, CheckBox, Group} from '@material-ui/icons';  
+import { Button, Grid, Checkbox, TextField, Dialog, DialogContent, DialogTitle, Autocomplete } from '@mui/material';
+import {CheckBoxOutlineBlank, CheckBox } from '@mui/icons-material';  
 import GroupDiv from "../../common/GroupDiv";
 import ComingSoon from "../../common/ComingSoon"; 
 const icon = <CheckBoxOutlineBlank fontSize="small" />;
