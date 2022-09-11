@@ -1,12 +1,5 @@
 import styled from "@emotion/styled"
-import { Box, Button } from "@mui/material"
-
-export const ModalButton = styled(Button)`
-  margin-top: 20px;
-  margin-left: 20%;
-  border-radius: 50%;
-  height: 200px;
-`
+import { Box } from "@mui/material"
 
 export const ModalBoxParent = styled(Box)`
   height: 100%;

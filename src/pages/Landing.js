@@ -1,29 +1,14 @@
-import {
-  Box,
-  Stack,
-  Button,
-  Card,
-  CardContent,
-  Typography,
-} from "@mui/material"
-import React from "react"
-import { useMoralis } from "react-moralis"
-import { useNavigate } from "react-router-dom"
-import CreateCluster from "../component/Cluster/CreateCluster"
-import PageWrapper from "../component/PageWrapper"
-import { grey } from "@mui/material/colors"
-import { colors } from "../utils/constants"
+import CampaignIcon from "@mui/icons-material/Campaign"
 import GrainIcon from "@mui/icons-material/Grain"
 import PanToolIcon from "@mui/icons-material/PanTool"
-import CampaignIcon from "@mui/icons-material/Campaign"
+import { Box, Card, CardContent, Stack, Typography } from "@mui/material"
+import React from "react"
+import { useMoralis } from "react-moralis"
+import PageWrapper from "../component/PageWrapper"
+import { colors } from "../utils/constants"
 
 export default function Landing() {
   const { isAuthenticated } = useMoralis()
-
-  const navigate = useNavigate()
-  const navigateTo = (path) => {
-    navigate(path)
-  }
 
   return (
     <PageWrapper>
@@ -75,8 +60,6 @@ export default function Landing() {
             />
           </Box>
         </Box>
-
-        {isAuthenticated && <CreateCluster />}
 
         {!isAuthenticated && (
           <Stack direction="row" spacing={2} style={{ marginTop: 50 }}>

@@ -12,6 +12,7 @@ const theme = createTheme({
     },
     grey: {
       main: grey[300],
+      dark: grey[500],
     },
     green: {
       main: green[400],
