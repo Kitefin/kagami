@@ -61,7 +61,18 @@ function CreateAlert({open, dlgClose, clusters}) {
 	const [descDetail, set_DescDetail] = useState(false); 
 	const [open2, setOpen2] = useState(false); 
 
-	const create_Alert = async () => {    
+	const create_Alert = async () => {
+		let recipients_ = [];
+		for(var i in recipients)
+		{
+			let recipient = recipients[i];
+			if(recipient === '@You')
+			{
+				const {userInfo} = localStorage;
+				recipient = JSON.parse(userInfo).email;
+			}
+			recipients_.push(recipient);
+		}
 		if(descDetail)
 		{    
 			const alert = {
@@ -73,7 +84,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 					per: per
 				},
 				clusterName: portFolio,
-				recipients: recipients, 
+				recipients: recipients_ 
 			}  
 			const url = NODE_URL + "/api/alert/";
 			try { 
@@ -82,13 +93,9 @@ function CreateAlert({open, dlgClose, clusters}) {
 			catch(err) {
 				console.log(err) 
 			} 
-
-		} 
-		
-		
+		} 		
 		dlgClose();
-		// handleClickOpen2();
-		
+		// handleClickOpen2();		
 	}  
  
 
@@ -131,7 +138,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 
 
  
-	let availableRecipients = [{title: "@You", id: 1}];
+	let availableRecipients = [ "@You" ];
 	
 	if(emails)
 	{
@@ -145,9 +152,9 @@ function CreateAlert({open, dlgClose, clusters}) {
 					title: email.email,
 					id: email._id
 				}
-				availableRecipients.push(recipient);
+				availableRecipients.push(email.email);
 			}
-			else availableRecipients[0].id = email._id;
+			// else availableRecipients[0].id = email._id;
 		}
 	} 
 	
@@ -306,8 +313,10 @@ function CreateAlert({open, dlgClose, clusters}) {
 		<Autocomplete
 		  	multiple
 		  	id="tags-filled"
-		  	options={availableRecipients.map((option) => option.title)}
-		   	defaultValue={[availableRecipients[0].title]}
+			options={availableRecipients}
+			getOptionLabel={(option) => option}
+		  	// options={availableRecipients.map((option) => option.title)}
+		   	defaultValue={[availableRecipients[0]]}
 		  	freeSolo  
 			renderTags={(value, getTagProps) =>
 			value.map((option, index) => (
@@ -318,7 +327,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 				<TextField {...params} variant="filled" label="" placeholder="" />
 		  	)}
 		  	style={{width: '80%', marginLeft: '10%'}}
-			onChange={(e, val) => set_Recipients(val)}
+			onChange={(e, val) => set_Recipients(val) }
 		/>
 	); 
 

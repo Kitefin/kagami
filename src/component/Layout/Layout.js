@@ -2,9 +2,10 @@ import TableScrollbar from 'react-table-scrollbar';
 import React, {useEffect, useState} from 'react';   
 import { Button, Table, Grid } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import CreateAlert from './Notification/CreateAlert';
+import CreateAlert from './Alert/CreateAlert';
 import CreateCluster from './Cluster/CreateCluster';
 import EditCluster from './Cluster/EditCluster';
+import EditAlert from './Alert/EditAlert';
 import axios from 'axios'; 
 const NODE_URL = "http://localhost:5000"; 
   
@@ -12,15 +13,19 @@ function Layout() {
 	const [open1, setOpen1] = useState(false); 
 	const [open2, setOpen2] = useState(false); 
 	const [open3, setOpen3] = useState(false); 
+	const [open4, setOpen4] = useState(false); 
 	const [clusters, set_clusters] = useState([]);
+	const [alerts, set_alerts] = useState([]);
 	const [clusterTrs, setClusterTrs] = useState(undefined);
-	const [edit_id, set_edit_id] = useState('');
+	const [alertTrs, setAlertTrs] = useState(undefined);
+	const [edit_cluster_id, set_edit_cluster_id] = useState('');
+	const [edit_alert_id, set_edit_alert_id] = useState('');
+	
   
 	const getClusters = async() => {
 		const url = NODE_URL + "/api/cluster/";
 		const {userInfo} = localStorage;
-		const userAddress = JSON.parse(userInfo).address;
-		// console.log(userAddress)
+		const userAddress = JSON.parse(userInfo).address; 
 		try{ 
 			const res = await axios.get(url, {userAddress: userAddress});  
 			getClustersTbl(res.data); 
@@ -30,9 +35,26 @@ function Layout() {
 		} 
 	}
 	  
+	const getAlerts = async() => {
+		const url = NODE_URL + "/api/alert/all/";
+		const {userInfo} = localStorage;
+		const email = JSON.parse(userInfo).email; 
+		
+		try{  
+			const res = await axios.post(url, {email: email} );  
+			 
+			getAlertsTbl(res.data); 
+		}
+		catch(err) {
+			console.log(err) 
+		} 
+	}
+	  
+
   useEffect(() => {  
     getClusters();	
-	}, [open1, open2, open3]); 
+	getAlerts();
+	}, [open1, open2, open3, open4]); 
 
 	const handleClickOpen1 = () => {
 		setOpen1(true); 
@@ -55,20 +77,21 @@ function Layout() {
 		setOpen3(false); 
 	  }; 
 
+	  const handleClose4 = () => {
+		getAlerts();	
+		setOpen4(false); 
+	  }; 
+
 	  const onEditCluster = (_id) => {
-		set_edit_id(_id);
+		set_edit_cluster_id(_id);
 		setOpen3(true);
 	  }
- 
-	//   const descriptionElementRef = React.useRef(null);
-	//   React.useEffect(() => {
-	// 	if (open1) {
-	// 	  const { current: descriptionElement } = descriptionElementRef;
-	// 	  if (descriptionElement !== null) {
-	// 		descriptionElement.focus();
-	// 	  }
-	// 	}
-	//   }, [open1]);
+
+	  const onEditAlert = (_id) => {
+		set_edit_alert_id(_id);
+		setOpen4(true);
+	  }
+  
 
 	  const openCreateAlertBtn = (
 		<Button variant="contained" className="create_alert_open_btn" onClick={() =>handleClickOpen1()}>
@@ -106,11 +129,49 @@ function Layout() {
 		setClusterTrs(trs);
 	}
 	
+	const getAlertsTbl = (alerts) => {
+		set_alerts(alerts);
+		let trs = [];
+		const {userInfo} = localStorage;
+		const email = JSON.parse(userInfo).email; 
+		for(var i in alerts)
+		{
+			const alert = alerts[i];
+			console.log(alert)
+			const {type, description, clusterName, recipients, _id} = alert;
+			const desc = description.minMax + " of " + description.amount + " ETH per " + description.per;
+			let recipientsStr = '';
+			for(var j in recipients)
+			{
+				let recipient = recipients[j];
+				if(recipient === email)  recipient = "@You";
+				recipientsStr += recipient + ", ";
+			}
+			const tr = (
+			<tr key={Number(i)}>
+				<td>{type}</td>
+				<td>{ desc }</td>
+				<td>{clusterName}</td>
+				<td>{recipientsStr}</td>
+				<td style={{ minWidth: '140px',  color: 'white', textAlign: 'center' }}>					
+					<Button variant="contained" size="small" color="primary" startIcon={<EditIcon fontSize="small" />} onClick={() => onEditAlert(_id)}>
+						<b>Edit</b>
+					</Button>
+				</td>
+			</tr>);
+			trs.push(tr);
+		}
+		setAlertTrs(trs);
+	}
+
+	
+	
 	return (
 		<div className="layout-back p-5"> 
 			<CreateAlert open={open1} dlgClose={handleClose1} clusters={clusters} />
 			<CreateCluster open={open2} dlgClose={handleClose2} />
-			<EditCluster open={open3} dlgClose={handleClose3} id={edit_id}/>
+			<EditCluster open={open3} dlgClose={handleClose3} id={edit_cluster_id}/>
+			<EditAlert open={open4} dlgClose={handleClose4} id={edit_alert_id}/>
 			
 			<Grid
 				justifyContent="space-between"
@@ -223,7 +284,8 @@ function Layout() {
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
+						{alertTrs}
+						{/* <tr>
 							<td>Limits</td>
 							<td>Maximum of 500 ETH per transaction</td>
 							<td>All Project Wallets</td>
@@ -264,7 +326,7 @@ function Layout() {
 							<td>Accounts Team</td>
 							<td>You, @seasonH</td>
 							<td style={{ backgroundColor: '#00ff30' }}>Edit Notification</td>
-						</tr>
+						</tr> */}
 					</tbody>
 					</Table>
 				</TableScrollbar>

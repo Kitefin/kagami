@@ -51,9 +51,10 @@ router.post( '/edit', async(req, res) => {
 );
 
 // @route GET Alerts 
-router.get('/', async (req, res) => {
-  try {
-    const alerts = await Alert.find( req.body.userAddress ); 
+router.post('/all', async (req, res) => {
+  try { 
+    const alerts = await Alert.find({recipients: { $all: [req.body.email] } } ); 
+    // console.log(alerts)
     res.json(alerts);
   } 
   catch (err) {
