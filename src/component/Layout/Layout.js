@@ -38,10 +38,12 @@ function Layout() {
 		}
 		catch(err) {
 			console.log(err) 
+			setLoading(false);
 		} 
 	}
 	  
 	const getAlerts = async() => {
+		setLoading(true);
 		const url = NODE_URL + "/api/alert/all/";
 		const {userInfo} = localStorage;
 		const email = JSON.parse(userInfo).email; 
@@ -147,6 +149,7 @@ function Layout() {
 			trs.push(tr);
 		}
 		setClusterTrs(trs);
+		setLoading(false);
 	}
 	
 	const getAlertsTbl = (alerts) => {
