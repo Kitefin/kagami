@@ -13,15 +13,13 @@
 }
 
 .bg_normal {
-	background-color: #dc3d90;
-	margin-top: -50px;
-	font-size: xx-large
+	background-color: #dc3d90;  
 }
 
 .text_bg {
 	color: #dc3d90;
-	color: #000;
-	background-color: blue;
+	/* color: #000;
+	background-color: blue; */
 }
 
 .group {
@@ -43,13 +41,59 @@
 	text-align: right;
 }
 
+.dash_bg {
+	left: 0;
+	top: 70px;
+	width: 100%;
+	height: 25%;
+	background-color: #dc3d90;
+	position: absolute;
+}
+
+.dash_img {
+	position: absolute;
+	left: 50%;
+	top: 6.6%;
+	width: 20%;
+	z-index: 1000;
+}
+
+.dash_title {
+	position: absolute;
+	right: 50%;
+	top: 14.2%;
+	width: 25%;
+	z-index: 1000;
+}
+
+.dash_cards {
+	
+	/* position: absolute; */
+	/* right: 50%; */
+	margin-top: 20%;
+	/* width: 25%;  */
+}
+
+.card {
+	background-color: #f6f6f6; 
+	height: 93%;
+	border-radius: 15px;
+}
+
+.card:hover { 
+	box-shadow: 0 0 15px rgba(255, 0, 0, 0.877) !important;
+}
+
+.card_text {
+	color: #989898;
+}
 
 .header-bar {
 	height: 70px;
 	background-color: rgba(212, 17, 119, 0.815) !important;
 	width: 100%;
 	padding: 10px;
-	 
+	z-index: 999;	 
 }
 .logo-title {
 	font-size: 60px;
@@ -177,7 +221,8 @@ td {
   .h-50{height:50%!important}.h-75{height:75%!important}.h-100{height:100%!important}.h-auto{height:auto!important}
   .mh-100{max-height:100%!important}.vh-100{height:100vh!important}.min-vh-100{min-height:100vh!important}
   .container{padding: .1%;}
-
+  .h-5{height:5%}.h-10{height:10%}
+	.pos-absolute{position: absolute;}
   .temp {
 	vertical-align: top;
 	display:block;

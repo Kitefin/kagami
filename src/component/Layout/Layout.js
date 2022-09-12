@@ -2,6 +2,9 @@ import TableScrollbar from 'react-table-scrollbar';
 import React, {useEffect, useState} from 'react';   
 import { Button, Table, Grid } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+ 
 import CreateAlert from './Alert/CreateAlert';
 import EditAlert from './Alert/EditAlert';
 import CreateCluster from './Cluster/CreateCluster';
@@ -20,9 +23,12 @@ function Layout() {
 	const [alertTrs, setAlertTrs] = useState(undefined);
 	const [edit_cluster_id, set_edit_cluster_id] = useState('');
 	const [edit_alert_id, set_edit_alert_id] = useState('');
-	
-  
-	const getClusters = async() => {
+	  
+	const [loading, setLoading] = useState(false);
+
+	const getClusters = async() => {	
+		setLoading(true);
+		
 		const url = NODE_URL + "/api/cluster/";
 		const {userInfo} = localStorage;
 		const userAddress = JSON.parse(userInfo).address; 
@@ -45,8 +51,10 @@ function Layout() {
 			getAlertsTbl(res.data); 
 		}
 		catch(err) {
-			console.log(err) 
+			console.log(err) ;
+			setLoading(false);
 		} 
+		
 	}
 	  
 
@@ -176,6 +184,7 @@ function Layout() {
 			trs.push(tr);
 		}
 		setAlertTrs(trs);
+		setLoading(false);
 	}
 
 	
@@ -188,6 +197,13 @@ function Layout() {
 			<CreateCluster open={open2} dlgClose={handleClose2} />
 			<EditCluster open={open3} dlgClose={handleClose3} id={edit_cluster_id}/>
 			
+			<Backdrop
+       			sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        		open={loading} 
+      		>
+        		<CircularProgress color="inherit" />
+      		</Backdrop>
+
 			
 			<Grid
 				justifyContent="space-between"

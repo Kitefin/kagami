@@ -1,6 +1,8 @@
 import React from 'react';
 import { useMoralis } from 'react-moralis';
 import { Button, AppBar, Toolbar, Grid } from '@mui/material'; 
+import LinkIcon from '@mui/icons-material/Link';
+import LinkOffIcon from '@mui/icons-material/LinkOff';
 import axios from 'axios';  
 const NODE_URL = "http://localhost:5000";  
 
@@ -23,22 +25,21 @@ function Header() {
 	if (isAuthenticated) {
 		var userAddress = user.get('ethAddress'); 
 		get_Email(userAddress);
-	}
-
-	
+	} 
 
 	const connectBtn = (
 		<Button
 			variant="contained"
 			className="header-connect-btn"
 			onClick={() => authenticate({ signingMessage: 'Connect to Kagami' })}
+			startIcon={<LinkIcon fontSize="small" className='text-black' />}
 		>
 			<b>CONNECT</b>
 		</Button>
 	);
-
+  
 	const disconnectBtn = (
-		<Button variant="contained" className="header-disconnect-btn " onClick={() => logout()}>
+		<Button variant="contained" className="header-disconnect-btn " onClick={() => logout()}  startIcon={<LinkOffIcon fontSize="small" className='text-black' /> }>
 			<b className='text-black'>DISCONNECT</b>
 		</Button>
 	);
