@@ -12,17 +12,12 @@ router.post( '/', async(req, res) => {
     try { 
       let alert = await Alert.findOne({ type: type, description: description, minMax: minMax, amount: amount, per: per, clusterName: clusterName, recipients: recipients });
       if (alert) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: 'Same Alert already exists' }] });
+        return res .status(400) .json({ errors: [{ msg: 'Same Alert already exists' }] });
       }
       const newAlert = new Alert({ 
-        type: type, 
-        description: description, 
-        minMax: minMax, 
-        amount: amount, 
-        per: per, 
-        clusterName: clusterName, 
+        type: type,  description: description, 
+        minMax: minMax,  amount: amount, 
+        per: per,  clusterName: clusterName, 
         recipients: recipients
       }); 
       alert = await newAlert.save();  
@@ -37,8 +32,8 @@ router.post( '/', async(req, res) => {
 
 // @desc Edit a Alert 
 router.post( '/edit', async(req, res) => {
-  const {name, desc, addresses, userAddress, id} = req.body; 
-      await Alert.findByIdAndUpdate(id, { name: name, description: desc, addresses: addresses, userAddress: userAddress }, function (err, docs) {
+  const {type, description, minMax, amount, per, clusterName, recipients, id} = req.body;
+      await Alert.findByIdAndUpdate(id, { type: type, description: description, minMax: minMax, amount: amount, per: per, clusterName: clusterName, recipients: recipients }, function (err, docs) {
           if (err){
             // console.error(err.message);
             res.status(500).send('Server Error');
