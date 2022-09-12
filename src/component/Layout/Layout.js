@@ -20,7 +20,7 @@ function Layout() {
 		const url = NODE_URL + "/api/cluster/";
 		const {userInfo} = localStorage;
 		const userAddress = JSON.parse(userInfo).address;
-		console.log(userAddress)
+		// console.log(userAddress)
 		try{ 
 			const res = await axios.get(url, {userAddress: userAddress});  
 			getClustersTbl(res.data); 
@@ -60,15 +60,15 @@ function Layout() {
 		setOpen3(true);
 	  }
  
-	  const descriptionElementRef = React.useRef(null);
-	  React.useEffect(() => {
-		if (open1) {
-		  const { current: descriptionElement } = descriptionElementRef;
-		  if (descriptionElement !== null) {
-			descriptionElement.focus();
-		  }
-		}
-	  }, [open1]);
+	//   const descriptionElementRef = React.useRef(null);
+	//   React.useEffect(() => {
+	// 	if (open1) {
+	// 	  const { current: descriptionElement } = descriptionElementRef;
+	// 	  if (descriptionElement !== null) {
+	// 		descriptionElement.focus();
+	// 	  }
+	// 	}
+	//   }, [open1]);
 
 	  const openCreateAlertBtn = (
 		<Button variant="contained" className="create_alert_open_btn" onClick={() =>handleClickOpen1()}>

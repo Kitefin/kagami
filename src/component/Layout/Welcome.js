@@ -21,7 +21,7 @@ function Welcome() {
 	};
 
 	const cancelBtn = (
-		<Button variant="contained" className="header-createalert-btn" onClick={ wcClose}>
+		<Button variant="contained" className="create_alert_btn" onClick={ wcClose}>
 			<b className="text-white">Continue</b>
 		</Button>
 	);  

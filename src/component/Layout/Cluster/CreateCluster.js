@@ -46,7 +46,7 @@ function CreateCluster({open, dlgClose}) {
 		const {userInfo} = localStorage;
 		const email_ = JSON.parse(userInfo).email;
 		set_Email(email_);	
-		console.log(email)
+		// console.log(email)
 		}, []); 
 
 	const ClusterName = (   
@@ -162,12 +162,12 @@ function CreateCluster({open, dlgClose}) {
 					spacing={0}>
 					<Grid item xs={2}></Grid>
 					<Grid item> 
-						<Button variant="contained" className="header-createalert-btn" onClick={ dlg_close }>
+						<Button variant="contained" className="create_alert_btn" onClick={ dlg_close }>
 							<b className="text-white">Cancel</b>
 						</Button> 
 					</Grid>
 					<Grid item>
-						<Button variant="contained" className="header-createalert-btn" onClick={() => create_Cluster()}>
+						<Button variant="contained" className="create_alert_btn" onClick={() => create_Cluster()}>
 							<b className="text-white">Create</b>
 						</Button> 
 					</Grid>

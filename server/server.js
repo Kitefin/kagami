@@ -23,6 +23,7 @@ connectDB();
 // Define Routes 
 
 app.use('/api/cluster', require('./routes/api/cluster'));
+app.use('/api/email', require('./routes/api/email'));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {

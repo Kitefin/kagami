@@ -1,32 +1,34 @@
 import * as React from 'react';
-import Chip from '@mui/material/Chip';
-import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
+import Autocomplete from '@mui/material/Autocomplete';
 
-export default function Tags() {
-  return ( 
-      
+export default function FreeSolo() {
+  return (
+    <Stack spacing={2} sx={{ width: 300 }}>
       <Autocomplete
-        multiple
-        id="tags-filled"
-        options={top100Films.map((option) => option.title)}
-        defaultValue={[top100Films[13].title]}
+        id="free-solo-demo"
         freeSolo
-        renderTags={(value, getTagProps) =>
-          value.map((option, index) => (
-            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-          ))
-        }
+        options={top100Films.map((option) => option.title)}
+        renderInput={(params) => <TextField {...params} label="freeSolo" />}
+      />
+      <Autocomplete
+        freeSolo
+        id="free-solo-2-demo"
+        disableClearable
+        options={top100Films.map((option) => option.title)}
         renderInput={(params) => (
           <TextField
             {...params}
-            variant="filled"
-            label="freeSolo"
-            placeholder="Favorites"
+            label="Search input"
+            InputProps={{
+              ...params.InputProps,
+              type: 'search',
+            }}
           />
         )}
-      /> 
+      />
+    </Stack>
   );
 }
 

@@ -9,9 +9,9 @@ function Header() {
 		const url = NODE_URL + `/api/cluster/${userAddress}`;
 		try { 
 			const res = await axios.post(url, userAddress);
-			console.log(res.data)
+			// console.log(res.data)
 			const userInfo = {address: userAddress, email: res.data.email}; 
-			console.log(userInfo)
+			// console.log(userInfo)
 			localStorage.userInfo = JSON.stringify( userInfo );
 		}
 		catch(err) {

@@ -37,7 +37,7 @@ function ComingSoon({open, dlgClose, title, content, btnText}) {
 				</div>
 			</DialogContent> 
 			<div className="text-right p-2"> 
-				<Button variant="contained" className="header-createalert-btn" onClick={ dlgClose }>
+				<Button variant="contained" className="create_alert_btn" onClick={ dlgClose }>
 					<b className="text-white">{btnText}</b>
 				</Button>  
 			</div> 

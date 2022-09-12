@@ -174,17 +174,17 @@ function EditCluster({open, dlgClose, id}) {
 				spacing={0}>
 					<Grid item xs={2}></Grid>
 					<Grid item>
-						<Button variant="contained" className="header-createalert-btn" onClick={ dlgClose }>
+						<Button variant="contained" className="create_alert_btn" onClick={ dlgClose }>
 							<b className="text-white">Cancel</b>
 						</Button>
 					</Grid>
 					<Grid item>
-						<Button variant="contained" className="header-createalert-btn" onClick={() => edit_Cluster()}>
+						<Button variant="contained" className="create_alert_btn" onClick={() => edit_Cluster()}>
 							<b className="text-white">Edit</b>
 						</Button> 
 					</Grid>
 					<Grid item> 
-						<Button variant="contained" className="header-createalert-btn" onClick={() => delete_Cluster()}>
+						<Button variant="contained" className="create_alert_btn" onClick={() => delete_Cluster()}>
 							<b className="text-white">Delete</b>
 						</Button> 
 					</Grid>
