@@ -49,6 +49,8 @@ function CreateAlert({open, dlgClose, clusters}) {
 	const [type, set_Type] = useState(types[0].title);
 	const [desc, set_Desc] = useState('');
 	const [descs, set_Descs] = useState([]);   
+	const [descId, set_DescId] = useState(0);   
+	 
 	const [emails, set_Emails] = useState([]);   
 	const [minMax, set_MinMax] = useState(null);
 	const [per, set_Per] = useState(null);
@@ -59,22 +61,36 @@ function CreateAlert({open, dlgClose, clusters}) {
 	const [descDetail, set_DescDetail] = useState(false); 
 	const [open2, setOpen2] = useState(false); 
 
-	const create_Alert = () => { 
-		console.log(type)
-		console.log(desc)
-		console.log(portFolio)
-		console.log(recipients)
-		// console.log(descDetail)
+	const create_Alert = async () => {    
 		if(descDetail)
-		{
-			console.log(per)
-			console.log(amount)
-			console.log(minMax)
-		}
-		 
-		// dlgClose();
+		{    
+			const alert = {
+				type: type,
+				description: {
+					id: descId,
+					minMax: minMax,
+					amount: amount,
+					per: per
+				},
+				clusterName: portFolio,
+				recipients: recipients, 
+			}  
+			const url = NODE_URL + "/api/alert/";
+			try { 
+				await axios.post(url, alert);   
+			}
+			catch(err) {
+				console.log(err) 
+			} 
+
+		} 
+		
+		
+		dlgClose();
 		// handleClickOpen2();
-    } 
+		
+	}  
+ 
 
 	const getEmails = async() => { 
 		const url = NODE_URL + "/api/email/"; 
@@ -145,9 +161,8 @@ function CreateAlert({open, dlgClose, clusters}) {
 				id = descs[i].id;
 				break;
 			}
-		}
-		// console.log(desc_)
-		// console.log(id)
+		} 
+		set_DescId(id);
 
 		if(id === TYPE_DESC_MINMAX_AMOUNT_PER || id === TPYE_DESC_4)
 			set_DescDetail(true);
@@ -233,10 +248,12 @@ function CreateAlert({open, dlgClose, clusters}) {
 
 	const InputAmount = ( 
 		<TextField 
-			id="outlined-basic" 
+			// id="outlined-basic" 
 			label="Amount" 
-			variant="standard" value={amount} 
-			onChange={(event, value) => set_Amount(value)} />
+			variant="standard" 
+			defaultValue={amount} 
+			onChange={(e) => set_Amount(e.target.value) }
+		/>
 	);
 
 	const ComboDesc = (
