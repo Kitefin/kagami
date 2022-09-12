@@ -72,6 +72,35 @@ router.get('/:id',  async (req, res) => {
   }
 });
 
+
+// @route GET api/Alert/getCount
+router.post('/getCount',  async (req, res) => { 
+
+  Alert.count({clusterName: req.body.clusterName}, function(err, result) {
+    if (err) {
+      console.log(err);
+      res.status(500).send('Server Error');
+    } else {
+      res.json( result );
+    }
+  });
+
+  // try {
+  //   const alertCnt = Alert.find( { clusterName: req.body.clusterName } ).count();
+  //   console.log(alertCnt)
+     
+  //   if (!alertCnt) {
+  //     return res.status(404).json({ msg: 'Alert not found' });
+  //   }
+  //   res.json(alertCnt);
+  // } catch (err) {
+  //   // console.error(err.message);
+  //   res.status(500).send('Server Error');
+  // }
+});
+
+
+
 // @route    POST api/Alert/:userAddress 
 router.post('/:userAddress',  async (req, res) => {
   try {  

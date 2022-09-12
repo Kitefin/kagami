@@ -41,8 +41,7 @@ function Layout() {
 		const email = JSON.parse(userInfo).email; 
 		
 		try{  
-			const res = await axios.post(url, {email: email} );  
-			 
+			const res = await axios.post(url, {email: email} );			 
 			getAlertsTbl(res.data); 
 		}
 		catch(err) {
@@ -90,8 +89,7 @@ function Layout() {
 	  const onEditAlert = (_id) => {
 		set_edit_alert_id(_id);
 		setOpen4(true);
-	  }
-  
+	  } 
 
 	  const openCreateAlertBtn = (
 		<Button variant="contained" className="create_alert_open_btn" onClick={() =>handleClickOpen1()}>
@@ -104,20 +102,34 @@ function Layout() {
 			<b>CREATE CLUSTER</b>
 		</Button>
 	);
+ 
 
-	const getClustersTbl = (clusters) => {
+	const get_alert_count = async(cluster_name) => {
+		const url = NODE_URL + "/api/alert/getCount/"; 
+		try{ 
+			const res = await axios.post(url, {clusterName: cluster_name});   
+			return res.data;
+		}
+		catch(err) {
+			console.log(err)
+			return 0; 
+		} 
+	}
+
+	const getClustersTbl = async(clusters) => {
 		set_clusters(clusters);
 		let trs = [];
 		for(var i in clusters)
 		{
 			const cluster = clusters[i];
 			const {name, description, addresses, _id} = cluster;
+			const alertsCnt = await get_alert_count(name);
 			const tr = (
 			<tr key={Number(i)}>
 				<td>{name}</td>
 				<td>{description}</td>
 				<td>{addresses.length}</td>
-				<td>7 Alerts (need to work)</td>
+				<td>{alertsCnt} Alerts  </td>
 				<td style={{ minWidth: '140px',  color: 'white', textAlign: 'center' }}>					
 					<Button variant="contained" size="small" color="primary" startIcon={<EditIcon fontSize="small" />} onClick={() => onEditCluster(_id)}>
 						<b>Edit</b>

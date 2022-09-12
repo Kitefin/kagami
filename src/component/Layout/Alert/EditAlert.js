@@ -68,7 +68,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		const url = NODE_URL + `/api/alert/${id}`;  
 		try{ 
 			const res = await axios.get(url); 
-			console.log(res.data)
+			// console.log(res.data)
 			const { type, description, clusterName, recipients } = res.data;			 
 			setType(type);
 			set_PortFolio(clusterName);
@@ -146,7 +146,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				recipients: recipients_,
 				id: id
 			}  
-			console.log(alert)
+			// console.log(alert)
 			const url = NODE_URL + `/api/alert/edit/`;
 			try { 
 				await axios.post(url, alert);   
@@ -215,7 +215,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 	} 
 	
 	const setDesc = (descs_, desc_) => {  
-		console.log(desc_)
+		// console.log(desc_)
 		set_Desc(desc_);  
 		let id = -1;
 		for(var i in descs_)
@@ -227,14 +227,14 @@ function EditAlert({open, dlgClose, clusters, id}) {
 			}
 		} 
 		set_DescId(id);
-		console.log(id)
+		// console.log(id)
 		if(id === TYPE_DESC_MINMAX_AMOUNT_PER || id === TPYE_DESC_4)
 			set_DescDetail(true);
 		else set_DescDetail(false);
 	}
 
 	const setType = (type_) => { 
-		console.log(type_)
+		// console.log(type_)
 		set_Type(type_);
 		let id = 0;
 		for(var i in types)
