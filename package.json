@@ -45,6 +45,7 @@
   },
   "scripts": {
     "server": "nodemon server/server",
+    "svr": "node server/server",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",

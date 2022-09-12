@@ -3,9 +3,9 @@ import React, {useEffect, useState} from 'react';
 import { Button, Table, Grid } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import CreateAlert from './Alert/CreateAlert';
+import EditAlert from './Alert/EditAlert';
 import CreateCluster from './Cluster/CreateCluster';
 import EditCluster from './Cluster/EditCluster';
-import EditAlert from './Alert/EditAlert';
 import axios from 'axios'; 
 const NODE_URL = "http://localhost:5000"; 
   
@@ -144,8 +144,10 @@ function Layout() {
 			for(var j in recipients)
 			{
 				let recipient = recipients[j];
-				if(recipient === email)  recipient = "@You";
-				recipientsStr += recipient + ", ";
+				if(recipient === email)  recipient = "@You"; 
+				recipientsStr += recipient ;
+				if(j < recipients.length - 1)
+					recipientsStr +=  ", ";
 			}
 			const tr = (
 			<tr key={Number(i)}>
@@ -169,9 +171,11 @@ function Layout() {
 	return (
 		<div className="layout-back p-5"> 
 			<CreateAlert open={open1} dlgClose={handleClose1} clusters={clusters} />
+			<EditAlert open={open4} dlgClose={handleClose4} clusters={clusters} id={edit_alert_id}/>
+			
 			<CreateCluster open={open2} dlgClose={handleClose2} />
 			<EditCluster open={open3} dlgClose={handleClose3} id={edit_cluster_id}/>
-			<EditAlert open={open4} dlgClose={handleClose4} id={edit_alert_id}/>
+			
 			
 			<Grid
 				justifyContent="space-between"
