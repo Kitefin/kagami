@@ -18,7 +18,9 @@ function Layout() {
   
 	const getClusters = async() => {
 		const url = NODE_URL + "/api/cluster/";
-		const {userAddress} = localStorage;
+		const {userInfo} = localStorage;
+		const userAddress = JSON.parse(userInfo).address;
+		console.log(userAddress)
 		try{ 
 			const res = await axios.get(url, {userAddress: userAddress});  
 			getClustersTbl(res.data); 
@@ -30,7 +32,7 @@ function Layout() {
 	  
   useEffect(() => {  
     getClusters();	
-	}, null); 
+	}, [open1, open2, open3]); 
 
 	const handleClickOpen1 = () => {
 		setOpen1(true); 
@@ -83,7 +85,6 @@ function Layout() {
 	const getClustersTbl = (clusters) => {
 		set_clusters(clusters);
 		let trs = [];
-		// console.log(clusters);
 		for(var i in clusters)
 		{
 			const cluster = clusters[i];
@@ -94,13 +95,10 @@ function Layout() {
 				<td>{description}</td>
 				<td>{addresses.length}</td>
 				<td>7 Alerts (need to work)</td>
-				<td style={{ minWidth: '140px',  color: 'white', textAlign: 'center' }}>
-					
+				<td style={{ minWidth: '140px',  color: 'white', textAlign: 'center' }}>					
 					<Button variant="contained" size="small" color="primary" startIcon={<EditIcon fontSize="small" />} onClick={() => onEditCluster(_id)}>
 						<b>Edit</b>
 					</Button>
- 
- 
 				</td>
 			</tr>);
 			trs.push(tr);
@@ -115,19 +113,17 @@ function Layout() {
 			<EditCluster open={open3} dlgClose={handleClose3} id={edit_id}/>
 			
 			<Grid
-				justifyContent="space-between" // Add it here :)
+				justifyContent="space-between"
 				container
-				spacing={0} //24
+				spacing={0}
 			>
 				<Grid item xs={2}> </Grid>
 				<Grid item> 
 				 { openCreateClusterBtn } 				
-				</Grid> 
-				
+				</Grid>				
 				<Grid item>
 					 { openCreateAlertBtn } 
-				</Grid>
-				
+				</Grid>				
 				<Grid item xs={2}> </Grid>
 			</Grid>
 			 
@@ -140,14 +136,12 @@ function Layout() {
 							<th style={{ minWidth: '200px' }}>Cluser Name</th>
 							<th style={{ minWidth: '300px' }}>Cluster Description</th>
 							<th style={{ minWidth: '150px' }}>Wallets Count</th>
-							<th style={{ minWidth: '150px' }}>ALerts Count</th>
+							<th style={{ minWidth: '150px' }}>Alerts Count</th>
 							<th style={{ minWidth: '140px' }} />
 						</tr>
 					</thead>
-
 					<tbody>
-						{clusterTrs}
-						
+						{clusterTrs}						
 						{/* <tr>
 							<td style={{ minWidth: '200px' }}>All Project Wallets</td>
 							<td style={{ minWidth: '300px' }}>All wallets controlled by our company</td>

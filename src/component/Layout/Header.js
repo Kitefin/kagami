@@ -1,14 +1,31 @@
 import React from 'react';
 import { useMoralis } from 'react-moralis';
 import { Button, AppBar, Toolbar, Grid } from '@mui/material'; 
+import axios from 'axios';  
+const NODE_URL = "http://localhost:5000";  
 
-var userAddress;
-function Header() {
+function Header() { 
+	const get_Email = async (userAddress) => {
+		const url = NODE_URL + `/api/cluster/${userAddress}`;
+		try { 
+			const res = await axios.post(url, userAddress);
+			console.log(res.data)
+			const userInfo = {address: userAddress, email: res.data.email}; 
+			console.log(userInfo)
+			localStorage.userInfo = JSON.stringify( userInfo );
+		}
+		catch(err) {
+			console.log(err) 
+		} 
+	}
+
 	const { authenticate, isAuthenticated, user, logout } = useMoralis();
 	if (isAuthenticated) {
-		userAddress = user.get('ethAddress');
-		localStorage.userAddress = userAddress;
+		var userAddress = user.get('ethAddress'); 
+		get_Email(userAddress);
 	}
+
+	
 
 	const connectBtn = (
 		<Button

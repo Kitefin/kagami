@@ -1,36 +1,18 @@
 import { makeStyles } from '@mui/styles';
 import React, {useEffect, useState} from 'react';   
-import { Button, Grid, Checkbox, TextField, Dialog, DialogContent, DialogTitle, Autocomplete } from '@mui/material';
-import {CheckBoxOutlineBlank, CheckBox } from '@mui/icons-material';  
+import { Button, Grid, Chip, TextField, Dialog, DialogContent, DialogTitle, Autocomplete } from '@mui/material';
 import GroupDiv from "../../common/GroupDiv";
-import ComingSoon from "../../common/ComingSoon"; 
-const icon = <CheckBoxOutlineBlank fontSize="small" />;
-const checkedIcon = <CheckBox fontSize="small" />; 
+import ComingSoon from "../../common/ComingSoon";
  
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
 	modal: {
 	  display: 'flex',
 	  alignItems: 'center',
 	  justifyContent: 'center', 
-	},
-	// paper: {
-	// 	backgroundColor: theme.palette.background.paper,	 
-	// 	borderRadius: '10px',
-	// 	boxShadow: theme.shadows[5],	   
-	// 	width: '100%'
-	//   }	 
+	}
   }));
 
-function CreateAlert({open, dlgClose, clusters}) { 
-	// console.log(clusters);
-	
-	// const portfolios = [
-	// 	{ title: 'All Project Wallets', id: CLUSTER_ALL_PROJECT_WALLETS },
-	// 	{ title: 'Executive Controlled', id: CLUSTER_EXECUTIVE_CONTROLLED },
-	// 	{ title: 'Junior Traders', id: CLUSTER_JUNIOR_TRADERS },     
-	// 	{ title: 'Portfolio Managers', id: CLUSTER_PROTFOLIO_MANAGERS },     
-	// 	{ title: 'Accounts Team', id: CLUSTER_ACCOUTS_TEAMS },     
-	// ];
+function CreateAlert({open, dlgClose, clusters}) {  
 
 	let portfolios = [];
 	
@@ -40,18 +22,15 @@ function CreateAlert({open, dlgClose, clusters}) {
 			const cluster = clusters[i];
 			const portfolio = {
 				title: cluster.name,
-				id: cluster._id,
-				// id: i
+				id: cluster._id
 			}
 			portfolios.push(portfolio);
-		} 
-		// console.log(portfolios)
+		}  
 	}
 	  
 	const classes = useStyles();
 
-	const create_Alert = () => {
-		//console.log(type)
+	const create_Alert = () => { 
 		dlgClose();
 		handleClickOpen2();
    } 
@@ -64,21 +43,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 		{ title: 'Limits', id: TYPE_LIMITS },
 		{ title: 'Allow-lists', id: TYPE_ALLOW_LISTS },
 		{ title: 'Exclusion-lists', id: TYPE_EXCLUSION_LISTS }
-	];
-
-	const CLUSTER_ALL_PROJECT_WALLETS = 1;
-	const CLUSTER_EXECUTIVE_CONTROLLED = 2;
-	const CLUSTER_JUNIOR_TRADERS = 3;
-	const CLUSTER_PROTFOLIO_MANAGERS = 4;
-	const CLUSTER_ACCOUTS_TEAMS = 5;
-  
-	// const portfolios = [
-	// 	{ title: 'All Project Wallets', id: CLUSTER_ALL_PROJECT_WALLETS },
-	// 	{ title: 'Executive Controlled', id: CLUSTER_EXECUTIVE_CONTROLLED },
-	// 	{ title: 'Junior Traders', id: CLUSTER_JUNIOR_TRADERS },     
-	// 	{ title: 'Portfolio Managers', id: CLUSTER_PROTFOLIO_MANAGERS },     
-	// 	{ title: 'Accounts Team', id: CLUSTER_ACCOUTS_TEAMS },     
-	// ];
+	]; 
 
 	const DESC_MIN = 1;
 	const DESC_MAX = 2;
@@ -117,8 +82,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 	const [per, set_Per] = useState(null);
 	const [descDetail, set_DescDetail] = useState(false); 
  
-	const setDesc = (desc) => {
-		console.log(desc);
+	const setDesc = (desc) => { 
 		set_Desc(desc);
 		if(desc.id === TYPE_DESC_MINMAX_AMOUNT_PER || desc.id === TPYE_DESC_4)
 			set_DescDetail(true);
@@ -158,6 +122,7 @@ function CreateAlert({open, dlgClose, clusters}) {
  
     const ComboType = (  
 		<Autocomplete
+		freeSolo
         options = {types}
     	getOptionLabel = {(option) => option.title}
         id="controlled-demo"
@@ -173,6 +138,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 	 
 	const ComboDescMinMax = (
 		<Autocomplete
+			freeSolo
 			id="combo-box-demo"
 			options={minMaxs}			 
 			getOptionLabel={(option) => option.title} 
@@ -184,6 +150,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 
 	const ComboDescPer = (
 		<Autocomplete
+			freeSolo
 			id="combo-box-demo"
 			options={pers}			 
 			getOptionLabel={(option) => option.title}  
@@ -203,6 +170,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 	const ComboDesc = (
 		<>
 			<Autocomplete
+				freeSolo
 				id="disabled-options-demo"
 				options={descs} 
 				getOptionLabel={(option) => option.title} 
@@ -236,6 +204,7 @@ function CreateAlert({open, dlgClose, clusters}) {
  
 	const ComboPort = (
 			<Autocomplete
+				freeSolo
 				id="combo-box-demo"
 				options={portfolios} 
 				getOptionLabel={(option) => option.title} 
@@ -247,23 +216,30 @@ function CreateAlert({open, dlgClose, clusters}) {
 	const HookRecipients = (
 		<Autocomplete
 		  multiple
-		  id="checkboxes-tags-demo"
-		  options={availableRecipients} 
-		  disableCloseOnSelect
-		  getOptionLabel={(option) => option.title}
-		  renderOption={(option, { selected }) => (
-			<React.Fragment>
-			  <Checkbox
-				icon={icon}
-				checkedIcon={checkedIcon}
-				style={{ marginRight: 8 }}
-				checked={selected}
-			  />
-			  {option.title}
-			</React.Fragment>
-		  )} 
+		  id="tags-filled"
+		  options={availableRecipients.map((option) => option.title)}
+		  defaultValue={[availableRecipients[0].title]}
+		  freeSolo 
+		//   disableCloseOnSelect
+		//   getOptionLabel={(option) => option.title}
+		//   renderOption={(option, { selected }) => (
+		// 	<React.Fragment>
+		// 	  <Checkbox
+		// 		icon={icon}
+		// 		checkedIcon={checkedIcon}
+		// 		style={{ marginRight: 8 }}
+		// 		checked={selected}
+		// 	  />
+		// 	  {option.title}
+		// 	</React.Fragment>
+		//   )} 
+		renderTags={(value, getTagProps) =>
+			value.map((option, index) => (
+			  <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+			))
+		  }
 		  renderInput={(params) => (
-			<TextField {...params} variant="standard" label="" placeholder="" />
+			<TextField {...params} variant="filled" label="" placeholder="" />
 		  )}
 		  style={{width: '80%', marginLeft: '10%'}}
 		/>

@@ -46,12 +46,14 @@ function EditCluster({open, dlgClose, id}) {
 	const [addresses, set_Addresses] = useState([]);
 
 	const edit_Cluster = async () => { 
+		const {userInfo} = localStorage;
+		const userAddress = JSON.parse(userInfo).address;
 		const cluster = {
 			id: id,
 			name: name,
 			desc: desc,
 			addresses: addresses,
-			userAddress: localStorage.userAddress
+			userAddress: userAddress
 		} 		
 		const url = NODE_URL + "/api/cluster/edit";
 		try{ 

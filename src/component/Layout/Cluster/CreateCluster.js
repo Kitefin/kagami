@@ -1,25 +1,37 @@
-import React, {useState} from 'react'; 
+import React, { useState, useEffect } from 'react'; 
 import { Button, TextField, Dialog, DialogContent, DialogTitle, IconButton, Grid } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-
+import AddIcon from '@mui/icons-material/Add'; 
 import CloseIcon from '@mui/icons-material/Close';
 import GroupDiv from "../../common/GroupDiv";
-import axios from 'axios';  
+import axios from 'axios';   
 const NODE_URL = "http://localhost:5000";  
   
 function CreateCluster({open, dlgClose}) {  
 	const [name, set_Name] = useState('');
 	const [desc, set_Desc] = useState('');   
+	const [email, set_Email] = useState(null);   
 	const [address, set_Address] = useState('');   
 	const [addresses, set_Addresses] = useState([]);   
  
-	const create_Cluster = async () => {    
+	const dlg_close = () => {
+		set_Name('');
+		set_Desc('');   
+	 	// set_Email(null);   
+		set_Address('');   
+		set_Addresses([]);   
+		dlgClose();
+	}
+
+	const create_Cluster = async () => {  
+		const {userInfo} = localStorage;
+		const userAddress = JSON.parse(userInfo).address;  
 		const cluster = {
 			name: name,
 			desc: desc,
 			addresses: addresses,
-			userAddress: localStorage.userAddress
-		} 
+			userAddress: userAddress,
+			email: email
+		}  
 		const url = NODE_URL + "/api/cluster/";
 		try { 
 			await axios.post(url, cluster);   
@@ -27,8 +39,15 @@ function CreateCluster({open, dlgClose}) {
 		catch(err) {
 			console.log(err) 
 		} 
-		dlgClose();
-	} 
+		dlg_close();
+	}  
+
+	useEffect(() => {  
+		const {userInfo} = localStorage;
+		const email_ = JSON.parse(userInfo).email;
+		set_Email(email_);	
+		console.log(email)
+		}, []); 
 
 	const ClusterName = (   
 		<TextField 
@@ -100,10 +119,19 @@ function CreateCluster({open, dlgClose}) {
 		</div>
 	);
 
+	const YourEmail = (   
+		<TextField 
+		id="standard-basic" 
+		label="" 
+		variant="standard"  
+		onChange={ e => { set_Email(e.target.value); }}	
+		/>  
+	);
+
 	return (
 		<Dialog   
 			open={open}
-			onClose={dlgClose}
+			onClose={dlg_close}
 			scroll={'paper'}    
 		> 
 		<DialogTitle className="alert_title">Create Cluster</DialogTitle>
@@ -117,6 +145,14 @@ function CreateCluster({open, dlgClose}) {
 					<div className="mt-4">
 						<GroupDiv title='Add Wallet Address' comp={AddWalletAddress} /> 
 					</div> 
+					{
+						email === null ? 
+						(
+							<div className="mt-4">
+								<GroupDiv title='Your Email' comp={YourEmail} /> 
+							</div> 
+						) : null
+					}
 				</div>
 			</div>
 		</DialogContent> 
@@ -126,7 +162,7 @@ function CreateCluster({open, dlgClose}) {
 					spacing={0}>
 					<Grid item xs={2}></Grid>
 					<Grid item> 
-						<Button variant="contained" className="header-createalert-btn" onClick={ dlgClose }>
+						<Button variant="contained" className="header-createalert-btn" onClick={ dlg_close }>
 							<b className="text-white">Cancel</b>
 						</Button> 
 					</Grid>
