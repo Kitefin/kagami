@@ -2,30 +2,38 @@ import React, {useState, useEffect} from 'react';
 import { Button, TextField, Dialog, DialogContent, DialogTitle, IconButton, Grid } from '@mui/material'; 
 import { makeStyles } from '@mui/styles'; 
 import AddIcon from '@mui/icons-material/Add';
-
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios'; 
 import GroupDiv from "../../common/GroupDiv";
 const NODE_URL = "http://localhost:5000";  
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
 	modal: {
 	  display: 'flex',
 	  alignItems: 'center',
 	  justifyContent: 'center', 
 	} 
-  }));
- 
+  })); 
+
 function EditCluster({open, dlgClose, id}) { 
 	
+	const classes = useStyles();
+	const [name, set_Name] = useState('');
+	const [desc, set_Desc] = useState('');   
+	const [address, set_Address] = useState('');   
+	const [addresses, set_Addresses] = useState([]);
+	const [address_Display, set_Address_Display] = useState(null);
+
 	const getClusterById = async() => {
 		const url = NODE_URL + `/api/cluster/${id}`;  
 		try{ 
 			const res = await axios.get(url); 
-			const {name, description, addresses} = res.data;			 
+			const {name, description, addresses} = res.data; 
 			set_Name(name);
 			set_Desc(description);
 			set_Addresses(addresses);
+			const addresses_display = get_addresses_display(addresses);
+			set_Address_Display(addresses_display); 
 		}
 		catch(err) {
 			console.log(err) 
@@ -39,11 +47,6 @@ function EditCluster({open, dlgClose, id}) {
 	}
 	},[id]); 
 
-	const classes = useStyles();
-	const [name, set_Name] = useState('');
-	const [desc, set_Desc] = useState('');   
-	const [address, set_Address] = useState('');   
-	const [addresses, set_Addresses] = useState([]);
 
 	const edit_Cluster = async () => { 
 		const {userInfo} = localStorage;
@@ -95,22 +98,28 @@ function EditCluster({open, dlgClose, id}) {
 	);
 	
     const addAddress = () => {
-		const index = addresses.indexOf(address);
-		console.log(index)
+		const index = addresses.indexOf(address); 
 		if(index === -1)
 		{
 			addresses.push(address);
 			set_Addresses(addresses);
+			set_Address('');
+			const addresses_display = get_addresses_display(addresses);
+			set_Address_Display(addresses_display);
 		} 
 	}
 
 	const deleteAddress = (address_) => { 
 		var index = addresses.indexOf(address_);
 		addresses.splice(index, 1); 
-		set_Addresses(addresses);  
+		set_Addresses(addresses);
+		set_Address(''); 
+		const addresses_display = get_addresses_display(addresses);
+		set_Address_Display(addresses_display); 
 	}
         
-	const addressesDisplay = () => {
+	const get_addresses_display = (addresses) => {
+		console.log(addresses)
 		let ps = [];	 
 		for(let i in addresses)
 		{
@@ -132,16 +141,17 @@ function EditCluster({open, dlgClose, id}) {
 	const AddWalletAddress = ( 
 		<div className='px-4'>			
 			<div> 
-				{ addressesDisplay() }
+				{ address_Display }
 			</div>
 			<TextField 
 				id="standard-basic" 
 				label="" 
 				variant="standard"  
-				onChange={ e => { set_Address(e.target.value); }}	
+				onChange={ e => { console.log(e.target.value); set_Address(e.target.value); }}	
 				className='px-2'
+				value={address}
 			/>	
-			<IconButton aria-label="delete" size="medium" onClick={() => { addAddress() }}>
+			<IconButton aria-label="add" size="medium" onClick={() => { addAddress() }}>
 				<AddIcon />
 			</IconButton>				
 		</div>
@@ -179,14 +189,16 @@ function EditCluster({open, dlgClose, id}) {
 						</Button>
 					</Grid>
 					<Grid item>
-						<Button variant="contained" className="create_alert_btn" onClick={() => edit_Cluster()}>
-							<b className="text-white">Edit</b>
-						</Button> 
-					</Grid>
-					<Grid item> 
 						<Button variant="contained" className="create_alert_btn" onClick={() => delete_Cluster()}>
 							<b className="text-white">Delete</b>
 						</Button> 
+					</Grid>
+					<Grid item> 
+						<Button variant="contained" className="create_alert_btn" onClick={() => edit_Cluster()}>
+							<b className="text-white">Edit</b>
+						</Button> 
+
+						
 					</Grid>
 					<Grid item xs={2}></Grid>
 				</Grid>

@@ -137,7 +137,7 @@ function Layout() {
 		for(var i in alerts)
 		{
 			const alert = alerts[i];
-			console.log(alert)
+			// console.log(alert)
 			const {type, description, clusterName, recipients, _id} = alert;
 			const desc = description.minMax + " of " + description.amount + " ETH per " + description.per;
 			let recipientsStr = '';
