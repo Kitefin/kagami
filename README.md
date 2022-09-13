@@ -3,8 +3,17 @@ fork-nft-21th_jul-test
 
 Created with CodeSandbox
 
-- Server side (PORT = 5000)
- 
+- app Start
+
+    ```javascript
+    npm start
+    ```
+
+    ```javascript
+    yarn start
+    ```
+
+- only Server side (PORT = 5000)
 
     ```javascript
     npm run server
@@ -14,12 +23,12 @@ Created with CodeSandbox
     yarn run server
     ```
 
-- Client side (DEFAULT PORT = 3000)
+- only Client side (DEFAULT PORT = 3000)
  
     ```javascript
-    npm start
+    npm run cli
     ```
  
     ```javascript
-    yarn start
+    yarn run cli
     ```
