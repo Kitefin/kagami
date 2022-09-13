@@ -43,9 +43,9 @@
     "nodemon": "^2.0.6",
     "typescript": "4.1.3"
   },
-  "scripts": {
-    "server": "nodemon server/server",
-    "svr": "node server/server",
+  "scripts": { 
+    "server": "node server/server",
+    "svr": "nodemon server/server",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
