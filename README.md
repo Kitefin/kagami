@@ -3,9 +3,9 @@ Kagami
 
 Created with MUI v5, React, Node
 
-## 1. Config
+1. Config
 
-    You have to replace your App Id and your Server Id in here.
+   You have to replace your App Id and your Server Id in here.
  
     ```javascript
     ./src/config.js
@@ -15,7 +15,7 @@ Created with MUI v5, React, Node
     export const SERVER_URL = "YOUR_SERVER_ID"; 
     ```
 
-## 2. Run
+ 2. Run
 
     ```javascript
     npm start
