@@ -10,8 +10,9 @@ import EditAlert from '../Alert/EditAlert';
 import CreateCluster from '../Cluster/CreateCluster';
 import EditCluster from '../Cluster/EditCluster';
 import axios from 'axios'; 
-import {GET_USER_ADDRESS, GET_USER_EMAIL, NODE_URL} from "../../config/config"; 
-  
+import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
+import {NODE_URL} from "../../config";
+
 function Layout() {  
 	const [open1, setOpen1] = useState(false); 
 	const [open2, setOpen2] = useState(false); 

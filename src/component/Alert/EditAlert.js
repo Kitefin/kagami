@@ -4,7 +4,8 @@ import { Button, Grid, Chip, TextField, Dialog, DialogContent, DialogTitle, Auto
 import GroupDiv from "../common/GroupDiv";
 // import ComingSoon from "../common/ComingSoon";
 import axios from 'axios'; 
-import {GET_USER_ADDRESS, GET_USER_EMAIL, NODE_URL} from "../../config/config"; 
+import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
+import {NODE_URL} from "../../config";
 
 const TYPE_LIMITS = 1;
 const TYPE_ALLOW_LISTS = 2;

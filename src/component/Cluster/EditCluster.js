@@ -5,7 +5,8 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios'; 
 import GroupDiv from "../common/GroupDiv";
-import {GET_USER_ADDRESS, NODE_URL} from "../../config/config"; 
+import {GET_USER_ADDRESS} from "../../util/localStore"; 
+import {NODE_URL} from "../../config";
 
 const useStyles = makeStyles(() => ({
 	modal: {

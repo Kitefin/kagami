@@ -4,8 +4,9 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import GroupDiv from "../common/GroupDiv";
 import axios from 'axios';   
-import {GET_USER_ADDRESS, GET_USER_EMAIL, NODE_URL} from "../../config/config"; 
-    
+import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
+import {NODE_URL} from "../../config";
+
 function CreateCluster({open, dlgClose}) {  
 
 	const [name, set_Name] = useState('');

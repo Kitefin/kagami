@@ -1,5 +1,4 @@
 
-export const NODE_URL = "http://localhost:5000"; 
 
 export const GET_USER_EMAIL = () => {
     if(localStorage.userInfo)

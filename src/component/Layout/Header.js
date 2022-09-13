@@ -4,7 +4,7 @@ import { Button, AppBar, Toolbar, Grid } from '@mui/material';
 import LinkIcon from '@mui/icons-material/Link';
 import LinkOffIcon from '@mui/icons-material/LinkOff';
 import axios from 'axios';  
-import {NODE_URL} from "../../config/config"; 
+import {NODE_URL} from "../../config"; 
  
 
 function Header() { 
