@@ -4,7 +4,7 @@ import { Button, Grid, Chip, TextField, Dialog, DialogContent, DialogTitle, Auto
 import GroupDiv from "../common/GroupDiv";
 // import ComingSoon from "../common/ComingSoon";
 import axios from 'axios'; 
-import {NODE_URL} from "../../config/config"; 
+import {GET_USER_ADDRESS, GET_USER_EMAIL, NODE_URL} from "../../config/config"; 
 
 const TYPE_LIMITS = 1;
 const TYPE_ALLOW_LISTS = 2;
@@ -73,8 +73,8 @@ function EditAlert({open, dlgClose, clusters, id}) {
 			setType(type);
 			set_PortFolio(clusterName);
 			let recipients_ = [];
-			const {userInfo} = localStorage;
-			const email = JSON.parse(userInfo).email;
+			 
+			const email = GET_USER_EMAIL();
 			for(var i in recipients)
 			{
 				let recipient = recipients[i];
@@ -119,7 +119,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		{
 			let recipient = recipients[i];
 			if(recipient === '@You') 
-				recipient = JSON.parse(localStorage.userInfo).email; 
+				recipient = GET_USER_EMAIL(); 
 			recipients_.push(recipient);
 		}
 		if(descDetail)
@@ -184,10 +184,9 @@ function EditAlert({open, dlgClose, clusters, id}) {
 	
 	let availableRecipients = [ "@You" ];
 	
-	if(emails && localStorage.userInfo)
-	{
-		const {userInfo} = localStorage;
-		const userAddress = JSON.parse(userInfo).address;   
+	if(emails )
+	{ 
+		const userAddress = GET_USER_ADDRESS();   
 		for(var i in emails)
 		{
 			const email = emails[i];

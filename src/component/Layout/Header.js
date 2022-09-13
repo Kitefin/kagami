@@ -5,15 +5,14 @@ import LinkIcon from '@mui/icons-material/Link';
 import LinkOffIcon from '@mui/icons-material/LinkOff';
 import axios from 'axios';  
 import {NODE_URL} from "../../config/config"; 
+ 
 
 function Header() { 
 	const get_Email = async (userAddress) => {
 		const url = NODE_URL + `/api/cluster/${userAddress}`;
 		try { 
-			const res = await axios.post(url, userAddress);
-			// console.log(res.data)
-			const userInfo = {address: userAddress, email: res.data.email}; 
-			// console.log(userInfo)
+			const res = await axios.post(url, userAddress); 
+			const userInfo = {address: userAddress, email: res.data.email};  
 			localStorage.userInfo = JSON.stringify( userInfo );
 		}
 		catch(err) {
@@ -52,7 +51,7 @@ function Header() {
 					container
 					spacing={0} //24
 				>
-					<Grid item>
+					<Grid item> 
 						<span className="navbar-start logo-title">KAGAMI</span>
 					</Grid>
 

@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios'; 
 import GroupDiv from "../common/GroupDiv";
-import {NODE_URL} from "../../config/config"; 
+import {GET_USER_ADDRESS, NODE_URL} from "../../config/config"; 
 
 const useStyles = makeStyles(() => ({
 	modal: {
@@ -48,9 +48,8 @@ function EditCluster({open, dlgClose, id}) {
 	},[id]); 
 
 
-	const edit_Cluster = async () => { 
-		const {userInfo} = localStorage;
-		const userAddress = JSON.parse(userInfo).address;
+	const edit_Cluster = async () => {  
+		const userAddress = GET_USER_ADDRESS();
 		const cluster = {
 			id: id,
 			name: name,
@@ -119,7 +118,7 @@ function EditCluster({open, dlgClose, id}) {
 	}
         
 	const get_addresses_display = (addresses) => {
-		console.log(addresses)
+		// console.log(addresses)
 		let ps = [];	 
 		for(let i in addresses)
 		{

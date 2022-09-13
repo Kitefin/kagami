@@ -10,7 +10,7 @@ import EditAlert from '../Alert/EditAlert';
 import CreateCluster from '../Cluster/CreateCluster';
 import EditCluster from '../Cluster/EditCluster';
 import axios from 'axios'; 
-import {NODE_URL} from "../../config/config"; 
+import {GET_USER_ADDRESS, GET_USER_EMAIL, NODE_URL} from "../../config/config"; 
   
 function Layout() {  
 	const [open1, setOpen1] = useState(false); 
@@ -30,10 +30,9 @@ function Layout() {
 		setLoading(true);
 		
 		const url = NODE_URL + "/api/cluster/";
-		if(localStorage.userInfo)
-		{
-			const {userInfo} = localStorage;
-			const userAddress = JSON.parse(userInfo).address; 
+		 
+			 
+			const userAddress = GET_USER_ADDRESS(); 
 			try{ 
 				const res = await axios.get(url, {userAddress: userAddress});  
 				getClustersTbl(res.data); 
@@ -41,17 +40,15 @@ function Layout() {
 			catch(err) {
 				console.log(err) 
 				setLoading(false);
-			} 
-		}
+			}  
 	}
 	  
 	const getAlerts = async() => {
 		setLoading(true);
 		const url = NODE_URL + "/api/alert/all/";
-		if(localStorage.userInfo)
-		{
-			const {userInfo} = localStorage;
-			const email = JSON.parse(userInfo).email; 
+		 
+			 
+			const email = GET_USER_EMAIL(); 
 			
 			try{  
 				const res = await axios.post(url, {email: email} );			 
@@ -60,8 +57,7 @@ function Layout() {
 			catch(err) {
 				console.log(err) ;
 				setLoading(false);
-			} 
-		}
+			}  
 	}
 	  
 
@@ -160,8 +156,8 @@ function Layout() {
 	const getAlertsTbl = (alerts) => {
 		set_alerts(alerts);
 		let trs = [];
-		const {userInfo} = localStorage;
-		const email = JSON.parse(userInfo).email; 
+	 
+		const email = GET_USER_EMAIL();
 		for(var i in alerts)
 		{
 			const alert = alerts[i];

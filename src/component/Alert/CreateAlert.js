@@ -4,7 +4,7 @@ import { Button, Grid, Chip, TextField, Dialog, DialogContent, DialogTitle, Auto
 import GroupDiv from "../common/GroupDiv";
 // import ComingSoon from "../common/ComingSoon";
 import axios from 'axios'; 
-import {NODE_URL} from "../../config/config"; 
+import {GET_USER_ADDRESS, GET_USER_EMAIL, NODE_URL} from "../../config/config"; 
 
 	const useStyles = makeStyles(() => ({
 	modal: {
@@ -67,9 +67,8 @@ function CreateAlert({open, dlgClose, clusters}) {
 		{
 			let recipient = recipients[i];
 			if(recipient === '@You')
-			{
-				const {userInfo} = localStorage;
-				recipient = JSON.parse(userInfo).email;
+			{ 
+				recipient = GET_USER_EMAIL();
 			}
 			recipients_.push(recipient);
 		}
@@ -140,10 +139,9 @@ function CreateAlert({open, dlgClose, clusters}) {
  
 	let availableRecipients = [ "@You" ];
 	
-	if(emails && localStorage.userInfo)
-	{
-		const {userInfo} = localStorage;
-		const userAddress = JSON.parse(userInfo).address;   
+	if(emails ) 
+	{ 
+		const userAddress = GET_USER_ADDRESS();
 		for(var i in emails)
 		{
 			const email = emails[i];

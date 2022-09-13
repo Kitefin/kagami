@@ -4,7 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import GroupDiv from "../common/GroupDiv";
 import axios from 'axios';   
-import {NODE_URL} from "../../config/config"; 
+import {GET_USER_ADDRESS, GET_USER_EMAIL, NODE_URL} from "../../config/config"; 
     
 function CreateCluster({open, dlgClose}) {  
 
@@ -24,8 +24,8 @@ function CreateCluster({open, dlgClose}) {
 	}
 
 	const create_Cluster = async () => {  
-		const {userInfo} = localStorage;
-		const userAddress = JSON.parse(userInfo).address;  
+	 
+		const userAddress = GET_USER_ADDRESS();  
 		const cluster = {
 			name: name,
 			desc: desc,
@@ -43,13 +43,9 @@ function CreateCluster({open, dlgClose}) {
 		dlg_close();
 	}  
 
-	useEffect(() => { 
-		if(localStorage.userInfo)
-		{ 
-			const {userInfo} = localStorage;
-			const email_ = JSON.parse(userInfo).email;
-			set_Email(email_); 
-		}
+	useEffect(() => {  
+		const email_ = GET_USER_EMAIL();
+		set_Email(email_);  
 		}, []); 
 
 	const ClusterName = (   
