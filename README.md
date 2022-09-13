@@ -3,7 +3,7 @@ Kagami
 
 Created with MUI v5, React, Node
 
-- Config
+## 1. Config
 
     You have to replace your App Id and your Server Id in here.
  
@@ -15,7 +15,7 @@ Created with MUI v5, React, Node
     export const SERVER_URL = "YOUR_SERVER_ID"; 
     ```
 
-- app Start
+## 2. Run
 
     ```javascript
     npm start
@@ -25,7 +25,7 @@ Created with MUI v5, React, Node
     yarn start
     ```
 
-- only Server side (PORT = 5000)
+- Run only Server (PORT = 5000)
 
     ```javascript
     npm run server
@@ -35,7 +35,7 @@ Created with MUI v5, React, Node
     yarn run server
     ```
 
-- only Client side (DEFAULT PORT = 3000)
+- Run only Client (DEFAULT PORT = 3000)
  
     ```javascript
     npm run cli
