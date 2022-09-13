@@ -1,7 +1,7 @@
-fork-nft-21th_jul-test
+Kagami
 ===================
 
-Created with CodeSandbox
+Created with MUI v5, React, Node
 
 - Config
 
@@ -9,7 +9,7 @@ Created with CodeSandbox
  
     ```javascript
     ./src/config.js
-        
+
     export const APP_ID = "YOUR_APP_ID";
 
     export const SERVER_URL = "YOUR_SERVER_ID"; 
