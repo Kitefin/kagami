@@ -5,12 +5,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
  
-import CreateAlert from './Alert/CreateAlert';
-import EditAlert from './Alert/EditAlert';
-import CreateCluster from './Cluster/CreateCluster';
-import EditCluster from './Cluster/EditCluster';
+import CreateAlert from '../Alert/CreateAlert';
+import EditAlert from '../Alert/EditAlert';
+import CreateCluster from '../Cluster/CreateCluster';
+import EditCluster from '../Cluster/EditCluster';
 import axios from 'axios'; 
-const NODE_URL = "http://localhost:5000"; 
+import {NODE_URL} from "../../config/config"; 
   
 function Layout() {  
 	const [open1, setOpen1] = useState(false); 
@@ -30,33 +30,38 @@ function Layout() {
 		setLoading(true);
 		
 		const url = NODE_URL + "/api/cluster/";
-		const {userInfo} = localStorage;
-		const userAddress = JSON.parse(userInfo).address; 
-		try{ 
-			const res = await axios.get(url, {userAddress: userAddress});  
-			getClustersTbl(res.data); 
+		if(localStorage.userInfo)
+		{
+			const {userInfo} = localStorage;
+			const userAddress = JSON.parse(userInfo).address; 
+			try{ 
+				const res = await axios.get(url, {userAddress: userAddress});  
+				getClustersTbl(res.data); 
+			}
+			catch(err) {
+				console.log(err) 
+				setLoading(false);
+			} 
 		}
-		catch(err) {
-			console.log(err) 
-			setLoading(false);
-		} 
 	}
 	  
 	const getAlerts = async() => {
 		setLoading(true);
 		const url = NODE_URL + "/api/alert/all/";
-		const {userInfo} = localStorage;
-		const email = JSON.parse(userInfo).email; 
-		
-		try{  
-			const res = await axios.post(url, {email: email} );			 
-			getAlertsTbl(res.data); 
+		if(localStorage.userInfo)
+		{
+			const {userInfo} = localStorage;
+			const email = JSON.parse(userInfo).email; 
+			
+			try{  
+				const res = await axios.post(url, {email: email} );			 
+				getAlertsTbl(res.data); 
+			}
+			catch(err) {
+				console.log(err) ;
+				setLoading(false);
+			} 
 		}
-		catch(err) {
-			console.log(err) ;
-			setLoading(false);
-		} 
-		
 	}
 	  
 
@@ -190,7 +195,9 @@ function Layout() {
 		setLoading(false);
 	}
 
-	
+	const handleClose = () => {
+		setLoading(false);
+	  };
 	
 	return (
 		<div className="layout-back p-5"> 
@@ -203,6 +210,7 @@ function Layout() {
 			<Backdrop
        			sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         		open={loading} 
+				onClick={handleClose}
       		>
         		<CircularProgress color="inherit" />
       		</Backdrop>

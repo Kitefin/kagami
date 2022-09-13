@@ -4,7 +4,7 @@ import { Button, AppBar, Toolbar, Grid } from '@mui/material';
 import LinkIcon from '@mui/icons-material/Link';
 import LinkOffIcon from '@mui/icons-material/LinkOff';
 import axios from 'axios';  
-const NODE_URL = "http://localhost:5000";  
+import {NODE_URL} from "../../config/config"; 
 
 function Header() { 
 	const get_Email = async (userAddress) => {

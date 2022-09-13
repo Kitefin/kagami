@@ -4,8 +4,8 @@ import { makeStyles } from '@mui/styles';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios'; 
-import GroupDiv from "../../common/GroupDiv";
-const NODE_URL = "http://localhost:5000";  
+import GroupDiv from "../common/GroupDiv";
+import {NODE_URL} from "../../config/config"; 
 
 const useStyles = makeStyles(() => ({
 	modal: {

@@ -1,10 +1,10 @@
 
 import React, {useEffect, useState} from 'react';   
 import { Button, Grid, Chip, TextField, Dialog, DialogContent, DialogTitle, Autocomplete } from '@mui/material';
-import GroupDiv from "../../common/GroupDiv";
-import ComingSoon from "../../common/ComingSoon";
+import GroupDiv from "../common/GroupDiv";
+// import ComingSoon from "../common/ComingSoon";
 import axios from 'axios'; 
-const NODE_URL = "http://localhost:5000"; 
+import {NODE_URL} from "../../config/config"; 
 
 const TYPE_LIMITS = 1;
 const TYPE_ALLOW_LISTS = 2;
@@ -65,14 +65,13 @@ function EditAlert({open, dlgClose, clusters, id}) {
 	const [open2, setOpen2] = useState(false); 
 		
 	const getAlertById = async() => {
+		if(id === undefined || id === '') return;
 		const url = NODE_URL + `/api/alert/${id}`;  
 		try{ 
-			const res = await axios.get(url); 
-			// console.log(res.data)
+			const res = await axios.get(url);
 			const { type, description, clusterName, recipients } = res.data;			 
 			setType(type);
 			set_PortFolio(clusterName);
-
 			let recipients_ = [];
 			const {userInfo} = localStorage;
 			const email = JSON.parse(userInfo).email;
@@ -80,9 +79,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 			{
 				let recipient = recipients[i];
 				if(recipient === email)
-				{
 					recipient = "@You";
-				}
 				recipients_.push(recipient);
 			}
 			set_Recipients(recipients_);
@@ -102,18 +99,14 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				set_Amount(description.amount);
 				set_Per(description.per);
 			}
-			
 		}
 		catch(err) {
 			console.log(err) 
 		} 
 	} 
 		  
-	useEffect(() => {  
-		if(id !== undefined && id !== '')
-		{ 
+	useEffect(() => {		
 			getAlertById();	
-		}
 		},[id]); 
 		
 	useEffect(()=>{
@@ -125,11 +118,8 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		for(var i in recipients)
 		{
 			let recipient = recipients[i];
-			if(recipient === '@You')
-			{
-				const {userInfo} = localStorage;
-				recipient = JSON.parse(userInfo).email;
-			}
+			if(recipient === '@You') 
+				recipient = JSON.parse(localStorage.userInfo).email; 
 			recipients_.push(recipient);
 		}
 		if(descDetail)
@@ -145,8 +135,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				clusterName: portFolio,
 				recipients: recipients_,
 				id: id
-			}  
-			// console.log(alert)
+			}   
 			const url = NODE_URL + `/api/alert/edit/`;
 			try { 
 				await axios.post(url, alert);   
@@ -157,8 +146,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		} 		
 		dlgClose();
 		// handleClickOpen2();		
-	}  
-
+	}
 	
 	const delete_Alert = async () => {    
 		const url = NODE_URL + `/api/alert/${id}`;
@@ -196,7 +184,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 	
 	let availableRecipients = [ "@You" ];
 	
-	if(emails)
+	if(emails && localStorage.userInfo)
 	{
 		const {userInfo} = localStorage;
 		const userAddress = JSON.parse(userInfo).address;   
@@ -397,7 +385,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 
 	return (
 		<>
-			<ComingSoon open={open2} dlgClose={dlgClose2} title="Coming Soon!" content="it wiil be added code after database completed " btnText="OK" />
+			{/* <ComingSoon open={open2} dlgClose={dlgClose2} title="Coming Soon!" content="it wiil be added code after database completed " btnText="OK" /> */}
 			<Dialog  
 				open={open}
 				onClose={dlgClose}

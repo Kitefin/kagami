@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Button, TextField, Dialog, DialogContent, DialogTitle, IconButton, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add'; 
 import CloseIcon from '@mui/icons-material/Close';
-import GroupDiv from "../../common/GroupDiv";
+import GroupDiv from "../common/GroupDiv";
 import axios from 'axios';   
-const NODE_URL = "http://localhost:5000";  
+import {NODE_URL} from "../../config/config"; 
     
 function CreateCluster({open, dlgClose}) {  
 
@@ -43,10 +43,13 @@ function CreateCluster({open, dlgClose}) {
 		dlg_close();
 	}  
 
-	useEffect(() => {  
-		const {userInfo} = localStorage;
-		const email_ = JSON.parse(userInfo).email;
-		set_Email(email_); 
+	useEffect(() => { 
+		if(localStorage.userInfo)
+		{ 
+			const {userInfo} = localStorage;
+			const email_ = JSON.parse(userInfo).email;
+			set_Email(email_); 
+		}
 		}, []); 
 
 	const ClusterName = (   

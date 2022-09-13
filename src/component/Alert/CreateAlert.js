@@ -1,10 +1,10 @@
 import { makeStyles } from '@mui/styles';
 import React, {useEffect, useState} from 'react';   
 import { Button, Grid, Chip, TextField, Dialog, DialogContent, DialogTitle, Autocomplete } from '@mui/material';
-import GroupDiv from "../../common/GroupDiv";
-import ComingSoon from "../../common/ComingSoon";
+import GroupDiv from "../common/GroupDiv";
+// import ComingSoon from "../common/ComingSoon";
 import axios from 'axios'; 
-const NODE_URL = "http://localhost:5000"; 
+import {NODE_URL} from "../../config/config"; 
 
 	const useStyles = makeStyles(() => ({
 	modal: {
@@ -140,7 +140,7 @@ function CreateAlert({open, dlgClose, clusters}) {
  
 	let availableRecipients = [ "@You" ];
 	
-	if(emails)
+	if(emails && localStorage.userInfo)
 	{
 		const {userInfo} = localStorage;
 		const userAddress = JSON.parse(userInfo).address;   
@@ -341,7 +341,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 
 	return (
 		<>
-			<ComingSoon open={open2} dlgClose={dlgClose2} title="Coming Soon!" content="it wiil be added code after database completed " btnText="OK" />
+			{/* <ComingSoon open={open2} dlgClose={dlgClose2} title="Coming Soon!" content="it wiil be added code after database completed " btnText="OK" /> */}
 			<Dialog 
 				className={classes.modal}
 				open={open}
