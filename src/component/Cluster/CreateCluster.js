@@ -129,7 +129,8 @@ function CreateCluster({open, dlgClose}) {
 		<TextField 
 			id="standard-basic" 
 			label="" 
-			variant="standard"  
+			variant="standard"
+			defaultValue={email}
 			onChange={ e => { set_Email(e.target.value); }}	
 		/>  
 	);
@@ -151,14 +152,14 @@ function CreateCluster({open, dlgClose}) {
 						<div className="mt-4">
 							<GroupDiv title='Add Wallet Address' comp={AddWalletAddress} /> 
 						</div> 
-						{
-							email === null ? 
-							(
+						 
+							 
+							 
 								<div className="mt-4">
 									<GroupDiv title='Your Email' comp={YourEmail} /> 
 								</div> 
-							) : null
-						}
+							 
+						 
 					</div>
 				</div>
 			</DialogContent> 
