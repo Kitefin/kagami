@@ -28,44 +28,41 @@ function Layout() {
 	const [loading, setLoading] = useState(false);
 
 	const getClusters = async() => {	
-		setLoading(true);
-		
-		const url = NODE_URL + "/api/cluster/";
-		 
-			 
-			const userAddress = GET_USER_ADDRESS(); 
-			try{ 
-				const res = await axios.get(url, {userAddress: userAddress});  
-				getClustersTbl(res.data); 
-			}
-			catch(err) {
-				console.log(err) 
-				setLoading(false);
-			}  
+		setLoading(true); 
+		const url = NODE_URL + "/api/cluster/"; 
+		const userAddress = GET_USER_ADDRESS(); 
+		try{ 
+			const res = await axios.get(url, {userAddress: userAddress});  
+			getClustersTbl(res.data); 
+		}
+		catch(err) {
+			console.log(err) 
+			setLoading(false);
+		}  
 	}
 	  
 	const getAlerts = async() => {
 		setLoading(true);
-		const url = NODE_URL + "/api/alert/all/";
-		 
-			 
-			const email = GET_USER_EMAIL(); 
-			
+		const url = NODE_URL + "/api/alert/all/";  
+		const address = GET_USER_ADDRESS();  
+		if(address !== undefined)
+		{	
 			try{  
-				const res = await axios.post(url, {email: email} );			 
+				const res = await axios.post(url, {address: address} );			 
 				getAlertsTbl(res.data); 
 			}
 			catch(err) {
-				console.log(err) ;
+				console.log(err);
 				setLoading(false);
-			}  
-	}
-	  
+			}
+		}  
+		else 	setLoading(false);
+	} 
 
-  useEffect(() => {  
-    getClusters();	
-	getAlerts();
-	}, [open1, open2, open3, open4]); 
+	useEffect(() => {  
+		getClusters();	
+		getAlerts();
+		}, [open1, open2, open3, open4]); 
 
 	const handleClickOpen1 = () => {
 		setOpen1(true); 
@@ -105,7 +102,7 @@ function Layout() {
 
 	  const openCreateAlertBtn = (
 		<Button variant="contained" className="create_alert_open_btn" onClick={() =>handleClickOpen1()}>
-			<b>CREATE NOTIFICATION</b>
+			<b>CREATE POLICY</b>
 		</Button>
 	);
 
@@ -129,6 +126,7 @@ function Layout() {
 	}
 
 	const getClustersTbl = async(clusters) => {
+		setLoading(true)
 		set_clusters(clusters);
 		let trs = [];
 		for(var i in clusters)
@@ -155,6 +153,7 @@ function Layout() {
 	}
 	
 	const getAlertsTbl = (alerts) => {
+		setLoading(true)
 		set_alerts(alerts);
 		let trs = [];
 	 
@@ -311,15 +310,15 @@ function Layout() {
 				</TableScrollbar>
 			</div>
 			<div className="m-5">
-				<h3>YOUR NOTIFICATIONS</h3>
+				<h3>YOUR POLICIES</h3>
 				<TableScrollbar>
 					<Table>
 					<thead>
 						<tr>
 							<th style={{ minWidth: '120px' }}>Type</th>
 							<th style={{ minWidth: '250px' }}>Description</th>
-							<th style={{ minWidth: '200px' }}>Portfolio Name</th>
-							<th style={{ minWidth: '200px' }}>Alert Recipients</th>
+							<th style={{ minWidth: '200px' }}>Cluster Name</th>
+							<th style={{ minWidth: '200px' }}>Notification Recipients</th>
 							<th style={{ minWidth: '100px' }} />
 						</tr>
 					</thead>

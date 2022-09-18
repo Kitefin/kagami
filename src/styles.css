@@ -189,6 +189,9 @@ td {
 .text-black {
 	color: black;
 }
+.text-red {
+	color: red
+}
 
 .mt-0{margin-top:0!important}.mt-1{margin-top:.25rem!important}.mt-2{margin-top:.5rem!important}
   

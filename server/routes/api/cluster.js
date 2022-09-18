@@ -47,14 +47,17 @@ router.post( '/', async(req, res) => {
 
 // @desc Edit a cluster 
 router.post( '/edit', async(req, res) => {
-  const {name, desc, addresses, userAddress, id} = req.body; 
+  const {name, desc, addresses, userAddress, id, email} = req.body; 
       await Cluster.findByIdAndUpdate(id, { name: name, description: desc, addresses: addresses, userAddress: userAddress }, function (err, docs) {
-          if (err){
-            // console.error(err.message);
+          if (err){ 
             res.status(500).send('Server Error');
           }
-          else{ 
-              res.json(docs);
+          else {
+            const filter = {address: userAddress};
+            const update = {email: email};
+            User.findOneAndUpdate(filter, update)
+            .then(doc => res.json(doc))
+            .catch(err => res.status(500).send('Server Error'))
           }
       });  
   }
@@ -67,7 +70,7 @@ router.get('/', async (req, res) => {
     res.json(clusters);
   } 
   catch (err) {
-    console.error(err.message);
+    console.error("getClusters Err: " + err.message);
     res.status(500).send('Server Error');
   }
 });
@@ -88,7 +91,7 @@ router.get('/:id',  async (req, res) => {
 
 // @route    POST api/cluster/:userAddress 
 router.post('/:userAddress',  async (req, res) => {
-  try {  
+  try {   
     const user = await User.findOne({address: req.params.userAddress});
     if (!user) {  
       return res.json({email: null});

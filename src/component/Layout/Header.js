@@ -3,34 +3,38 @@ import { useMoralis } from 'react-moralis';
 import { Button, AppBar, Toolbar, Grid } from '@mui/material'; 
 import LinkIcon from '@mui/icons-material/Link';
 import LinkOffIcon from '@mui/icons-material/LinkOff';
-import axios from 'axios';  
-import {NODE_URL} from "../../config"; 
- 
+import {get_Email_by_wallet} from "../../util/localStore";
 
 function Header() { 
-	const get_Email = async (userAddress) => {
-		const url = NODE_URL + `/api/cluster/${userAddress}`;
-		try { 
-			const res = await axios.post(url, userAddress); 
-			const userInfo = {address: userAddress, email: res.data.email};  
-			localStorage.userInfo = JSON.stringify( userInfo );
-		}
-		catch(err) {
-			console.log(err) 
-		} 
-	}
-
+	 
 	const { authenticate, isAuthenticated, user, logout } = useMoralis();
 	if (isAuthenticated) {
 		var userAddress = user.get('ethAddress'); 
-		get_Email(userAddress);
+		get_Email_by_wallet(userAddress);
 	} 
+
+	const metaMaskLogin = async() => {
+		try{
+			const res = await authenticate({ signingMessage: 'Connect to Kagami' })
+			if(res === undefined)
+			{
+				alert('Moralis is Die!');
+			} 
+		}
+		catch
+		{
+			console.log('err')
+		}
+
+		// .then(res => console.log(res))
+		// .catch(err => alert(err))
+	}
 
 	const connectBtn = (
 		<Button
 			variant="contained"
 			className="header-connect-btn"
-			onClick={() => authenticate({ signingMessage: 'Connect to Kagami' })}
+			onClick={() => metaMaskLogin() }
 			startIcon={<LinkIcon fontSize="small" className='text-black' />}
 		>
 			<b>CONNECT</b>

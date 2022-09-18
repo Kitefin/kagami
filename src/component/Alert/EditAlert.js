@@ -1,8 +1,7 @@
 
 import React, {useEffect, useState} from 'react';   
 import { Button, Grid, Chip, TextField, Dialog, DialogContent, DialogTitle, Autocomplete } from '@mui/material';
-import GroupDiv from "../common/GroupDiv";
-// import ComingSoon from "../common/ComingSoon";
+import GroupDiv from "../common/GroupDiv"; 
 import axios from 'axios'; 
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
@@ -70,12 +69,14 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		const url = NODE_URL + `/api/alert/${id}`;  
 		try{ 
 			const res = await axios.get(url);
-			const { type, description, clusterName, recipients } = res.data;			 
+			const { type, description, clusterName, recipients } = res.data;
+			console.log(res.data)			 
 			setType(type);
 			set_PortFolio(clusterName);
 			let recipients_ = [];
 			 
 			const email = GET_USER_EMAIL();
+			// const userAddress = GET_USER_ADDRESS();
 			for(var i in recipients)
 			{
 				let recipient = recipients[i];
@@ -427,7 +428,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 
 						<Grid item xs={2}>
 							<Button variant="contained" className="create_alert_btn" onClick={() => edit_Alert()}>
-								<b className="text-white">Edit</b>
+								<b className="text-white">Save</b>
 							</Button> 
 						</Grid>
 						<Grid item xs={2}></Grid>

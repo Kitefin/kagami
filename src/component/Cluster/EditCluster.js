@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios'; 
 import GroupDiv from "../common/GroupDiv";
-import {GET_USER_ADDRESS} from "../../util/localStore"; 
+import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
 
 const useStyles = makeStyles(() => ({
@@ -20,10 +20,23 @@ function EditCluster({open, dlgClose, id}) {
 	
 	const classes = useStyles();
 	const [name, set_Name] = useState('');
+	const [nameError, set_NameError] = useState('');
+	const [descError, set_DescError] = useState('');
+	const [addressError, set_AddressError] = useState('');
+	const [emailError, set_EmailError] = useState('');
+	const [email, set_Email] = useState(null);   
 	const [desc, set_Desc] = useState('');   
 	const [address, set_Address] = useState('');   
 	const [addresses, set_Addresses] = useState([]);
 	const [address_Display, set_Address_Display] = useState(null);
+
+	const dlg_close = () => {
+		set_Name('');
+		set_Desc('');
+		set_Address('');   
+		set_Addresses([]);    
+		dlgClose();
+	}
 
 	const getClusterById = async() => {
 		const url = NODE_URL + `/api/cluster/${id}`;  
@@ -33,6 +46,7 @@ function EditCluster({open, dlgClose, id}) {
 			set_Name(name);
 			set_Desc(description);
 			set_Addresses(addresses);
+			set_Address(address);
 			const addresses_display = get_addresses_display(addresses);
 			set_Address_Display(addresses_display); 
 		}
@@ -46,58 +60,157 @@ function EditCluster({open, dlgClose, id}) {
 	{ 
     	getClusterById();	
 	}
-	},[id]); 
+	},[id, open]); 
 
 
-	const edit_Cluster = async () => {  
+	const isEmptyCluster = (cluster) => { 
+		const {name, desc, addresses, userAddress, email} = cluster;
+		const isNameEmpty = isEmpty(name);
+		const isDescEmpty = isEmpty(desc); 
+		const isAddressesEmpty = addresses.length === 0;
+		const isUserAddressEmpty = isEmpty(userAddress);
+		const isEmailEmpty = isEmpty(email); 
+		if(isNameEmpty) 
+		{
+			set_NameError("Cluster name is empty!"); 
+			return false;
+		}
+		if(isDescEmpty) 
+		{
+			set_DescError("Cluster description is empty!"); 
+			return false;
+		}
+		if(isAddressesEmpty) {
+			set_AddressError("Wallet Addresses is empty!"); 
+			return false;
+		}
+		if(isEmailEmpty) {
+			set_EmailError("Email is empty!"); 
+			return false;
+		}
+		return true;
+	}
+
+	const isEmpty = (val) => {
+		return val === '' || val === null || val === undefined;
+	}
+
+	const save_Cluster = async () => {  
 		const userAddress = GET_USER_ADDRESS();
 		const cluster = {
 			id: id,
 			name: name,
 			desc: desc,
 			addresses: addresses,
-			userAddress: userAddress
-		} 		
+			userAddress: userAddress,
+			email: email
+		} 	
+		const ok = isEmptyCluster(cluster); 
+		if(!ok) return;	
+		alert(2)
 		const url = NODE_URL + "/api/cluster/edit";
 		try{ 
-			await axios.post(url, cluster);		
+			const res = await axios.post(url, cluster);
+			console.log(res)
 		}
 		catch(err) {
 			console.log(err) 
 		}
-		dlgClose(); 
+		dlg_close(); 
 	}
   
+	useEffect(() => {  
+		const email_ = GET_USER_EMAIL();
+		set_Email(email_);  
+		}, []); 
+
 	const delete_Cluster = async () => {    
 		const url = NODE_URL + `/api/cluster/${id}`;
 		try{ 
 			await axios.delete(url, id);		  
 		}
 		catch(err) { } 
-		dlgClose();
+		dlg_close();
 	}
 
-	const ClusterName = (   
+	const setName = (val) => {
+		if(val.length > 30)
+			set_NameError('Cluster Name must be smaller than 30 charactors.')
+		else 
+		{
+			set_NameError('')
+			set_Name(val);
+		}
+	} 
+
+	const ClusterName = (
+		<>
 		<TextField 
 			id="standard-basic" 
 			label="" 
 		  	variant="standard"
 		  	value={name}
-		  	onChange={(e) => { set_Name(e.target.value); }}	
+		  	onChange={(e) => { setName(e.target.value); }}	
 		  /> 
+		  <p className='mt-3 mb-0 text-red'>{nameError}</p> 
+		  </>
 	);  
   
+	const setDesc = (val) => {
+		if(val.length > 30)
+			set_DescError('Cluster Description must be smaller than 30 charactors.');
+		else 
+		{
+			set_DescError('');
+			set_Desc(val);
+		}
+	}
+
 	const ClusterDesc = (   
-		<TextField 
+		<><TextField 
 			id="standard-basic" 
 			label="" 
 			variant="standard"
 			value={desc}
-			onChange={ e => { set_Desc(e.target.value); }}	
+			onChange={ e => { setDesc(e.target.value); }}	
 		/>  
+		<p className='mt-3 mb-0 text-red'>{descError}</p> 
+		</>
 	);
 	
+	const isEmail = (input) => { 
+		var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/; 
+		if (input.match(validRegex)) { 
+		  return true; 
+		}
+		else {
+		  return false; 
+		} 
+	  }
+
+	  const isAddress = (address_) => {
+		const ok1 = address_.length > 2 && address_.substr(0, 2) === "0x";
+		if(!ok1) return false;
+		address_ = address_.substr(2, address_.length - 2);
+		for(var i in address_)
+		{
+			const code = address_.charCodeAt(i);
+			if( (code > 47 && code < 58) /*0~9*/ || (code > 64 && code < 71) /*A~F*/ || (code > 96 && code < 103) /*a~f*/ )
+				console.log(code)
+			else return false;
+		}
+		return true;
+	}
+
     const addAddress = () => {
+		const ok = isAddress(address);
+		if(!ok) 
+		{
+			set_AddressError('Wallet Address type error');
+			return;
+		} 
+		set_AddressError('');
+
 		const index = addresses.indexOf(address); 
 		if(index === -1)
 		{
@@ -137,6 +250,18 @@ function EditCluster({open, dlgClose, id}) {
 		return ps;
 	}
        
+	const setAddress = (val) => {
+		if(val.length > 42 )
+		{ 
+			set_AddressError('Wallet Address must be smaller than 30 charactors.');  
+		}
+		else 
+		{
+			set_AddressError('');
+			set_Address(val)
+		}
+	}
+
  
 	const AddWalletAddress = ( 
 		<div className='px-4'>			
@@ -147,21 +272,46 @@ function EditCluster({open, dlgClose, id}) {
 				id="standard-basic" 
 				label="" 
 				variant="standard"  
-				onChange={ e => { console.log(e.target.value); set_Address(e.target.value); }}	
+				onChange={ e => {setAddress(e.target.value); }}	
 				className='px-2'
 				value={address}
 			/>	
 			<IconButton aria-label="add" size="medium" onClick={() => { addAddress() }}>
 				<AddIcon />
-			</IconButton>				
+			</IconButton>		
+			<p className='mt-3 mb-0 text-red'>{addressError}</p> 
+					
 		</div>
+	);
+
+	const setEmail = (val) => {
+		if(isEmail(val))
+		{
+			set_Email(val);
+			set_EmailError('');
+		}
+		else
+			set_EmailError('Valied Email failure!');
+	}
+
+	const YourEmail = (   
+		<>
+			<TextField 
+				id="standard-basic" 
+				label="" 
+				variant="standard"
+				defaultValue={email}
+				onChange={ e => { setEmail(e.target.value); }}	
+			/>  
+			<p className='mt-3 mb-0 text-red'>{emailError}</p> 
+		</>
 	);
 
 	return (
 		<Dialog  
 			className={classes.modal}
 			open={open}
-			onClose={dlgClose}
+			onClose={dlg_close}
 			scroll={'paper'}    
 		> 
 		<DialogTitle className="alert_title">Edit Cluster</DialogTitle>
@@ -173,8 +323,12 @@ function EditCluster({open, dlgClose, id}) {
 						<GroupDiv title='Cluster Description' comp={ClusterDesc} />
 					</div>  
 					<div className="mt-4">
-						<GroupDiv title='Add Wallet Address' comp={AddWalletAddress} /> 
+						<GroupDiv title='Edit Wallet Address' comp={AddWalletAddress} /> 
 					</div> 
+					<div className="mt-4">
+							<GroupDiv title='Notification Email' comp={YourEmail} /> 
+						</div>  
+
 				</div>
 			</div>
 		</DialogContent> 
@@ -184,7 +338,7 @@ function EditCluster({open, dlgClose, id}) {
 				spacing={0}>
 					<Grid item xs={2}></Grid>
 					<Grid item>
-						<Button variant="contained" className="create_alert_btn" onClick={ dlgClose }>
+						<Button variant="contained" className="create_alert_btn" onClick={ dlg_close }>
 							<b className="text-white">Cancel</b>
 						</Button>
 					</Grid>
@@ -194,8 +348,8 @@ function EditCluster({open, dlgClose, id}) {
 						</Button> 
 					</Grid>
 					<Grid item> 
-						<Button variant="contained" className="create_alert_btn" onClick={() => edit_Cluster()}>
-							<b className="text-white">Edit</b>
+						<Button variant="contained" className="create_alert_btn" onClick={() => save_Cluster()}>
+							<b className="text-white">Save</b>
 						</Button> 
 
 						

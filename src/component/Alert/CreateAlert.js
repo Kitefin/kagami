@@ -356,7 +356,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 						<GroupDiv title='Select Notification Description' comp={ComboDesc} />
 					</div>  
 					<div className="mt-4">
-						<GroupDiv title='Select Notification Portfolio Name' comp={ComboPort} /> 
+						<GroupDiv title='Select Notification Cluster Name' comp={ComboPort} /> 
 					</div>
 					<div className="mt-4">
 						<GroupDiv title='Select Notification Recipients' comp={HookRecipients} /> 
