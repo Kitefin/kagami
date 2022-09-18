@@ -1,52 +1,30 @@
-import { makeStyles } from '@mui/styles';
+
 import React, {useEffect, useState} from 'react';   
 import { Button, Grid, Chip, TextField, Dialog, DialogContent, DialogTitle, Autocomplete } from '@mui/material';
-import GroupDiv from "../common/GroupDiv";
-// import ComingSoon from "../common/ComingSoon";
+import GroupDiv from "../common/GroupDiv"; 
 import axios from 'axios'; 
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
-
-	const useStyles = makeStyles(() => ({
-	modal: {
-	  display: 'flex',
-	  alignItems: 'center',
-	  justifyContent: 'center', 
-	}
-  	})); 
-
-  	const TYPE_LIMITS = 1;
-	const TYPE_ALLOW_LISTS = 2;
-	const TYPE_EXCLUSION_LISTS = 3;  
-
-	const types = [
-		{ title: 'Limits', id: TYPE_LIMITS },
-		{ title: 'Allow-lists', id: TYPE_ALLOW_LISTS },
-		{ title: 'Exclusion-lists', id: TYPE_EXCLUSION_LISTS }
-	]; 
-
-	const DESC_MIN = 1;
-	const DESC_MAX = 2;
-	
-	const minMaxs = [
-		{ title: 'Minimum', id: DESC_MIN },
-		{ title: 'Maximum', id: DESC_MAX },
-	];
-
-	const DESC_PER_TRANSACTION = 1;
-	const DESC_PER_DAY = 2;
-	const DESC_PER_WEEK = 3;
-	const DESC_PER_MONTH = 4;
-
-	const pers = [
-		{ title: 'Transaction', id: DESC_PER_TRANSACTION },
-		{ title: 'Day', id: DESC_PER_DAY },
-		{ title: 'Week', id: DESC_PER_WEEK },
-		{ title: 'Month', id: DESC_PER_MONTH },
-	];  
+import {TYPE_LIMITS,  TYPE_ALLOW_LISTS, TYPE_EXCLUSION_LISTS, types, 
+   DESC_MIN,
+   DESC_MAX, 
+   minMaxs, 
+   DESC_PER_TRANSACTION,
+   DESC_PER_DAY,
+   DESC_PER_WEEK,
+   DESC_PER_MONTH, 
+  pers, 
+  TYPE_DESC_MINMAX_AMOUNT_PER ,
+  TPYE_DESC_2 ,
+  TPYE_DESC_3 ,
+  TPYE_DESC_4,
+  
+} from './util';
+import {isEmail, isEmpty, isAddress} from "../../util/valid"
+  
 
 function CreateAlert({open, dlgClose, clusters}) {    
-	const classes = useStyles();
+	// const classes = useStyles();
 	const [type, set_Type] = useState(types[0].title);
 	const [desc, set_Desc] = useState('');
 	const [descs, set_Descs] = useState([]);   
@@ -56,21 +34,74 @@ function CreateAlert({open, dlgClose, clusters}) {
 	const [minMax, set_MinMax] = useState(null);
 	const [per, set_Per] = useState(null);
 	const [amount, set_Amount] = useState(null);
+	const [amountError, set_AmountError] = useState('');
 	const [portFolio, set_PortFolio] = useState(null);
-	const [recipients, set_Recipients] = useState(["@You"]);
+	const [recipients, set_Recipients] = useState(["@You"]); 
+	const [descDetail, set_DescDetail] = useState(false);  
+
+	const [clusterNameError, set_ClusterNameError] = useState('');
+	const [recipientsError, set_RecipientsError] = useState('');	
+	const [minMaxError, set_MinMaxError] = useState('');
+	const [perError, set_PerError] = useState('');
+ 
+	const isEmptyAlert = (alert) => {
+		console.log(alert)
+		const {clusterName, description, recipients} = alert;
+		if(isEmpty(clusterName))
+		{
+			set_ClusterNameError("cluster name is empty!")
+			return false;
+		}
+		if(recipients.length === 0)
+		{
+			set_RecipientsError("Recipients is empty!")
+			return false;
+		}
+		if(description)
+		{
+			const {minMax, amount, per} = description;
+			if(isEmpty(minMax)) 
+			{
+				set_MinMaxError("Select min or max")
+				return false;
+			}
+			if(isEmpty(amount)) 
+			{
+				set_AmountError("Type amount value")
+				return false;
+			}
+			if(isEmpty(per)) 
+			{
+				set_PerError("Select case of per")
+				return false;
+			} 
+		} 
+		return true;
+	}
+
+	const dlg_close = () => {
+
+		set_Type (types[0].title);
+		set_Desc('');
+		set_Descs([]);   
+		set_DescId(0);   
 	 
-	const [descDetail, set_DescDetail] = useState(false); 
-	const [open2, setOpen2] = useState(false); 
+		set_Emails([]);   
+		set_MinMax(null);
+		set_Per(null);
+		set_Amount(null);
+		set_PortFolio(null);
+		set_Recipients(["@You"]); 
+		set_DescDetail(false); 
+
+		dlgClose();
+	}
 
 	const create_Alert = async () => {
 		let recipients_ = [];
-		for(var i in recipients)
-		{
+		for(var i in recipients) {
 			let recipient = recipients[i];
-			if(recipient === '@You')
-			{ 
-				recipient = GET_USER_EMAIL();
-			}
+			if(recipient === '@You') recipient = GET_USER_EMAIL(); 
 			recipients_.push(recipient);
 		}
 		if(descDetail)
@@ -86,19 +117,21 @@ function CreateAlert({open, dlgClose, clusters}) {
 				clusterName: portFolio,
 				recipients: recipients_ 
 			}  
+
+			const ok = isEmptyAlert(alert);
+			if(!ok) return;
+
 			const url = NODE_URL + "/api/alert/";
 			try { 
 				await axios.post(url, alert);   
 			}
 			catch(err) {
 				console.log(err) 
-			} 
-		} 		
-		dlgClose();
-		// handleClickOpen2();		
+			}  		
+			dlg_close(); 	
+		} 	
 	}  
- 
-
+  
 	const getEmails = async() => { 
 		const url = NODE_URL + "/api/email/"; 
 		try{ 
@@ -134,26 +167,18 @@ function CreateAlert({open, dlgClose, clusters}) {
 			}
 			portfolios.push(portfolio_);
 		}  
-	} 
-
-
+	}  
  
 	let availableRecipients = [ "@You" ];
 	
-	if(emails ) 
+	if( emails ) 
 	{ 
 		const userAddress = GET_USER_ADDRESS();
 		for(var i in emails)
 		{
 			const email = emails[i];
-			if(email.address !== userAddress){
-				const recipient = {
-					title: email.email,
-					id: email._id
-				}
+			if(email.address !== userAddress)
 				availableRecipients.push(email.email);
-			}
-			// else availableRecipients[0].id = email._id;
 		}
 	} 
 	
@@ -173,12 +198,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 		if(id === TYPE_DESC_MINMAX_AMOUNT_PER || id === TPYE_DESC_4)
 			set_DescDetail(true);
 		else set_DescDetail(false);
-	}
-
-	const TYPE_DESC_MINMAX_AMOUNT_PER = 1;
-	const TPYE_DESC_2 = 2;
-	const TPYE_DESC_3 = 3;
-	const TPYE_DESC_4 = 4;
+	}  
 
 	const setType = (type_) => { 
 		set_Type(type_);
@@ -233,33 +253,74 @@ function CreateAlert({open, dlgClose, clusters}) {
    	); 
 	 
 	const ComboDescMinMax = (
+		<>
 		<Autocomplete
 			freeSolo
 			id="combo-box-demo" 	
 			options={minMaxs.map((option) => option.title)}	  
 			renderInput={(params) => <TextField {...params} label="Min or Max" variant="standard" />}
-			onChange={(event, value) => set_MinMax(value)} 
+			onChange=
+			{
+				(event, value) => 
+				{ 
+					if(value !== null) 
+					{
+						set_MinMaxError("");
+						set_MinMax(value) ;
+					}
+					else  
+						set_MinMaxError("Select min or max")
+				}
+			} 
 		/>
+		<p className='mt-3 mb-0 text-red'>{minMaxError}</p>
+		</>
 	);
 
 	const ComboDescPer = (
+		<>
 		<Autocomplete
 			freeSolo
 			id="combo-box-demo" 
 			options={pers.map((option) => option.title)}
 			renderInput={(params) => <TextField {...params} label="Per" variant="standard" />}
-			onChange={(event, value) => set_Per(value)} 
+			onChange=
+			{
+				(event, value) => 
+				{
+					if(value !== null)
+					{
+						set_Per(value)
+						set_PerError('');
+					}
+					else set_PerError("Select case of per")
+				}
+			} 
 		/>
+		<p className='mt-3 mb-0 text-red'>{perError}</p>
+		</>
 	);
 
+	const setAmount = (val) => {
+		if(val.length > 30)
+			set_AmountError('Amount must be less than 30 charactors')
+		else 
+		{
+			set_AmountError('')
+			set_Amount(val);
+		} 
+	}
+
 	const InputAmount = ( 
-		<TextField 
-			// id="outlined-basic" 
-			label="Amount" 
-			variant="standard" 
-			defaultValue={amount} 
-			onChange={(e) => set_Amount(e.target.value) }
-		/>
+		<>
+			<TextField  
+				label="Amount" 
+				variant="standard" 
+				defaultValue={amount} 
+				onChange={(e) => setAmount(e.target.value) }
+			/>
+			<p className='mt-3 mb-0 text-red'>{amountError}</p>
+		</>
 	);
 
 	const ComboDesc = (
@@ -297,18 +358,39 @@ function CreateAlert({open, dlgClose, clusters}) {
 	);
  
 	const ComboPort = (
-		<Autocomplete
-			freeSolo
-			id="combo-box-demo" 
-			options={portfolios.map((option) => option.title)}
-			renderInput={(params) => <TextField {...params} label="" variant="standard" />}
-			style={{width: '80%', marginLeft: '10%'}}
-			 
-			onChange={(event, value) => set_PortFolio(value)}
-		/>
+		<>
+			<Autocomplete
+				freeSolo
+				id="combo-box-demo" 
+				options={portfolios.map((option) => option.title)}
+				renderInput={(params) => 
+					<TextField 
+						{...params} 
+						label="" 
+						variant="standard" 
+						style={{color: 'white', textAlign: 'center'}}  
+					/>
+				} 
+				style={{color: 'white', textAlign: 'center'}}  
+				onChange=
+				{
+					(event, value) => 
+					{ 
+						if(value !== null) 
+						{
+							set_PortFolio(value);
+							set_ClusterNameError("");
+						}
+						else set_ClusterNameError("cluster name is empty!")
+					}
+				}
+			/>
+			<p className='mt-3 mb-0 text-red'>{clusterNameError}</p>
+		</>
 	);
     
 	const HookRecipients = (
+		<>
 		<Autocomplete
 		  	multiple
 		  	id="tags-filled"
@@ -326,38 +408,56 @@ function CreateAlert({open, dlgClose, clusters}) {
 				<TextField {...params} variant="filled" label="" placeholder="" />
 		  	)}
 		  	style={{width: '80%', marginLeft: '10%'}}
-			onChange={(e, val) => set_Recipients(val) }
+			onChange=
+			{
+				(e, val) => 
+				{
+					if(val.length > 0)
+					{
+						set_Recipients(val);
+						set_RecipientsError("");
+					}
+					else set_RecipientsError("Recipients is empty!")
+				}
+			}
 		/>
+		<p className='mt-3 mb-0 text-red'>{recipientsError}</p>
+		</>
 	); 
 
-	const handleClickOpen2 = () => {
-		setOpen2(true); 
-	};
-	
-	const dlgClose2 = () => {
-		setOpen2(false);
-	};
-
+	 
+	 
 	return (
-		<>
-			{/* <ComingSoon open={open2} dlgClose={dlgClose2} title="Coming Soon!" content="it wiil be added code after database completed " btnText="OK" /> */}
-			<Dialog 
-				className={classes.modal}
+		<> 
+			<Dialog  
 				open={open}
-				onClose={dlgClose}
+				onClose={dlg_close}
 				scroll={'paper'}  
-			>
-		<DialogTitle className="alert_title">Set email Notification for [pipe: cluster_name] Cluster</DialogTitle>
+			> 
+		<DialogTitle className="alert_title"> 
+			<Grid container spacing={2}>
+				<Grid item xs={5}>
+					<span>Set Policies for</span>
+				</Grid>
+				<Grid item xs={5} style={{marginLeft: '-3%'}}>
+					{ComboPort} 
+				</Grid>
+				<Grid item xs={2}>
+					<span>Cluster</span>
+				</Grid>
+			</Grid>
+		</DialogTitle>
+		
 		<DialogContent dividers={true}> 
-			<div className="text-center">    
+			<div className="text-center px-5 pr-5">    
 				<div className="px-3 pr-3">
 					<GroupDiv title='Select Notification Type' comp={ComboType} />
 					<div className='mt-4'>
 						<GroupDiv title='Select Notification Description' comp={ComboDesc} />
 					</div>  
-					<div className="mt-4">
+					{/* <div className="mt-4">
 						<GroupDiv title='Select Notification Cluster Name' comp={ComboPort} /> 
-					</div>
+					</div> */}
 					<div className="mt-4">
 						<GroupDiv title='Select Notification Recipients' comp={HookRecipients} /> 
 					</div> 
@@ -365,12 +465,12 @@ function CreateAlert({open, dlgClose, clusters}) {
 			</div>
 		</DialogContent> 
 			<div className="text-center p-2">
-			<Grid justifyContent="space-between" // Add it here :)
+			<Grid justifyContent="space-between"  
 				container
 				spacing={0}>
 					<Grid item xs={2}></Grid>
 					<Grid item>
-				<Button variant="contained" className="create_alert_btn" onClick={ dlgClose }>
+				<Button variant="contained" className="create_alert_btn" onClick={ dlg_close }>
 					<b className="text-white">Cancel</b>
 				</Button>
 				</Grid>

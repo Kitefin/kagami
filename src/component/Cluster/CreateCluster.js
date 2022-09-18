@@ -6,6 +6,7 @@ import GroupDiv from "../common/GroupDiv";
 import axios from 'axios';   
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
+import {isEmpty, isAddress, isEmail} from "../../util/valid";
 
 function CreateCluster({open, dlgClose}) {
 	const [name, set_Name] = useState('');
@@ -26,6 +27,7 @@ function CreateCluster({open, dlgClose}) {
 		set_Addresses([]);    
 		dlgClose();
 	}
+
 
 	const isEmptyCluster = (cluster) => { 
 		const {name, desc, addresses, userAddress, email} = cluster;
@@ -52,11 +54,10 @@ function CreateCluster({open, dlgClose}) {
 			set_EmailError("Email is empty!"); 
 			return false;
 		}
+        if(isUserAddressEmpty) { 
+			return false;
+		}
 		return true;
-	}
-
-	const isEmpty = (val) => {
-		return val === '' || val === null || val === undefined;
 	}
 
 	const create_Cluster = async () => {
@@ -88,7 +89,7 @@ function CreateCluster({open, dlgClose}) {
 	
 	const setName = (val) => {
 		if(val.length > 30)
-			set_NameError('Cluster Name must be smaller than 30 charactors.')
+			set_NameError('Cluster Name must be less than 30 charactors.')
 		else 
 		{
 			set_NameError('')
@@ -110,16 +111,14 @@ function CreateCluster({open, dlgClose}) {
   
 	const setDesc = (val) => {
 		if(val.length > 30)
-			set_DescError('Cluster Description must be smaller than 30 charactors.');
+			set_DescError('Cluster Description must be less than 30 charactors.');
 		else 
 		{
 			set_DescError('');
 			set_Desc(val);
 		}
 	}
-
-
-	
+ 
 	const ClusterDesc = (   
 		<>
 			<TextField 
@@ -132,29 +131,7 @@ function CreateCluster({open, dlgClose}) {
 		</>
 	);
 
-	const isEmail = (input) => { 
-		var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/; 
-		if (input.match(validRegex)) { 
-		  return true; 
-		}
-		else {
-		  return false; 
-		} 
-	  }
 	
-	const isAddress = (address_) => {
-		const ok1 = address_.length > 2 && address_.substr(0, 2) === "0x";
-		if(!ok1) return false;
-		address_ = address_.substr(2, address_.length - 2);
-		for(var i in address_)
-		{
-			const code = address_.charCodeAt(i);
-			if( (code > 47 && code < 58) /*0~9*/ || (code > 64 && code < 71) /*A~F*/ || (code > 96 && code < 103) /*a~f*/ )
-				continue;
-			else return false;
-		}
-		return true;
-	}
 
     const add_Address = () => {
 		const ok = isAddress(address);
@@ -205,7 +182,7 @@ function CreateCluster({open, dlgClose}) {
 	const setAddress = (val) => {
 		if(val.length > 42 )
 		{ 
-			set_AddressError('Wallet Address must be smaller than 30 charactors.');  
+			set_AddressError('Wallet Address must be less than 30 charactors.');  
 		}
 		else 
 		{

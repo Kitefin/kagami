@@ -5,48 +5,18 @@ import GroupDiv from "../common/GroupDiv";
 import axios from 'axios'; 
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
-
-const TYPE_LIMITS = 1;
-const TYPE_ALLOW_LISTS = 2;
-const TYPE_EXCLUSION_LISTS = 3;  
-
-const types = [
-	{ title: 'Limits', id: TYPE_LIMITS },
-	{ title: 'Allow-lists', id: TYPE_ALLOW_LISTS },
-	{ title: 'Exclusion-lists', id: TYPE_EXCLUSION_LISTS }
-];
-
-const TYPE_DESC_MINMAX_AMOUNT_PER = 1;
-const TPYE_DESC_2 = 2;
-const TPYE_DESC_3 = 3;
-const TPYE_DESC_4 = 4;
-
-const descs_con = [ 
-	{ title: '<Min/Max> of <Amount> ETH per <transaction/time>', id: TYPE_DESC_MINMAX_AMOUNT_PER }, 
-	{ title: 'Notifications if value of total assets in wallets exceeds a threshold', id: TPYE_DESC_2 },		
-	{ title: 'Approved counterparts and smart contracts', id: TPYE_DESC_3 },		
-	{ title: 'Minimum of 20 ETH per month (team wages)', id: TPYE_DESC_4 }
-];
-
-const DESC_MIN = 1;
-const DESC_MAX = 2;
-
-const minMaxs = [
-	{ title: 'Minimum', id: DESC_MIN },
-	{ title: 'Maximum', id: DESC_MAX },
-];
-
-const DESC_PER_TRANSACTION = 1;
-const DESC_PER_DAY = 2;
-const DESC_PER_WEEK = 3;
-const DESC_PER_MONTH = 4;
-
-const pers = [
-	{ title: 'Transaction', id: DESC_PER_TRANSACTION },
-	{ title: 'Day', id: DESC_PER_DAY },
-	{ title: 'Week', id: DESC_PER_WEEK },
-	{ title: 'Month', id: DESC_PER_MONTH },
-];  
+import {TYPE_LIMITS, 
+	  TYPE_ALLOW_LISTS,
+	 TYPE_EXCLUSION_LISTS, 
+	 types, 
+	 DESC_MIN,
+	 DESC_MAX, 
+	 minMaxs, 
+	 DESC_PER_TRANSACTION,
+	 DESC_PER_DAY,
+	 DESC_PER_WEEK,
+	 DESC_PER_MONTH, 
+	pers} from './util';
 
 function EditAlert({open, dlgClose, clusters, id}) {  
 	const [type, set_Type] = useState('');

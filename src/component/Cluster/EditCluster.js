@@ -7,6 +7,7 @@ import axios from 'axios';
 import GroupDiv from "../common/GroupDiv";
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
+import {isEmpty, isAddress, isEmail} from "../../util/valid";
 
 const useStyles = makeStyles(() => ({
 	modal: {
@@ -38,31 +39,6 @@ function EditCluster({open, dlgClose, id}) {
 		dlgClose();
 	}
 
-	const getClusterById = async() => {
-		const url = NODE_URL + `/api/cluster/${id}`;  
-		try{ 
-			const res = await axios.get(url); 
-			const {name, description, addresses} = res.data; 
-			set_Name(name);
-			set_Desc(description);
-			set_Addresses(addresses);
-			set_Address(address);
-			const addresses_display = get_addresses_display(addresses);
-			set_Address_Display(addresses_display); 
-		}
-		catch(err) {
-			console.log(err) 
-		} 
-	} 
-	  
-  useEffect(() => {  
-	if(id !== undefined && id !== '')
-	{ 
-    	getClusterById();	
-	}
-	},[id, open]); 
-
-
 	const isEmptyCluster = (cluster) => { 
 		const {name, desc, addresses, userAddress, email} = cluster;
 		const isNameEmpty = isEmpty(name);
@@ -88,12 +64,39 @@ function EditCluster({open, dlgClose, id}) {
 			set_EmailError("Email is empty!"); 
 			return false;
 		}
+        if(isUserAddressEmpty) { 
+			return false;
+		}
 		return true;
 	}
-
-	const isEmpty = (val) => {
-		return val === '' || val === null || val === undefined;
+	
+	const getClusterById = async() => {
+		const url = NODE_URL + `/api/cluster/${id}`;  
+		try{ 
+			const res = await axios.get(url); 
+			const {name, description, addresses} = res.data; 
+			set_Name(name);
+			set_Desc(description);
+			set_Addresses(addresses);
+			set_Address(address);
+			const addresses_display = get_addresses_display(addresses);
+			set_Address_Display(addresses_display); 
+		}
+		catch(err) {
+			console.log(err) 
+		} 
+	} 
+	  
+  useEffect(() => {  
+	if(id !== undefined && id !== '')
+	{ 
+    	getClusterById();	
 	}
+	},[id, open]); 
+
+
+
+	
 
 	const save_Cluster = async () => {  
 		const userAddress = GET_USER_ADDRESS();
@@ -135,7 +138,7 @@ function EditCluster({open, dlgClose, id}) {
 
 	const setName = (val) => {
 		if(val.length > 30)
-			set_NameError('Cluster Name must be smaller than 30 charactors.')
+			set_NameError('Cluster Name must be less than 30 charactors.')
 		else 
 		{
 			set_NameError('')
@@ -158,7 +161,7 @@ function EditCluster({open, dlgClose, id}) {
   
 	const setDesc = (val) => {
 		if(val.length > 30)
-			set_DescError('Cluster Description must be smaller than 30 charactors.');
+			set_DescError('Cluster Description must be less than 30 charactors.');
 		else 
 		{
 			set_DescError('');
@@ -178,29 +181,7 @@ function EditCluster({open, dlgClose, id}) {
 		</>
 	);
 	
-	const isEmail = (input) => { 
-		var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/; 
-		if (input.match(validRegex)) { 
-		  return true; 
-		}
-		else {
-		  return false; 
-		} 
-	  }
-
-	  const isAddress = (address_) => {
-		const ok1 = address_.length > 2 && address_.substr(0, 2) === "0x";
-		if(!ok1) return false;
-		address_ = address_.substr(2, address_.length - 2);
-		for(var i in address_)
-		{
-			const code = address_.charCodeAt(i);
-			if( (code > 47 && code < 58) /*0~9*/ || (code > 64 && code < 71) /*A~F*/ || (code > 96 && code < 103) /*a~f*/ )
-				console.log(code)
-			else return false;
-		}
-		return true;
-	}
+	
 
     const addAddress = () => {
 		const ok = isAddress(address);
@@ -253,7 +234,7 @@ function EditCluster({open, dlgClose, id}) {
 	const setAddress = (val) => {
 		if(val.length > 42 )
 		{ 
-			set_AddressError('Wallet Address must be smaller than 30 charactors.');  
+			set_AddressError('Wallet Address must be less than 30 charactors.');  
 		}
 		else 
 		{
