@@ -34,11 +34,11 @@ function CreateAlert({open, dlgClose, clusters}) {
 	const [minMax, set_MinMax] = useState(null);
 	const [per, set_Per] = useState(null);
 	const [amount, set_Amount] = useState(null);
-	const [amountError, set_AmountError] = useState('');
 	const [portFolio, set_PortFolio] = useState(null);
 	const [recipients, set_Recipients] = useState(["@You"]); 
 	const [descDetail, set_DescDetail] = useState(false);  
 
+	const [amountError, set_AmountError] = useState('');
 	const [clusterNameError, set_ClusterNameError] = useState('');
 	const [recipientsError, set_RecipientsError] = useState('');	
 	const [minMaxError, set_MinMaxError] = useState('');
@@ -52,7 +52,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 			set_ClusterNameError("cluster name is empty!")
 			return false;
 		}
-		if(recipients.length === 0)
+		if(availableRecipients.length === 0)
 		{
 			set_RecipientsError("Recipients is empty!")
 			return false;
@@ -171,6 +171,7 @@ function CreateAlert({open, dlgClose, clusters}) {
  
 	let availableRecipients = [ "@You" ];
 	
+	console.log(emails)
 	if( emails ) 
 	{ 
 		const userAddress = GET_USER_ADDRESS();
@@ -259,6 +260,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 			id="combo-box-demo" 	
 			options={minMaxs.map((option) => option.title)}	  
 			renderInput={(params) => <TextField {...params} label="Min or Max" variant="standard" />}
+			value={minMax}
 			onChange=
 			{
 				(event, value) => 
@@ -284,6 +286,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 			id="combo-box-demo" 
 			options={pers.map((option) => option.title)}
 			renderInput={(params) => <TextField {...params} label="Per" variant="standard" />}
+			value={per}
 			onChange=
 			{
 				(event, value) => 
@@ -371,7 +374,8 @@ function CreateAlert({open, dlgClose, clusters}) {
 						style={{color: 'white', textAlign: 'center'}}  
 					/>
 				} 
-				style={{color: 'white', textAlign: 'center'}}  
+				style={{color: 'white', textAlign: 'center'}} 
+				value={portFolio}	 
 				onChange=
 				{
 					(event, value) => 
@@ -417,7 +421,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 						set_Recipients(val);
 						set_RecipientsError("");
 					}
-					else set_RecipientsError("Recipients is empty!")
+					// else set_RecipientsError("Recipients is empty!")
 				}
 			}
 		/>
@@ -454,10 +458,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 					<GroupDiv title='Select Notification Type' comp={ComboType} />
 					<div className='mt-4'>
 						<GroupDiv title='Select Notification Description' comp={ComboDesc} />
-					</div>  
-					{/* <div className="mt-4">
-						<GroupDiv title='Select Notification Cluster Name' comp={ComboPort} /> 
-					</div> */}
+					</div>
 					<div className="mt-4">
 						<GroupDiv title='Select Notification Recipients' comp={HookRecipients} /> 
 					</div> 

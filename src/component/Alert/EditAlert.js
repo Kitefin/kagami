@@ -1,22 +1,25 @@
-
 import React, {useEffect, useState} from 'react';   
 import { Button, Grid, Chip, TextField, Dialog, DialogContent, DialogTitle, Autocomplete } from '@mui/material';
 import GroupDiv from "../common/GroupDiv"; 
 import axios from 'axios'; 
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
-import {TYPE_LIMITS, 
-	  TYPE_ALLOW_LISTS,
-	 TYPE_EXCLUSION_LISTS, 
-	 types, 
-	 DESC_MIN,
-	 DESC_MAX, 
-	 minMaxs, 
-	 DESC_PER_TRANSACTION,
-	 DESC_PER_DAY,
-	 DESC_PER_WEEK,
-	 DESC_PER_MONTH, 
-	pers} from './util';
+import {TYPE_LIMITS,  TYPE_ALLOW_LISTS, TYPE_EXCLUSION_LISTS, types, 
+	DESC_MIN,
+	DESC_MAX, 
+	minMaxs, 
+	DESC_PER_TRANSACTION,
+	DESC_PER_DAY,
+	DESC_PER_WEEK,
+	DESC_PER_MONTH, 
+   pers, 
+   TYPE_DESC_MINMAX_AMOUNT_PER ,
+   TPYE_DESC_2 ,
+   TPYE_DESC_3 ,
+   TPYE_DESC_4,
+   descs_con 
+ } from './util';
+ import {isEmail, isEmpty, isAddress} from "../../util/valid"
 
 function EditAlert({open, dlgClose, clusters, id}) {  
 	const [type, set_Type] = useState('');
@@ -31,9 +34,67 @@ function EditAlert({open, dlgClose, clusters, id}) {
 	const [portFolio, set_PortFolio] = useState(null);
 	const [recipients, set_Recipients] = useState([]);
 		
-	const [descDetail, set_DescDetail] = useState(false); 
-	const [open2, setOpen2] = useState(false); 
+	const [descDetail, set_DescDetail] = useState(false);  
 		
+	const [amountError, set_AmountError] = useState('');
+	const [clusterNameError, set_ClusterNameError] = useState('');
+	const [recipientsError, set_RecipientsError] = useState('');	
+	const [minMaxError, set_MinMaxError] = useState('');
+	const [perError, set_PerError] = useState('');
+
+	const isEmptyAlert = (alert) => {
+		console.log(alert)
+		const {clusterName, description, recipients} = alert;
+		if(isEmpty(clusterName))
+		{
+			set_ClusterNameError("cluster name is empty!")
+			return false;
+		}
+		if(availableRecipients.length === 0)
+		{
+			set_RecipientsError("Recipients is empty!")
+			return false;
+		}
+		if(description)
+		{
+			const {minMax, amount, per} = description;
+			if(isEmpty(minMax)) 
+			{
+				set_MinMaxError("Select min or max")
+				return false;
+			}
+			if(isEmpty(amount)) 
+			{
+				set_AmountError("Type amount value")
+				return false;
+			}
+			if(isEmpty(per)) 
+			{
+				set_PerError("Select case of per")
+				return false;
+			} 
+		} 
+		return true;
+	}
+
+	const dlg_Close = () => {
+
+		set_Type (types[0].title);
+		set_Desc('');
+		set_Descs([]);   
+		set_DescId(0);   
+	 
+		set_Emails([]);   
+		set_MinMax(null);
+		set_Per(null);
+		set_Amount(null);
+		set_PortFolio(null);
+		set_Recipients(["@You"]); 
+		set_DescDetail(false); 
+
+		dlgClose();
+	}
+
 	const getAlertById = async() => {
 		if(id === undefined || id === '') return;
 		const url = NODE_URL + `/api/alert/${id}`;  
@@ -45,8 +106,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 			set_PortFolio(clusterName);
 			let recipients_ = [];
 			 
-			const email = GET_USER_EMAIL();
-			// const userAddress = GET_USER_ADDRESS();
+			const email = GET_USER_EMAIL(); 
 			for(var i in recipients)
 			{
 				let recipient = recipients[i];
@@ -108,16 +168,19 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				recipients: recipients_,
 				id: id
 			}   
+
+			const ok = isEmptyAlert(alert);
+			if(!ok) return;
+
 			const url = NODE_URL + `/api/alert/edit/`;
 			try { 
 				await axios.post(url, alert);   
 			}
 			catch(err) {
 				console.log(err) 
-			} 
-		} 		
-		dlgClose();
-		// handleClickOpen2();		
+			} 		
+		dlg_Close(); 
+		} 
 	}
 	
 	const delete_Alert = async () => {    
@@ -126,7 +189,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 			await axios.delete(url, id);		  
 		}
 		catch(err) { } 
-		dlgClose();
+		dlg_Close();
 	}
 
 	const getEmails = async() => { 
@@ -247,35 +310,78 @@ function EditAlert({open, dlgClose, clusters, id}) {
    	); 
 	 
 	const ComboDescMinMax = (
+		<>
 		<Autocomplete
 			freeSolo
 			id="combo-box-demo" 	
 			options={minMaxs.map((option) => option.title)}	  
 			renderInput={(params) => <TextField {...params} label="Min or Max" variant="standard" />}
-			onChange={(event, value) => set_MinMax(value)} 
+			onChange=
+			{
+				(event, value) => 
+				{ 
+					if(value !== null) 
+					{
+						set_MinMaxError("");
+						set_MinMax(value) ;
+					}
+					else  
+						set_MinMaxError("Select min or max")
+				}
+			} 
 			value={minMax}
 		/>
+		<p className='mt-3 mb-0 text-red'>{minMaxError}</p>
+		</>
 	);
 
 	const ComboDescPer = (
+		<>
 		<Autocomplete
 			freeSolo
 			id="combo-box-demo" 
 			options={pers.map((option) => option.title)}
 			renderInput={(params) => <TextField {...params} label="Per" variant="standard" />}
-			onChange={(event, value) => set_Per(value)} 
+			
+			onChange=
+			{
+				(event, value) => 
+				{
+					if(value !== null)
+					{
+						set_Per(value)
+						set_PerError('');
+					}
+					else set_PerError("Select case of per")
+				}
+			} 
 			value={per}
 		/>
+		<p className='mt-3 mb-0 text-red'>{perError}</p>
+		</>
 	);
 
+	const setAmount = (val) => {
+		if(val.length > 30)
+			set_AmountError('Amount must be less than 30 charactors')
+		else 
+		{
+			set_AmountError('')
+			set_Amount(val);
+		} 
+	}
+
 	const InputAmount = ( 
+		<>
 		<TextField  
 			label="Amount" 
 			variant="standard" 
 			defaultValue={amount} 
-			onChange={(e) => set_Amount(e.target.value) }
+			onChange={(e) => setAmount(e.target.value) }
 			// value={amount}
 		/>
+		<p className='mt-3 mb-0 text-red'>{amountError}</p>
+		</>
 	);
 
 	const ComboDesc = (
@@ -313,6 +419,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 	);
  
 	const ComboPort = (
+		<>
 		<Autocomplete
 			freeSolo
 			id="combo-box-demo" 
@@ -320,11 +427,25 @@ function EditAlert({open, dlgClose, clusters, id}) {
 			renderInput={(params) => <TextField {...params} label="" variant="standard" />}
 			style={{width: '80%', marginLeft: '10%'}}
 			value={portFolio}			 
-			onChange={(event, value) => set_PortFolio(value)}
+			onChange=
+			{
+				(event, value) => 
+				{ 
+					if(value !== null) 
+					{
+						set_PortFolio(value);
+						set_ClusterNameError("");
+					}
+					else set_ClusterNameError("cluster name is empty!")
+				}
+			}
 		/>
+		<p className='mt-3 mb-0 text-red'>{clusterNameError}</p>
+		</>
 	);
     
 	const HookRecipients = (
+		<>
 		<Autocomplete
 		  	multiple
 		  	id="tags-filled"
@@ -342,37 +463,58 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				<TextField {...params} variant="filled" label="" placeholder="" />
 		  	)}
 		  	style={{width: '80%', marginLeft: '10%'}}
-			onChange={(e, val) => set_Recipients(val) }			
+			  onChange=
+			  {
+				  (e, val) => 
+				  {
+					  if(val.length > 0)
+					  {
+						  set_Recipients(val);
+						  set_RecipientsError("");
+					  }
+					//   else set_RecipientsError("Recipients is empty!")
+				  }
+			  }		
 		/>
+		<p className='mt-3 mb-0 text-red'>{recipientsError}</p>
+		</>
 	); 
-
-	const handleClickOpen2 = () => {
-		setOpen2(true); 
-	};
-	
-	const dlgClose2 = () => {
-		setOpen2(false);
-	};
+ 
+	 
 
 	return (
-		<>
-			{/* <ComingSoon open={open2} dlgClose={dlgClose2} title="Coming Soon!" content="it wiil be added code after database completed " btnText="OK" /> */}
+		<> 
 			<Dialog  
 				open={open}
-				onClose={dlgClose}
+				onClose={dlg_Close}
 				scroll={'paper'}  
 			>
-				<DialogTitle className="alert_title">Edit email Notification for [pipe: cluster_name] Cluster</DialogTitle>
+				{/* <DialogTitle className="alert_title">Edit email Notification for [pipe: cluster_name] Cluster</DialogTitle> */}
+
+				<DialogTitle className="alert_title"> 
+			<Grid container spacing={2}>
+				<Grid item xs={5}>
+					<span>Set Policies for</span>
+				</Grid>
+				<Grid item xs={5} style={{marginLeft: '-3%'}}>
+					{ComboPort} 
+				</Grid>
+				<Grid item xs={2}>
+					<span>Cluster</span>
+				</Grid>
+			</Grid>
+		</DialogTitle>
+
 				<DialogContent dividers={true}> 
-					<div className="text-center">    
-						<div className="px-3 pr-3">
+					<div className="text-center  px-5 pr-5">    
+						<div className="px-3 pr-3 ">
 							<GroupDiv title='Select Notification Type' comp={ComboType} />
 							<div className='mt-4'>
 								<GroupDiv title='Select Notification Description' comp={ComboDesc} />
 							</div>  
-							<div className="mt-4">
+							{/* <div className="mt-4">
 								<GroupDiv title='Select Notification Portfolio Name' comp={ComboPort} /> 
-							</div>
+							</div> */}
 							<div className="mt-4">
 								<GroupDiv title='Select Notification Recipients' comp={HookRecipients} /> 
 							</div> 
@@ -385,7 +527,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 						spacing={0}>
 						<Grid item xs={2}></Grid>
 						<Grid item>
-							<Button variant="contained" className="create_alert_btn" onClick={ dlgClose }>
+							<Button variant="contained" className="create_alert_btn" onClick={ dlg_Close }>
 								<b className="text-white">Cancel</b>
 							</Button>
 						</Grid>

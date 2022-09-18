@@ -33,3 +33,10 @@ export const TPYE_DESC_2 = 2;
 export const TPYE_DESC_3 = 3;
 export const TPYE_DESC_4 = 4;
 
+export const descs_con = [ 
+	{ title: '<Min/Max> of <Amount> ETH per <transaction/time>', id: TYPE_DESC_MINMAX_AMOUNT_PER }, 
+	{ title: 'Notifications if value of total assets in wallets exceeds a threshold', id: TPYE_DESC_2 },		
+	{ title: 'Approved counterparts and smart contracts', id: TPYE_DESC_3 },		
+	{ title: 'Minimum of 20 ETH per month (team wages)', id: TPYE_DESC_4 }
+];
+
