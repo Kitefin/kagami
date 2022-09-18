@@ -25,7 +25,7 @@ router.post( '/', async(req, res) => {
       cluster = await newCluster.save();
 
       let user = await User.findOne({ address: userAddress });
-      console.log(user)
+       
       if(user)
       { 
         return res.json(user);
@@ -35,7 +35,7 @@ router.post( '/', async(req, res) => {
         address: userAddress
       }); 
       user = await newUser.save();
-      console.log(user)
+       
       res.json(user);
     } 
     catch (err) {

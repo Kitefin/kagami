@@ -55,7 +55,7 @@ const wallets2Emails = async(wallets) => {
 // Create a alert 
 router.post( '/', async(req, res) => {
   const {type, description, clusterName, recipients} = req.body;
-  // console.log(req.body)
+   
     try { 
       let alert = await Alert.findOne({ type: type, description: description, clusterName: clusterName, recipients: recipients });
       if (alert) {
@@ -82,7 +82,7 @@ router.post( '/', async(req, res) => {
 // @desc Edit a Alert 
 router.post( '/edit', async(req, res) => {
   const {type, description, clusterName, recipients, id} = req.body;
-  console.log(recipients);
+   
   const recipients_ = await emails2Wallets(recipients);
   await Alert.findByIdAndUpdate(id, 
     { type: type, description: description, clusterName: clusterName, recipients: recipients_ }, 
