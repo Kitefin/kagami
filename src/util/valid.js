@@ -5,7 +5,7 @@
 	}
  
 	export const isAddress = (address_) => {
-		const ok1 = address_.length > 2 && address_.substr(0, 2) === "0x";
+		const ok1 = address_.length >= 42 && address_.substr(0, 2) === "0x";
 		if(!ok1) return false;
 		address_ = address_.substr(2, address_.length - 2);
 		for(var i in address_)
@@ -21,7 +21,7 @@
     export const isEmail = (input) => { 
 		if(input.length > 30) return false;
 		var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/; 
-		if (input.match(validRegex)) { 
+		if (input.match(validRegex) && input.indexOf("@") > 0 && input.indexOf(".") > 0 ) { 
 		  return true; 
 		}
 		else {

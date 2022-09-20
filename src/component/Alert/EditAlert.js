@@ -36,17 +36,18 @@ function EditAlert({open, dlgClose, clusters, id}) {
 	const [minMaxError, set_MinMaxError] = useState('');
 	const [perError, set_PerError] = useState('');
 
-	const isEmptyAlert = (alert) => { 
+	const isEmptyAlert = (alert) => {
+		let ok = true; 
 		const {clusterName, description, recipients} = alert;
 		if(isEmpty(clusterName))
 		{
 			set_ClusterNameError("cluster name is empty!")
-			return false;
+			ok = false;
 		}
 		if(availableRecipients.length === 0)
 		{
 			set_RecipientsError("Recipients is empty!")
-			return false;
+			ok = false;
 		}
 		if(description)
 		{ 
@@ -56,22 +57,21 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				if(isEmpty(minMax)) 
 				{
 					set_MinMaxError("Select min or max")
-					return false;
+					ok = false;
 				}
 				if(isEmpty(amount)) 
 				{
 					set_AmountError("Type amount value")
-					return false;
+					ok = false;
 				}
 				if(isEmpty(per)) 
 				{
 					set_PerError("Select case of per")
-					return false;
+					ok = false;
 				} 
-			}
-			else return true;
+			} 
 		} 
-		return true;
+		return ok;
 	}
 
 	const dlg_Close = () => {

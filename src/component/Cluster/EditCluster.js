@@ -51,39 +51,41 @@ function EditCluster({open, dlgClose, id}) {
 		const isDescEmpty = isEmpty(desc); 
 		const isAddressesEmpty = addresses.length === 0;
 		const isUserAddressEmpty = isEmpty(userAddress);
-		const isEmailEmpty = isEmpty(email); 
+		const isEmailEmpty = isEmpty(email);
+		let ok = true; 
 		if(isNameEmpty) 
 		{
 			set_NameError("Cluster name is empty!"); 
-			return false;
+			ok = false;
 		}
 		if(isDescEmpty) 
 		{
 			set_DescError("Cluster description is empty!"); 
-			return false;
+			ok = false;
 		}
 		if(isAddressesEmpty) {
 			set_AddressError("Wallet Addresses is empty!"); 
-			return false;
+			ok = false;
 		}
 		if(isEmailEmpty) {
 			set_EmailError("Email is empty!"); 
-			return false;
+			ok = false;
 		}
         if(isUserAddressEmpty) { 
-			return false;
+			ok = false;
 		}
-		return true;
+		return ok;
 	}
 	
-	const checkCluster = () => {    
+	const checkCluster = () => { 
+		let ok = true;   
 		if(nameError !== '')  
-			return false; 
+		ok = false;
 		if(descError !== '')  
-			return false; 
-		if(emailError !== '') 
-			return false;          
-		return true;
+		ok = false;
+		if( !isEmail(email) ) 
+		ok = false;
+		return ok;
 	}
 
 	const getClusterById = async() => {
@@ -250,7 +252,7 @@ function EditCluster({open, dlgClose, id}) {
 	const setAddress = (val) => {
 		if(val.length > 42 )
 		{ 
-			set_AddressError('Wallet Address must be less than 30 charactors.');  
+			set_AddressError('Wallet Address must be less than 42 charactors.');  
 		}
 		else 
 		{
@@ -282,12 +284,12 @@ function EditCluster({open, dlgClose, id}) {
 	);
 
 	const setEmail = (val) => {
-		if(isEmail(val))
+		// if(isEmail(val))
 		{
 			set_Email(val);
 			set_EmailError('');
 		}
-		else
+		if(!isEmail(val))
 			set_EmailError('Valied Email failure!');
 	}
 

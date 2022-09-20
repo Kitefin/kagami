@@ -51,17 +51,17 @@ function CreateAlert({open, dlgClose, clusters}) {
 	}
 
 	const isEmptyAlert = (alert) => {
-		 
+		 let ok = false;
 		const {clusterName, description, recipients} = alert;
 		if(isEmpty(clusterName))
 		{
 			set_ClusterNameError("cluster name is empty!")
-			return false;
+			ok = false;
 		}
 		if(availableRecipients.length === 0)
 		{
 			set_RecipientsError("Recipients is empty!")
-			return false;
+			ok = false;
 		}
 		if(description)
 		{
@@ -71,22 +71,21 @@ function CreateAlert({open, dlgClose, clusters}) {
 				if(isEmpty(minMax)) 
 				{
 					set_MinMaxError("Select min or max")
-					return false;
+					ok = false;
 				}
 				if(isEmpty(amount)) 
 				{
 					set_AmountError("Type amount value")
-					return false;
+					ok = false;
 				}
 				if(isEmpty(per)) 
 				{
 					set_PerError("Select case of per")
-					return false;
+					ok = false;
 				}
-			} 
-			else return true;
+			}  
 		} 
-		return true;
+		return ok;
 	}
 
 	const create_Alert = async () => {
@@ -119,8 +118,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 		}  
 
 		const ok = isEmptyAlert(alert);
-		 
-
+		  
 		if(!ok) return;
 
 		const url = NODE_URL + "/api/alert/";
