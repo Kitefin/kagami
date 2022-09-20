@@ -36,6 +36,8 @@ function EditAlert({open, dlgClose, clusters, id}) {
 	const [minMaxError, set_MinMaxError] = useState('');
 	const [perError, set_PerError] = useState('');
 
+	const [error, set_Error] = useState('');
+
 	const isEmptyAlert = (alert) => {
 		let ok = true; 
 		const {clusterName, description, recipients} = alert;
@@ -80,12 +82,27 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		set_Descs([]);   
 		set_DescId(0);   	 
 		// set_Emails([]);   
+		 
+		 
+		set_MinMax(null);
+		set_Amount('');
+		set_Per(null);
+	
+
 		set_MinMax(null);
 		set_Per(null);
 		set_Amount(null);
 		set_PortFolio(null);
 		set_Recipients(["@You"]); 
 		set_DescDetail(false); 
+		
+		set_AmountError('');
+		set_ClusterNameError('');
+		set_RecipientsError('');	
+		set_MinMaxError('');
+		set_PerError('');
+		set_Error('');
+
 		dlgClose();
 	}
 
@@ -106,19 +123,27 @@ function EditAlert({open, dlgClose, clusters, id}) {
 					recipient = "@You";
 				recipients_.push(recipient);
 			}
-			set_Recipients(recipients_);			 
-			set_Desc( GET_DESC_TITLE_BY_ID(description.id) ); 
+			set_Recipients(recipients_);
+			const desc_Id = description.id;
+			set_Desc( GET_DESC_TITLE_BY_ID(desc_Id) ); 
 			
-			if( NEED_DESC_DETAIL(description.id) )
+			if( NEED_DESC_DETAIL(desc_Id) )
 			{
 				set_DescDetail(true);
 				set_MinMax(description.minMax);
 				set_Amount(description.amount);
 				set_Per(description.per);
 			}
+			else {
+				set_DescDetail(false);
+				set_MinMax(null);
+				set_Amount('');
+				set_Per(null);
+			}
 		}
 		catch(err) {
-			console.log(err) 
+			console.log(err)  
+			set_Error(err.response.data.msg);
 		} 
 	} 
 		  
@@ -130,7 +155,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		getEmails();  
 	}, []);
 
-	const edit_Alert = async () => {
+	const edit_Alert = async () => { 
 		let recipients_ = [];
 		for(var i in recipients)
 		{
@@ -151,26 +176,25 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		}
 		else 
 			description = { id: descId }; 
-		if(descDetail)
-		{    
-			const alert = {
-				type: type,
-				description: description,
-				clusterName: portFolio,
-				recipients: recipients_,
-				id: id
-			}   
-			const ok = isEmptyAlert(alert);
-			if(!ok) return;
-			const url = NODE_URL + `/api/alert/edit/`;
-			try { 
-				await axios.post(url, alert);   
-			}
-			catch(err) {
-				console.log(err) 
-			} 		
-		dlg_Close(); 
-		} 
+	 
+		const alert = {
+			type: type,
+			description: description,
+			clusterName: portFolio,
+			recipients: recipients_,
+			id: id
+		}   
+		const ok = isEmptyAlert(alert);
+		console.log(ok)
+		if(!ok) return;
+		const url = NODE_URL + `/api/alert/edit/`;
+		try { 
+			await axios.post(url, alert); 	
+			dlg_Close();   
+		}
+		catch(err) {
+			console.log(err) 
+		} 	
 	}
 	
 	const delete_Alert = async () => {    
@@ -440,6 +464,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 					<span>Cluster</span>
 				</Grid>
 			</Grid>
+			<p className='mt-3 mb-0 text-red'>{error}</p>
 		</DialogTitle>
 
 				<DialogContent dividers={true}> 

@@ -6,8 +6,6 @@ const Cluster = require('../../models/Cluster');
 const User = require('../../models/User');
 const checkObjectId = require('../../middleware/checkObjectId');
  
- 
-
 // @desc Edit a cluster 
 router.post( '/edit', async(req, res) => {
   const {name, desc, addresses, userAddress, id} = req.body; 
@@ -55,12 +53,12 @@ router.delete('/:id',  async (req, res) => { //[checkObjectId('id')],
     const cluster = await Cluster.findById(req.params.id);
 
     if (!cluster) {
-      return res.status(404).json({ msg: 'Post not found' });
+      return res.status(400).json({ msg: 'Cluster not found' });
     }
   
     await cluster.remove();
 
-    res.json({ msg: 'Post removed' });
+    res.status(400).json({ msg: 'Cluster removed' });
   } catch (err) {
     // console.error(err.message);
 

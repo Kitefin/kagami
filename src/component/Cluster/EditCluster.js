@@ -133,11 +133,12 @@ function EditCluster({open, dlgClose, id}) {
 		try{ 
 			const res = await axios.post(url, cluster);
 			console.log(res)
+			dlg_close();
 		}
 		catch(err) {
 			console.log(err) 
-		}
-		dlg_close(); 
+			set_NameError(err.response.data.msg);
+		} 
 	}
   
 	useEffect(() => {  

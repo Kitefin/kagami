@@ -95,12 +95,14 @@ function CreateCluster({open, dlgClose}) {
 		if(!ok) return;
 		const url = NODE_URL + "/api/cluster/";
 		try { 
-			await axios.post(url, cluster);   
+			await axios.post(url, cluster);
+			console.log(res.data)
+			dlg_close(); 
 		}
 		catch(err) {
-			console.log(err) 
+			console.log(err);
+			set_NameError(err.response.data.msg); 
 		} 
-		dlg_close();
 	}  
 
 	useEffect(() => {  

@@ -51,7 +51,6 @@ const wallets2Emails = async(wallets) => {
   return emails;
 }
 
-
 // Create a alert 
 router.post( '/', async(req, res) => {
     const {type, description, clusterName, recipients} = req.body;
@@ -61,7 +60,7 @@ router.post( '/', async(req, res) => {
       let alert = await Alert.findOne({type: type, description: description, clusterName: clusterName, recipients: recipientWallets});
      
       if (alert) {
-        return res .status(400) .json({ errors: [{ msg: 'Same Alert already exists' }] });
+        return res.status(400).json({ msg: 'Same Policy already exists' });
       } 
 
       const newAlert = new Alert({ 
@@ -81,11 +80,17 @@ router.post( '/', async(req, res) => {
 
 // @desc Edit a Alert 
 router.post( '/edit', async(req, res) => {
-  const {type, description, clusterName, recipients, id} = req.body;
-   
-  const recipients_ = await emails2Wallets(recipients);
+  const {type, description, clusterName, recipients, id} = req.body;   
+  const recipientWallets = await emails2Wallets(recipients);
+
+  let alert = await Alert.findOne({type: type, description: description, clusterName: clusterName, recipients: recipientWallets});
+     
+      if (alert) {
+        return res.status(400).json({ msg: 'Same Policy already exists' });
+      } 
+
   await Alert.findByIdAndUpdate(id, 
-    { type: type, description: description, clusterName: clusterName, recipients: recipients_ }, 
+    { type: type, description: description, clusterName: clusterName, recipients: recipientWallets }, 
     function (err, docs) 
     {
       if (err) {
@@ -104,9 +109,7 @@ router.post('/all', async (req, res) => {
     const alerts = await Alert.find({recipients: { $all: [req.body.address] } } ); 
     if(alerts)
     { 
-      let alerts_ = []; 
-
-
+      let alerts_ = [];
       for(var i in alerts) {
         const alert = alerts[i];
         const {recipients} = alert; 
@@ -114,10 +117,9 @@ router.post('/all', async (req, res) => {
         alert.recipients = recipients_; 
         alerts_.push(alert);
       }
-
       res.json(alerts_);
     }
-    else res.json({ msg: 'alerts empty.' });
+    else res.status(400).json({ msg: 'alerts empty.' });
   } 
   catch (err) {
     console.error("getAlerts Err: " + err.message);
@@ -130,15 +132,11 @@ router.get('/:id',  async (req, res) => {
   try {
     const alert = await Alert.findById(req.params.id);
     if (!alert) {
-      return res.status(404).json({ msg: 'Alert not found' });
-    } 
-
-    let {recipients} = alert;
- 
+      return res.status(400).json({ msg: 'Alert not found' });
+    }
+    let {recipients} = alert; 
     let recipients_ = await wallets2Emails(recipients);
-
-    alert.recipients = recipients_;
-  
+    alert.recipients = recipients_;  
     res.json(alert);
   } catch (err) {
     console.error("getAlertById Err: " + err.message);
@@ -149,7 +147,6 @@ router.get('/:id',  async (req, res) => {
 
 // @route GET api/Alert/getCount
 router.post('/getCount',  async (req, res) => { 
-
   Alert.count({clusterName: req.body.clusterName}, function(err, result) {
     if (err) {
       console.log("getAlertCountByClusterName Err: " + err);
@@ -193,14 +190,11 @@ router.post('/:userAddress',  async (req, res) => {
 router.delete('/:id',  async (req, res) => { //[checkObjectId('id')],
   try {
     const alert = await Alert.findById(req.params.id);
-
     if (!alert) {
-      return res.status(404).json({ msg: 'Post not found' });
-    }
-  
+      return res.status(400).json({ msg: 'Policy not found' });
+    }  
     await alert.remove();
-
-    res.json({ msg: 'Post removed' });
+    res.json({ msg: 'Policy removed' });
   } catch (err) {
     console.error("deleteAlertById" + err.message); 
     res.status(500).send('Server Error');

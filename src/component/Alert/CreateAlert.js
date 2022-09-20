@@ -34,6 +34,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 	const [recipientsError, set_RecipientsError] = useState('');	
 	const [minMaxError, set_MinMaxError] = useState('');
 	const [perError, set_PerError] = useState('');
+	const [error, set_Error] = useState('');
  
 	const dlg_close = () => { 
 		set_Type (TYPES[0].title);
@@ -47,11 +48,19 @@ function CreateAlert({open, dlgClose, clusters}) {
 		set_PortFolio(null);
 		set_Recipients(["@You"]); 
 		set_DescDetail(false);
+
+		set_AmountError('');
+		set_ClusterNameError('');
+		set_RecipientsError('');	
+		set_MinMaxError('');
+		set_PerError('');
+		set_Error('');
+
 		dlgClose();
 	}
 
 	const isEmptyAlert = (alert) => {
-		 let ok = false;
+		 let ok = true;
 		const {clusterName, description, recipients} = alert;
 		if(isEmpty(clusterName))
 		{
@@ -119,17 +128,18 @@ function CreateAlert({open, dlgClose, clusters}) {
 
 		const ok = isEmptyAlert(alert);
 		  
+		console.log(ok)
 		if(!ok) return;
 
 		const url = NODE_URL + "/api/alert/";
 		try { 
-			await axios.post(url, alert);   
+			await axios.post(url, alert); 
+			dlg_close(); 
 		}
 		catch(err) {
-			console.log(err) 
-		}  		
-		dlg_close(); 
-
+			console.log(err)  
+			set_Error(err.response.data.msg);
+		}
 	}  
   
 	const getEmails = async() => { 
@@ -407,6 +417,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 					<span>Cluster</span>
 				</Grid>
 			</Grid>
+			<p className='mt-3 mb-0 text-red'>{error}</p>
 		</DialogTitle>
 		
 		<DialogContent dividers={true}> 

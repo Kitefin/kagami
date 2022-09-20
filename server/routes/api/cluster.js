@@ -10,11 +10,11 @@ const checkObjectId = require('../../middleware/checkObjectId');
 router.post( '/', async(req, res) => {
   const {name, desc, addresses, userAddress, email} = req.body;
     try { 
-      let cluster = await Cluster.findOne({ name: name, userAddress: userAddress });
+      let cluster = await Cluster.findOne({ name: name });
       if (cluster) {
         return res
           .status(400)
-          .json({ errors: [{ msg: 'Cluster Name already exists' }] });
+          .json( { msg: 'Cluster name already exists' });
       }
       const newCluster = new Cluster({ 
         name: name,
@@ -23,9 +23,7 @@ router.post( '/', async(req, res) => {
         userAddress: userAddress
       }); 
       cluster = await newCluster.save();
-
-      let user = await User.findOne({ address: userAddress });
-       
+      let user = await User.findOne({ address: userAddress });       
       if(user)
       { 
         return res.json(user);
@@ -34,8 +32,7 @@ router.post( '/', async(req, res) => {
         email: email,
         address: userAddress
       }); 
-      user = await newUser.save();
-       
+      user = await newUser.save();       
       res.json(user);
     } 
     catch (err) {
@@ -47,21 +44,26 @@ router.post( '/', async(req, res) => {
 
 // @desc Edit a cluster 
 router.post( '/edit', async(req, res) => {
-  const {name, desc, addresses, userAddress, id, email} = req.body; 
-      await Cluster.findByIdAndUpdate(id, { name: name, description: desc, addresses: addresses, userAddress: userAddress }, function (err, docs) {
-          if (err){ 
-            res.status(500).send('Server Error');
-          }
-          else {
-            const filter = {address: userAddress};
-            const update = {email: email};
-            User.findOneAndUpdate(filter, update)
-            .then(doc => res.json(doc))
-            .catch(err => res.status(500).send('Server Error'))
-          }
-      });  
-  }
-);
+    const {name, desc, addresses, userAddress, id, email} = req.body;
+    
+    let cluster = await Cluster.findOne({ name: name });
+      if (cluster) {
+        return res.status(400).json( { msg: 'Cluster name already exists' });
+      }
+
+    await Cluster.findByIdAndUpdate(id, { name: name, description: desc, addresses: addresses, userAddress: userAddress }, function (err, docs) {
+    if (err) { 
+      res.status(500).send('Server Error');
+    }
+    else {
+      const filter = {address: userAddress};
+      const update = {email: email};
+      User.findOneAndUpdate(filter, update)
+        .then(doc => res.json(doc))
+        .catch(err => res.status(500).send('Server Error'))
+    }
+  });  
+});
 
 // @route GET clusters 
 router.get('/', async (req, res) => {
@@ -80,12 +82,12 @@ router.get('/:id',  async (req, res) => {
   try {
     let cluster = await Cluster.findById(req.params.id);
     if (!cluster) {
-      return res.status(404).json({ msg: 'Cluster not found' });
+      return res.status(400).json({ msg: 'Cluster not found' } );  
     } 
     let user = await User.findOne({address: cluster.userAddress});
      
     if(!user)
-      return res.status(404).json({ msg: 'email not found' });
+      return res.status(400).json({ msg: 'Email not found' });
      
       res.json(
         {
@@ -124,15 +126,12 @@ router.delete('/:id',  async (req, res) => { //[checkObjectId('id')],
     const cluster = await Cluster.findById(req.params.id);
 
     if (!cluster) {
-      return res.status(404).json({ msg: 'Post not found' });
-    }
-  
+      return res.status(400).json({ msg: 'Cluster not found' });
+    }  
     await cluster.remove();
-
-    res.json({ msg: 'Post removed' });
+    res.json({ msg: 'Cluster removed' });
   } catch (err) {
     // console.error(err.message);
-
     res.status(500).send('Server Error');
   }
 });
