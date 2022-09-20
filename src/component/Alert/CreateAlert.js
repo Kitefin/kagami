@@ -5,25 +5,15 @@ import GroupDiv from "../common/GroupDiv";
 import axios from 'axios'; 
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
-import {TYPE_LIMITS,  TYPE_WHITE_LISTS, TYPE_EXCLUSION_LISTS, TYPES, 
-   DESC_MIN,
-   DESC_MAX, 
-   minMaxs, 
-   DESC_PER_TRANSACTION,
-   DESC_PER_DAY,
-   DESC_PER_WEEK,
-   DESC_PER_MONTH, 
-  pers, 
-  TYPE_DESC_MINMAX_AMOUNT_PER ,
-  TPYE_DESC_2 ,
-  TPYE_DESC_3 ,
-  TPYE_DESC_4,
-  DESCS,
-  GET_TYPE_ID_BY_TITLE,
-  GET_DESC_ID_BY_TITLE 
-  
+import {
+	TYPES,  
+   minMaxs,  
+  	pers,  
+	GET_DESC_ID_BY_TITLE, 
+	NEED_DESC_DETAIL,
+	GET_DESCS_BY_TYPE_ID 
 } from './util';
-import {isEmail, isEmpty, isAddress} from "../../util/valid"
+import {isEmpty} from "../../util/valid"
 
 function CreateAlert({open, dlgClose, clusters}) {     
 	const [type, set_Type] = useState(TYPES[0].title);
@@ -75,7 +65,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 		}
 		if(description)
 		{
-			if(description.id === TYPE_DESC_MINMAX_AMOUNT_PER || description.id === TPYE_DESC_4)
+			if( NEED_DESC_DETAIL( description.id) )
 			{
 				const {minMax, amount, per} = description;
 				if(isEmpty(minMax)) 
@@ -196,57 +186,16 @@ function CreateAlert({open, dlgClose, clusters}) {
 	
 	const setDesc = (desc_) => {  
 		set_Desc(desc_);  
-		let id = GET_DESC_ID_BY_TITLE(desc_);
-		// for(var i in descs)
-		// {
-		// 	if(descs[i].title === desc_)
-		// 	{
-		// 		id = descs[i].id;
-		// 		break;
-		// 	}
-		// } 
-		set_DescId(id);
-		if(id === TYPE_DESC_MINMAX_AMOUNT_PER || id === TPYE_DESC_4)
-			set_DescDetail(true);
-		else set_DescDetail(false);
+		const id = GET_DESC_ID_BY_TITLE(desc_); 
+		set_DescId(id); 
+		set_DescDetail(NEED_DESC_DETAIL(id)); 
 	}  
 
 	const setType = (type_) => { 
-		set_Type(type_);
-		let id = GET_TYPE_ID_BY_TITLE(type_);
-		// for(var i in TYPES)
-		// {
-		// 	if(TYPES[i].title === type_)
-		// 	{
-		// 		id = TYPES[i].id;
-		// 		break;
-		// 	}
-		// } 
-		if(id === TYPE_LIMITS)
-		{
-			var descs_ = [
-				DESCS[0], 
-				DESCS[1]
-			];
-			set_Descs(descs_);
-			setDesc(descs_[0].title);
-		}
-		else if(id === TYPE_WHITE_LISTS)
-		{
-			var descs_ = [
-				DESCS[2]
-			];
-			set_Descs(descs_);
-			setDesc(descs_[0].title);
-		}		
-		else if(id === TYPE_EXCLUSION_LISTS)
-		{
-			var descs_ = [
-				DESCS[3]
-			];
-			set_Descs(descs_);
-			setDesc(descs_[0].title);
-		} 
+		set_Type(type_); 
+		const descs_ = GET_DESCS_BY_TYPE_ID(type_);
+		set_Descs(descs_);
+		setDesc(descs_[0].title); 
 	}
    
     const ComboType = (  
@@ -255,6 +204,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 		options={TYPES.map((option) => option.title)}
         id="controlled-demo"
 		defaultValue={TYPES[0].title} 
+		value={type}
         onChange={(event, newValue) => { setType(newValue); }}
         renderInput={(params) => (
           <TextField {...params} label="" variant="standard" />
@@ -330,6 +280,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 				label="Amount" 
 				variant="standard" 
 				defaultValue={amount} 
+				value={amount}
 				onChange={(e) => setAmount(e.target.value) }
 			/>
 			<p className='mt-3 mb-0 text-red'>{amountError}</p>

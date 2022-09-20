@@ -13,12 +13,9 @@ import axios from 'axios';
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
 
-import {  
-	TYPE_DESC_MINMAX_AMOUNT_PER ,
-   	TPYE_DESC_2 ,
-   	TPYE_DESC_3 ,
-   	TPYE_DESC_4,   
-	GET_DESC_TITLE_BY_ID
+import {   
+	GET_DESC_TITLE_BY_ID,
+	NEED_DESC_DETAIL
  } from '../Alert/util';
 
 function Layout() {  
@@ -172,7 +169,7 @@ function Layout() {
 			// console.log(alert)
 			const {type, description, clusterName, recipients, _id} = alert;
 			let desc;
-			if(description.id === TYPE_DESC_MINMAX_AMOUNT_PER || description.id === TPYE_DESC_4)
+			if( NEED_DESC_DETAIL( description.id ))
 				desc = description.minMax + " of " + description.amount + " ETH per " + description.per;
 			else { 
 					desc = GET_DESC_TITLE_BY_ID(description.id);

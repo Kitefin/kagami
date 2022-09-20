@@ -4,25 +4,16 @@ import GroupDiv from "../common/GroupDiv";
 import axios from 'axios'; 
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
-import {TYPE_LIMITS,  TYPE_WHITE_LISTS, TYPE_EXCLUSION_LISTS, TYPES, 
-	DESC_MIN,
-	DESC_MAX, 
-	minMaxs, 
-	DESC_PER_TRANSACTION,
-	DESC_PER_DAY,
-	DESC_PER_WEEK,
-	DESC_PER_MONTH, 
-   pers, 
-   TYPE_DESC_MINMAX_AMOUNT_PER ,
-   TPYE_DESC_2 ,
-   TPYE_DESC_3 ,
-   TPYE_DESC_4,
-   DESCS,
-   GET_DESC_TITLE_BY_ID,
-   GET_DESC_ID_BY_TITLE,
-   GET_TYPE_ID_BY_TITLE
+import { 
+	TYPES,	 
+	minMaxs,  
+   	pers,
+   	GET_DESC_TITLE_BY_ID,
+   	GET_DESC_ID_BY_TITLE,
+	NEED_DESC_DETAIL,
+	GET_DESCS_BY_TYPE_ID
  } from './util';
- import {isEmail, isEmpty, isAddress} from "../../util/valid"
+ import {isEmpty} from "../../util/valid"
 
 function EditAlert({open, dlgClose, clusters, id}) {  
 	const [type, set_Type] = useState('');
@@ -45,8 +36,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 	const [minMaxError, set_MinMaxError] = useState('');
 	const [perError, set_PerError] = useState('');
 
-	const isEmptyAlert = (alert) => {
-	 
+	const isEmptyAlert = (alert) => { 
 		const {clusterName, description, recipients} = alert;
 		if(isEmpty(clusterName))
 		{
@@ -59,8 +49,8 @@ function EditAlert({open, dlgClose, clusters, id}) {
 			return false;
 		}
 		if(description)
-		{
-			if(description.id === TYPE_DESC_MINMAX_AMOUNT_PER || description.id === TPYE_DESC_4)
+		{ 
+			if( NEED_DESC_DETAIL(description.id) )
 			{
 				const {minMax, amount, per} = description;
 				if(isEmpty(minMax)) 
@@ -85,12 +75,10 @@ function EditAlert({open, dlgClose, clusters, id}) {
 	}
 
 	const dlg_Close = () => {
-
 		set_Type (TYPES[0].title);
 		set_Desc('');
 		set_Descs([]);   
-		set_DescId(0);   
-	 
+		set_DescId(0);   	 
 		// set_Emails([]);   
 		set_MinMax(null);
 		set_Per(null);
@@ -98,7 +86,6 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		set_PortFolio(null);
 		set_Recipients(["@You"]); 
 		set_DescDetail(false); 
-
 		dlgClose();
 	}
 
@@ -110,8 +97,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 			const { type, description, clusterName, recipients } = res.data; 		 
 			setType(type);
 			set_PortFolio(clusterName);
-			let recipients_ = [];
-			 
+			let recipients_ = [];			 
 			const email = GET_USER_EMAIL(); 
 			for(var i in recipients)
 			{
@@ -120,10 +106,10 @@ function EditAlert({open, dlgClose, clusters, id}) {
 					recipient = "@You";
 				recipients_.push(recipient);
 			}
-			set_Recipients(recipients_);
-			 
-			set_Desc( GET_DESC_TITLE_BY_ID(description.id) );
-			if(description.id === TYPE_DESC_MINMAX_AMOUNT_PER || description.id === TPYE_DESC_4)
+			set_Recipients(recipients_);			 
+			set_Desc( GET_DESC_TITLE_BY_ID(description.id) ); 
+			
+			if( NEED_DESC_DETAIL(description.id) )
 			{
 				set_DescDetail(true);
 				set_MinMax(description.minMax);
@@ -153,8 +139,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				recipient = GET_USER_EMAIL(); 
 			recipients_.push(recipient);
 		}
-		let description = {};
-		
+		let description = {};		
 		if(descDetail)
 		{    
 			description = {
@@ -165,10 +150,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 			};	
 		}
 		else 
-			description = {
-				id: descId
-			};
-
+			description = { id: descId }; 
 		if(descDetail)
 		{    
 			const alert = {
@@ -178,10 +160,8 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				recipients: recipients_,
 				id: id
 			}   
-
 			const ok = isEmptyAlert(alert);
 			if(!ok) return;
-
 			const url = NODE_URL + `/api/alert/edit/`;
 			try { 
 				await axios.post(url, alert);   
@@ -213,8 +193,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		} 
 	}
 
-	let portfolios = [];
-	
+	let portfolios = [];	
 	if(clusters && Object(clusters).length > 0) {
 		for(var i in clusters)
 		{
@@ -227,9 +206,8 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		}  
 	} 
 	
-	let availableRecipients = [ "@You" ];
-	
-	if(emails )
+	let availableRecipients = [ "@You" ];	
+	if( emails )
 	{ 
 		const userAddress = GET_USER_ADDRESS();   
 		for(var i in emails)
@@ -242,63 +220,21 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				}
 				availableRecipients.push(email.email);
 			}
-			// else availableRecipients[0].id = email._id;
 		}
 	} 
 	
-	const setDesc = (descs_, desc_) => {   
+	const setDesc = (desc_) => {   
 		set_Desc(desc_);  
-		let id = GET_DESC_ID_BY_TITLE(desc_);
-		// for(var i in descs_)
-		// {
-		// 	if(descs_[i].title === desc_)
-		// 	{
-		// 		id = descs_[i].id;
-		// 		break;
-		// 	}
-		// } 
-		set_DescId(id); 
-		if(id === TYPE_DESC_MINMAX_AMOUNT_PER || id === TPYE_DESC_4)
-			set_DescDetail(true);
-		else set_DescDetail(false);
+		const id = GET_DESC_ID_BY_TITLE(desc_);
+		set_DescId(id);  
+		set_DescDetail(NEED_DESC_DETAIL(id)); 
 	}
 
 	const setType = (type_) => {  
-		set_Type(type_);
-		let id = GET_TYPE_ID_BY_TITLE(type_);
-		// for(var i in TYPES)
-		// {
-		// 	if(TYPES[i].title === type_)
-		// 	{
-		// 		id = TYPES[i].id;
-		// 		break;
-		// 	}
-		// } 
-		if(id === TYPE_LIMITS)
-		{
-			var descs_ = [
-				DESCS[0], 
-				DESCS[1]
-			];
-			set_Descs(descs_);
-			setDesc(descs_, descs_[0].title);
-		}
-		else if(id === TYPE_WHITE_LISTS)
-		{
-			var descs_ = [
-				DESCS[2]
-			];
-			set_Descs(descs_);
-			setDesc(descs_, descs_[0].title);
-		}		
-		else if(id === TYPE_EXCLUSION_LISTS)
-		{
-			var descs_ = [
-				DESCS[3]
-			];
-			set_Descs(descs_);
-			setDesc(descs_, descs_[0].title);
-		} 
+		set_Type(type_); 
+		var descs_ = GET_DESCS_BY_TYPE_ID(type_);
+		set_Descs(descs_);
+		setDesc(descs_[0].title);
 	}
    
     const ComboType = (  
@@ -348,8 +284,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 			freeSolo
 			id="combo-box-demo" 
 			options={pers.map((option) => option.title)}
-			renderInput={(params) => <TextField {...params} label="Per" variant="standard" />}
-			
+			renderInput={(params) => <TextField {...params} label="Per" variant="standard" />}			
 			onChange=
 			{
 				(event, value) => 
@@ -382,10 +317,9 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		<>
 		<TextField  
 			label="Amount" 
-			variant="standard" 
-			defaultValue={amount} 
+			variant="standard"  
 			onChange={(e) => setAmount(e.target.value) }
-			// value={amount}
+			value={amount}
 		/>
 		<p className='mt-3 mb-0 text-red'>{amountError}</p>
 		</>
@@ -399,7 +333,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				options={descs.map((option) => option.title)} 
 				value={desc}
 				renderInput={(params) => <TextField {...params} label="" variant="standard" />}
-				onChange={(event, value) => setDesc(descs, value)}
+				onChange={(event, value) => setDesc(value)}
 				style={{width: '80%', marginLeft: '10%'}}
 			/>
 			{descDetail ? (
@@ -486,9 +420,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		<p className='mt-3 mb-0 text-red'>{recipientsError}</p>
 		</>
 	); 
- 
 	 
-
 	return (
 		<> 
 			<Dialog  
@@ -496,8 +428,6 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				onClose={dlg_Close}
 				scroll={'paper'}  
 			>
-				{/* <DialogTitle className="alert_title">Edit email Notification for [pipe: cluster_name] Cluster</DialogTitle> */}
-
 				<DialogTitle className="alert_title"> 
 			<Grid container spacing={2}>
 				<Grid item xs={5}>
@@ -519,9 +449,6 @@ function EditAlert({open, dlgClose, clusters, id}) {
 							<div className='mt-4'>
 								<GroupDiv title='Select Notification Description' comp={ComboDesc} />
 							</div>  
-							{/* <div className="mt-4">
-								<GroupDiv title='Select Notification Portfolio Name' comp={ComboPort} /> 
-							</div> */}
 							<div className="mt-4">
 								<GroupDiv title='Select Notification Recipients' comp={HookRecipients} /> 
 							</div> 
@@ -529,7 +456,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 					</div>
 				</DialogContent> 
 				<div className="text-center p-2">
-					<Grid justifyContent="space-between" // Add it here :)
+					<Grid justifyContent="space-between"
 						container
 						spacing={0}>
 						<Grid item xs={2}></Grid>
