@@ -85,16 +85,16 @@
 }
 
 .header-bar {
-	height: 70px;
+	/* height: 70px; */
 	background-color: rgba(212, 17, 119, 0.815) !important;
 	width: 100%;
-	padding: 10px;
+	/* padding: 10px; */
 	z-index: 999;	 
 }
 .logo-title {
 	font-size: 60px;
 	font-family: "Phosphate-Inline";
-	padding: 0px;
+	/* padding: 0px; */
 	color: #fff;
 }
 

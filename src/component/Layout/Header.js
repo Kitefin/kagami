@@ -48,19 +48,21 @@ function Header() {
 	);
 
 	return (
-		<AppBar position="static" className="header-bar">
+		<AppBar position="static" className="p-3 header-bar">
 			<Toolbar>
 				<Grid
-					justifyContent="space-between" // Add it here :)
+					justifyContent="space-between"
 					container
-					spacing={0} //24
+					spacing={0}
 				>
 					<Grid item> 
-						<span className="navbar-start logo-title">KAGAMI</span>
+						<div className="logo-title pt-1 mt-1">KAGAMI</div>
 					</Grid>
 
 					<Grid item>
-						<div className="mt-2">{isAuthenticated ? disconnectBtn : connectBtn}</div>
+						<div className="mt-3">
+						 	{isAuthenticated ? disconnectBtn : connectBtn} 
+						 </div>
 					</Grid>
 				</Grid>
 			</Toolbar>
