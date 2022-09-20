@@ -5,7 +5,7 @@ import GroupDiv from "../common/GroupDiv";
 import axios from 'axios'; 
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
-import {TYPE_LIMITS,  TYPE_WHITE_LISTS, TYPE_EXCLUSION_LISTS, types, 
+import {TYPE_LIMITS,  TYPE_WHITE_LISTS, TYPE_EXCLUSION_LISTS, TYPES, 
    DESC_MIN,
    DESC_MAX, 
    minMaxs, 
@@ -18,12 +18,15 @@ import {TYPE_LIMITS,  TYPE_WHITE_LISTS, TYPE_EXCLUSION_LISTS, types,
   TPYE_DESC_2 ,
   TPYE_DESC_3 ,
   TPYE_DESC_4,
+  DESCS,
+  GET_TYPE_ID_BY_TITLE,
+  GET_DESC_ID_BY_TITLE 
   
 } from './util';
 import {isEmail, isEmpty, isAddress} from "../../util/valid"
 
 function CreateAlert({open, dlgClose, clusters}) {     
-	const [type, set_Type] = useState(types[0].title);
+	const [type, set_Type] = useState(TYPES[0].title);
 	const [desc, set_Desc] = useState('');
 	const [descs, set_Descs] = useState([]);   
 	const [descId, set_DescId] = useState(0);   
@@ -42,6 +45,21 @@ function CreateAlert({open, dlgClose, clusters}) {
 	const [minMaxError, set_MinMaxError] = useState('');
 	const [perError, set_PerError] = useState('');
  
+	const dlg_close = () => { 
+		set_Type (TYPES[0].title);
+		set_Desc('');
+		set_Descs([]);   
+		set_DescId(0);
+		// set_Emails([]);   
+		set_MinMax(null);
+		set_Per(null);
+		set_Amount(null);
+		set_PortFolio(null);
+		set_Recipients(["@You"]); 
+		set_DescDetail(false);
+		dlgClose();
+	}
+
 	const isEmptyAlert = (alert) => {
 		 
 		const {clusterName, description, recipients} = alert;
@@ -79,23 +97,6 @@ function CreateAlert({open, dlgClose, clusters}) {
 			else return true;
 		} 
 		return true;
-	}
-
-	const dlg_close = () => { 
-		set_Type (types[0].title);
-		set_Desc('');
-		set_Descs([]);   
-		set_DescId(0);   
-	 
-		set_Emails([]);   
-		set_MinMax(null);
-		set_Per(null);
-		set_Amount(null);
-		set_PortFolio(null);
-		set_Recipients(["@You"]); 
-		set_DescDetail(false); 
-
-		dlgClose();
 	}
 
 	const create_Alert = async () => {
@@ -195,15 +196,15 @@ function CreateAlert({open, dlgClose, clusters}) {
 	
 	const setDesc = (desc_) => {  
 		set_Desc(desc_);  
-		let id = -1;
-		for(var i in descs)
-		{
-			if(descs[i].title === desc_)
-			{
-				id = descs[i].id;
-				break;
-			}
-		} 
+		let id = GET_DESC_ID_BY_TITLE(desc_);
+		// for(var i in descs)
+		// {
+		// 	if(descs[i].title === desc_)
+		// 	{
+		// 		id = descs[i].id;
+		// 		break;
+		// 	}
+		// } 
 		set_DescId(id);
 		if(id === TYPE_DESC_MINMAX_AMOUNT_PER || id === TPYE_DESC_4)
 			set_DescDetail(true);
@@ -212,20 +213,20 @@ function CreateAlert({open, dlgClose, clusters}) {
 
 	const setType = (type_) => { 
 		set_Type(type_);
-		let id = 0;
-		for(var i in types)
-		{
-			if(types[i].title === type_)
-			{
-				id = types[i].id;
-				break;
-			}
-		} 
+		let id = GET_TYPE_ID_BY_TITLE(type_);
+		// for(var i in TYPES)
+		// {
+		// 	if(TYPES[i].title === type_)
+		// 	{
+		// 		id = TYPES[i].id;
+		// 		break;
+		// 	}
+		// } 
 		if(id === TYPE_LIMITS)
 		{
 			var descs_ = [
-				{ title: '<Min/Max> of <Amount> ETH per <transaction/time>', id: TYPE_DESC_MINMAX_AMOUNT_PER }, 
-				{ title: 'Notifications if value of total assets in wallets exceeds a threshold', id: TPYE_DESC_2 }
+				DESCS[0], 
+				DESCS[1]
 			];
 			set_Descs(descs_);
 			setDesc(descs_[0].title);
@@ -233,7 +234,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 		else if(id === TYPE_WHITE_LISTS)
 		{
 			var descs_ = [
-				{ title: 'Approved counterparts and smart contracts', id: TPYE_DESC_3 }, 
+				DESCS[2]
 			];
 			set_Descs(descs_);
 			setDesc(descs_[0].title);
@@ -241,7 +242,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 		else if(id === TYPE_EXCLUSION_LISTS)
 		{
 			var descs_ = [
-				{ title: 'Minimum of 20 ETH per month (team wages)', id: TPYE_DESC_4 },  
+				DESCS[3]
 			];
 			set_Descs(descs_);
 			setDesc(descs_[0].title);
@@ -251,9 +252,9 @@ function CreateAlert({open, dlgClose, clusters}) {
     const ComboType = (  
 		<Autocomplete
 		freeSolo 
-		options={types.map((option) => option.title)}
+		options={TYPES.map((option) => option.title)}
         id="controlled-demo"
-		defaultValue={types[0].title} 
+		defaultValue={TYPES[0].title} 
         onChange={(event, newValue) => { setType(newValue); }}
         renderInput={(params) => (
           <TextField {...params} label="" variant="standard" />

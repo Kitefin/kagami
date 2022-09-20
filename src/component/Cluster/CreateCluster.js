@@ -15,7 +15,7 @@ function CreateCluster({open, dlgClose}) {
 	const [addressError, set_AddressError] = useState('');
 	const [emailError, set_EmailError] = useState('');
 	const [desc, set_Desc] = useState('');   
-	const [email, set_Email] = useState(null);   
+	const [email, set_Email] = useState('');
 	const [address, set_Address] = useState('');   
 	const [addresses, set_Addresses] = useState([]);   
 	const [address_Display, set_Address_Display] = useState(null);
@@ -31,7 +31,7 @@ function CreateCluster({open, dlgClose}) {
 		set_AddressError('');
 		set_EmailError('');
 		set_Desc('');   
-		set_Email(null); 
+		set_Email(''); 
 		dlgClose();
 	}
 
@@ -159,6 +159,7 @@ function CreateCluster({open, dlgClose}) {
 		const ok = isAddress(address);
 		if(!ok) 
 		{
+			set_Address('');
 			set_AddressError('Wallet Address type error');
 			return;
 		} 

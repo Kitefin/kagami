@@ -4,7 +4,7 @@ import GroupDiv from "../common/GroupDiv";
 import axios from 'axios'; 
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
-import {TYPE_LIMITS,  TYPE_WHITE_LISTS, TYPE_EXCLUSION_LISTS, types, 
+import {TYPE_LIMITS,  TYPE_WHITE_LISTS, TYPE_EXCLUSION_LISTS, TYPES, 
 	DESC_MIN,
 	DESC_MAX, 
 	minMaxs, 
@@ -17,7 +17,10 @@ import {TYPE_LIMITS,  TYPE_WHITE_LISTS, TYPE_EXCLUSION_LISTS, types,
    TPYE_DESC_2 ,
    TPYE_DESC_3 ,
    TPYE_DESC_4,
-   descs_con 
+   DESCS,
+   GET_DESC_TITLE_BY_ID,
+   GET_DESC_ID_BY_TITLE,
+   GET_TYPE_ID_BY_TITLE
  } from './util';
  import {isEmail, isEmpty, isAddress} from "../../util/valid"
 
@@ -83,12 +86,12 @@ function EditAlert({open, dlgClose, clusters, id}) {
 
 	const dlg_Close = () => {
 
-		set_Type (types[0].title);
+		set_Type (TYPES[0].title);
 		set_Desc('');
 		set_Descs([]);   
 		set_DescId(0);   
 	 
-		set_Emails([]);   
+		// set_Emails([]);   
 		set_MinMax(null);
 		set_Per(null);
 		set_Amount(null);
@@ -118,15 +121,8 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				recipients_.push(recipient);
 			}
 			set_Recipients(recipients_);
-			
-			for(var i in descs_con)
-			{
-				if(descs_con[i].id === description.id)
-				{
-					set_Desc( descs_con[i].title );
-					break;
-				}
-			}
+			 
+			set_Desc( GET_DESC_TITLE_BY_ID(description.id) );
 			if(description.id === TYPE_DESC_MINMAX_AMOUNT_PER || description.id === TPYE_DESC_4)
 			{
 				set_DescDetail(true);
@@ -252,15 +248,15 @@ function EditAlert({open, dlgClose, clusters, id}) {
 	
 	const setDesc = (descs_, desc_) => {   
 		set_Desc(desc_);  
-		let id = -1;
-		for(var i in descs_)
-		{
-			if(descs_[i].title === desc_)
-			{
-				id = descs_[i].id;
-				break;
-			}
-		} 
+		let id = GET_DESC_ID_BY_TITLE(desc_);
+		// for(var i in descs_)
+		// {
+		// 	if(descs_[i].title === desc_)
+		// 	{
+		// 		id = descs_[i].id;
+		// 		break;
+		// 	}
+		// } 
 		set_DescId(id); 
 		if(id === TYPE_DESC_MINMAX_AMOUNT_PER || id === TPYE_DESC_4)
 			set_DescDetail(true);
@@ -269,20 +265,20 @@ function EditAlert({open, dlgClose, clusters, id}) {
 
 	const setType = (type_) => {  
 		set_Type(type_);
-		let id = 0;
-		for(var i in types)
-		{
-			if(types[i].title === type_)
-			{
-				id = types[i].id;
-				break;
-			}
-		} 
+		let id = GET_TYPE_ID_BY_TITLE(type_);
+		// for(var i in TYPES)
+		// {
+		// 	if(TYPES[i].title === type_)
+		// 	{
+		// 		id = TYPES[i].id;
+		// 		break;
+		// 	}
+		// } 
 		if(id === TYPE_LIMITS)
 		{
 			var descs_ = [
-				{ title: '<Min/Max> of <Amount> ETH per <transaction/time>', id: TYPE_DESC_MINMAX_AMOUNT_PER }, 
-				{ title: 'Notifications if value of total assets in wallets exceeds a threshold', id: TPYE_DESC_2 }
+				DESCS[0], 
+				DESCS[1]
 			];
 			set_Descs(descs_);
 			setDesc(descs_, descs_[0].title);
@@ -290,7 +286,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		else if(id === TYPE_WHITE_LISTS)
 		{
 			var descs_ = [
-				{ title: 'Approved counterparts and smart contracts', id: TPYE_DESC_3 }, 
+				DESCS[2]
 			];
 			set_Descs(descs_);
 			setDesc(descs_, descs_[0].title);
@@ -298,7 +294,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		else if(id === TYPE_EXCLUSION_LISTS)
 		{
 			var descs_ = [
-				{ title: 'Minimum of 20 ETH per month (team wages)', id: TPYE_DESC_4 },  
+				DESCS[3]
 			];
 			set_Descs(descs_);
 			setDesc(descs_, descs_[0].title);
@@ -308,9 +304,9 @@ function EditAlert({open, dlgClose, clusters, id}) {
     const ComboType = (  
 		<Autocomplete
 		freeSolo 
-		options={types.map((option) => option.title)}
+		options={TYPES.map((option) => option.title)}
         id="controlled-demo"
-		defaultValue={types[0].title}
+		defaultValue={TYPES[0].title}
 		value={type} 
         onChange={(event, newValue) => { setType(newValue); }}
         renderInput={(params) => (

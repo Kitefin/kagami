@@ -17,7 +17,8 @@ import {
 	TYPE_DESC_MINMAX_AMOUNT_PER ,
    	TPYE_DESC_2 ,
    	TPYE_DESC_3 ,
-   	TPYE_DESC_4   
+   	TPYE_DESC_4,   
+	GET_DESC_TITLE_BY_ID
  } from '../Alert/util';
 
 function Layout() {  
@@ -173,9 +174,8 @@ function Layout() {
 			let desc;
 			if(description.id === TYPE_DESC_MINMAX_AMOUNT_PER || description.id === TPYE_DESC_4)
 				desc = description.minMax + " of " + description.amount + " ETH per " + description.per;
-			else {
-				if(description.id === 3)
-					desc = 'Approved counterparts and smart contracts'
+			else { 
+					desc = GET_DESC_TITLE_BY_ID(description.id);
 			}
 			let recipientsStr = '';
 			for(var j in recipients)
@@ -244,7 +244,7 @@ function Layout() {
 				<h2>YOUR CLUSTERS</h2>
 				<TableScrollbar>
 				<Table>
-				<thead>
+					<thead>
 						<tr>
 							<th style={{ minWidth: '200px' }}>Cluster Name</th>
 							<th style={{ minWidth: '300px' }}>Cluster Description</th>
