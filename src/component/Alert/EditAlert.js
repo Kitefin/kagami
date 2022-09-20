@@ -383,7 +383,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		</>
 	);
  
-	const ComboPort = (
+	const ComboCluster = (
 		<>
 		<Autocomplete
 			freeSolo
@@ -458,7 +458,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 					<span>Set Policies for</span>
 				</Grid>
 				<Grid item xs={5} style={{marginLeft: '-3%'}}>
-					{ComboPort} 
+					{ComboCluster} 
 				</Grid>
 				<Grid item xs={2}>
 					<span>Cluster</span>

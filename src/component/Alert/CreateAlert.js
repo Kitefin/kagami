@@ -329,7 +329,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 		</>
 	);
  
-	const ComboPort = (
+	const ComboCluster = (
 		<>
 			<Autocomplete
 				freeSolo
@@ -340,10 +340,10 @@ function CreateAlert({open, dlgClose, clusters}) {
 						{...params} 
 						label="" 
 						variant="standard" 
-						style={{color: 'white', textAlign: 'center'}}  
+						sx={{color: 'white', textAlign: 'center'}}  
 					/>
 				} 
-				style={{color: 'white', textAlign: 'center'}} 
+				sx={{color: 'white', textAlign: 'center'}} 
 				value={portFolio}	 
 				onChange=
 				{
@@ -411,7 +411,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 					<span>Set Policies for</span>
 				</Grid>
 				<Grid item xs={5} style={{marginLeft: '-3%'}}>
-					{ComboPort} 
+					{ComboCluster} 
 				</Grid>
 				<Grid item xs={2}>
 					<span>Cluster</span>
