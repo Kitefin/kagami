@@ -35,7 +35,13 @@ function EditCluster({open, dlgClose, id}) {
 		set_Name('');
 		set_Desc('');
 		set_Address('');   
-		set_Addresses([]);    
+		set_Addresses([]);  
+		set_NameError ('');
+		set_DescError('');
+		set_AddressError('');
+		set_EmailError('');
+		set_Email(null);  
+		set_Address_Display(null);
 		dlgClose();
 	}
 

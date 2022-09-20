@@ -24,7 +24,15 @@ function CreateCluster({open, dlgClose}) {
 		set_Name('');
 		set_Desc('');
 		set_Address('');   
-		set_Addresses([]);    
+		set_Addresses([]);   
+		set_Address_Display(null) ;
+		set_NameError('');
+		set_DescError('');
+		set_AddressError('');
+		set_EmailError('');
+		set_Desc('');   
+		set_Email(null);
+
 		dlgClose();
 	}
 

@@ -21,7 +21,6 @@ import {TYPE_LIMITS,  TYPE_ALLOW_LISTS, TYPE_EXCLUSION_LISTS, types,
   
 } from './util';
 import {isEmail, isEmpty, isAddress} from "../../util/valid"
-  
 
 function CreateAlert({open, dlgClose, clusters}) {    
 	// const classes = useStyles();
@@ -79,8 +78,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 		return true;
 	}
 
-	const dlg_close = () => {
-
+	const dlg_close = () => { 
 		set_Type (types[0].title);
 		set_Desc('');
 		set_Descs([]);   
