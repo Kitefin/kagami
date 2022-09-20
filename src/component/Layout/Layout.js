@@ -13,6 +13,13 @@ import axios from 'axios';
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
 
+import {  
+	TYPE_DESC_MINMAX_AMOUNT_PER ,
+   	TPYE_DESC_2 ,
+   	TPYE_DESC_3 ,
+   	TPYE_DESC_4   
+ } from '../Alert/util';
+
 function Layout() {  
 	const [open1, setOpen1] = useState(false); 
 	const [open2, setOpen2] = useState(false); 
@@ -163,7 +170,13 @@ function Layout() {
 			const alert = alerts[i];
 			// console.log(alert)
 			const {type, description, clusterName, recipients, _id} = alert;
-			const desc = description.minMax + " of " + description.amount + " ETH per " + description.per;
+			let desc;
+			if(description.id === TYPE_DESC_MINMAX_AMOUNT_PER || description.id === TPYE_DESC_4)
+				desc = description.minMax + " of " + description.amount + " ETH per " + description.per;
+			else {
+				if(description.id === 3)
+					desc = 'Approved counterparts and smart contracts'
+			}
 			let recipientsStr = '';
 			for(var j in recipients)
 			{
@@ -241,70 +254,7 @@ function Layout() {
 						</tr>
 					</thead>
 					<tbody>
-						{clusterTrs}						
-						{/* <tr>
-							<td style={{ minWidth: '200px' }}>All Project Wallets</td>
-							<td style={{ minWidth: '300px' }}>All wallets controlled by our company</td>
-							<td style={{ minWidth: '150px' }}>125 wallets</td>
-							<td style={{ minWidth: '150px' }}>7 alerts</td>
-							<td style={{ minWidth: '140px', backgroundColor: 'rgb(9, 154, 0)', color: 'white' }}>
-								Edit cluster
-							</td>
-						</tr>
-						<tr>
-							<td>All Team Vesting</td>
-							<td>All wallets that the team hold their personal reward tokens in</td>
-							<td>32 wallets</td>
-							<td>1 alerts</td>
-							<td style={{ minWidth: '140px', backgroundColor: 'rgb(9, 154, 0)', color: 'white' }}>
-								Edit cluster
-							</td>
-						</tr>
-						<tr>
-							<td>Founder Vesting</td>
-							<td>All wallets that the founders hold their personal reward tokens in</td>
-							<td>10 wallets</td>
-							<td>1 alerts</td>
-							<td style={{ minWidth: '140px', backgroundColor: 'rgb(9, 154, 0)', color: 'white' }}>
-								Edit cluster
-							</td>
-						</tr>
-						<tr>
-							<td>Executive Controlled</td>
-							<td>All wallets that are controlled by executive team on behalf of the company</td>
-							<td>125 wallets</td>
-							<td>5 alerts</td>
-							<td style={{ minWidth: '140px', backgroundColor: 'rgb(9, 154, 0)', color: 'white' }}>
-								Edit cluster
-							</td>
-						</tr>
-						<tr>
-							<td>Portfolio Managers</td>
-							<td>All wallets that are controlled by portfolio managers</td>
-							<td>20 wallets</td>
-							<td>10 alerts</td>
-							<td style={{ minWidth: '140px', backgroundColor: 'rgb(9, 154, 0)', color: 'white' }}>
-								Edit cluster
-							</td>
-						</tr>
-						<tr>
-							<td>Junior Traders</td>
-							<td>All wallets that are controlled by junior traders</td>
-							<td>10 wallets</td>
-							<td>35 alerts</td>
-							<td style={{ minWidth: '140px', backgroundColor: 'rgb(9, 154, 0)', color: 'white' }}>
-								Edit cluster
-							</td>
-						</tr>
-						<tr>
-							<td>Accounting</td>
-							<td>All wallets that are controlled by accounts team</td>
-							<td>25 wallets</td>
-							<td>15 alerts</td>
-							<td style={{ minWidth: '140px', backgroundColor: 'rgb(9, 154, 0)', color: 'white' }}>
-								Edit cluster
-							</td>
-						</tr> */}
+						{clusterTrs}	 
 					</tbody>
 				</Table>
 				</TableScrollbar>
@@ -323,49 +273,7 @@ function Layout() {
 						</tr>
 					</thead>
 					<tbody>
-						{alertTrs}
-						{/* <tr>
-							<td>Limits</td>
-							<td>Maximum of 500 ETH per transaction</td>
-							<td>All Project Wallets</td>
-							<td>You, @rogerTHAT, @hana</td>
-							<td style={{ backgroundColor: '#00ff30' }}>Edit Notification</td>
-						</tr>
-						<tr>
-							<td>Limits</td>
-							<td>Maximum of 5000 ETH per day</td>
-							<td>All Project Wallets</td>
-							<td>You, @rogerTHAT, @risk404</td>
-							<td style={{ backgroundColor: '#00ff30' }}>Edit Notification</td>
-						</tr>
-						<tr>
-							<td>Limits</td>
-							<td>Maximum of 2500 ETH per day</td>
-							<td>Executive Controlled</td>
-							<td>You, @rogerTHAT, @raggedJ</td>
-							<td style={{ backgroundColor: '#00ff30' }}>Edit Notification</td>
-						</tr>
-						<tr>
-							<td>Limits</td>
-							<td>Alerts if value of total assets in wallets exceeds a threshold</td>
-							<td>Junior Traders</td>
-							<td>You, @rogerTHAT</td>
-							<td style={{ backgroundColor: '#00ff30' }}>Edit Notification</td>
-						</tr>
-						<tr>
-							<td>Allow-lists</td>
-							<td>Approved counterparts and smart contracts</td>
-							<td>Portfolio Managers</td>
-							<td>You, @grosveynor</td>
-							<td style={{ backgroundColor: '#00ff30' }}>Edit Notification</td>
-						</tr>
-						<tr>
-							<td>Exclusion-lists</td>
-							<td>Minimum of 20 ETH per month (team wages)</td>
-							<td>Accounts Team</td>
-							<td>You, @seasonH</td>
-							<td style={{ backgroundColor: '#00ff30' }}>Edit Notification</td>
-						</tr> */}
+						{alertTrs} 
 					</tbody>
 					</Table>
 				</TableScrollbar>

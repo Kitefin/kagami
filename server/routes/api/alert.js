@@ -54,15 +54,15 @@ const wallets2Emails = async(wallets) => {
 
 // Create a alert 
 router.post( '/', async(req, res) => {
-  const {type, description, clusterName, recipients} = req.body;
-   
-    try { 
-      let alert = await Alert.findOne({ type: type, description: description, clusterName: clusterName, recipients: recipients });
+    const {type, description, clusterName, recipients} = req.body;
+    
+    let recipientWallets = await emails2Wallets(recipients);
+    try {  
+      let alert = await Alert.findOne({type: type, description: description, clusterName: clusterName, recipients: recipientWallets});
+     
       if (alert) {
         return res .status(400) .json({ errors: [{ msg: 'Same Alert already exists' }] });
-      }
-
-      let recipientWallets = await emails2Wallets(recipients); 
+      } 
 
       const newAlert = new Alert({ 
         type: type,      description: description, 

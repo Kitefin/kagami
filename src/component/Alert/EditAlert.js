@@ -4,7 +4,7 @@ import GroupDiv from "../common/GroupDiv";
 import axios from 'axios'; 
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
-import {TYPE_LIMITS,  TYPE_ALLOW_LISTS, TYPE_EXCLUSION_LISTS, types, 
+import {TYPE_LIMITS,  TYPE_WHITE_LISTS, TYPE_EXCLUSION_LISTS, types, 
 	DESC_MIN,
 	DESC_MAX, 
 	minMaxs, 
@@ -43,7 +43,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 	const [perError, set_PerError] = useState('');
 
 	const isEmptyAlert = (alert) => {
-		console.log(alert)
+	 
 		const {clusterName, description, recipients} = alert;
 		if(isEmpty(clusterName))
 		{
@@ -57,22 +57,26 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		}
 		if(description)
 		{
-			const {minMax, amount, per} = description;
-			if(isEmpty(minMax)) 
+			if(description.id === TYPE_DESC_MINMAX_AMOUNT_PER || description.id === TPYE_DESC_4)
 			{
-				set_MinMaxError("Select min or max")
-				return false;
+				const {minMax, amount, per} = description;
+				if(isEmpty(minMax)) 
+				{
+					set_MinMaxError("Select min or max")
+					return false;
+				}
+				if(isEmpty(amount)) 
+				{
+					set_AmountError("Type amount value")
+					return false;
+				}
+				if(isEmpty(per)) 
+				{
+					set_PerError("Select case of per")
+					return false;
+				} 
 			}
-			if(isEmpty(amount)) 
-			{
-				set_AmountError("Type amount value")
-				return false;
-			}
-			if(isEmpty(per)) 
-			{
-				set_PerError("Select case of per")
-				return false;
-			} 
+			else return true;
 		} 
 		return true;
 	}
@@ -100,8 +104,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		const url = NODE_URL + `/api/alert/${id}`;  
 		try{ 
 			const res = await axios.get(url);
-			const { type, description, clusterName, recipients } = res.data;
-			console.log(res.data)			 
+			const { type, description, clusterName, recipients } = res.data; 		 
 			setType(type);
 			set_PortFolio(clusterName);
 			let recipients_ = [];
@@ -154,16 +157,27 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				recipient = GET_USER_EMAIL(); 
 			recipients_.push(recipient);
 		}
+		let description = {};
+		
+		if(descDetail)
+		{    
+			description = {
+				id: descId,
+				minMax: minMax,
+				amount: amount,
+				per: per
+			};	
+		}
+		else 
+			description = {
+				id: descId
+			};
+
 		if(descDetail)
 		{    
 			const alert = {
 				type: type,
-				description: {
-					id: descId,
-					minMax: minMax,
-					amount: amount,
-					per: per
-				},
+				description: description,
 				clusterName: portFolio,
 				recipients: recipients_,
 				id: id
@@ -236,8 +250,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		}
 	} 
 	
-	const setDesc = (descs_, desc_) => {  
-		// console.log(desc_)
+	const setDesc = (descs_, desc_) => {   
 		set_Desc(desc_);  
 		let id = -1;
 		for(var i in descs_)
@@ -248,15 +261,13 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				break;
 			}
 		} 
-		set_DescId(id);
-		// console.log(id)
+		set_DescId(id); 
 		if(id === TYPE_DESC_MINMAX_AMOUNT_PER || id === TPYE_DESC_4)
 			set_DescDetail(true);
 		else set_DescDetail(false);
 	}
 
-	const setType = (type_) => { 
-		// console.log(type_)
+	const setType = (type_) => {  
 		set_Type(type_);
 		let id = 0;
 		for(var i in types)
@@ -276,7 +287,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 			set_Descs(descs_);
 			setDesc(descs_, descs_[0].title);
 		}
-		else if(id === TYPE_ALLOW_LISTS)
+		else if(id === TYPE_WHITE_LISTS)
 		{
 			var descs_ = [
 				{ title: 'Approved counterparts and smart contracts', id: TPYE_DESC_3 }, 

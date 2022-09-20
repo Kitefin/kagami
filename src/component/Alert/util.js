@@ -1,10 +1,10 @@
 export const TYPE_LIMITS = 1;
-export const TYPE_ALLOW_LISTS = 2;
+export const TYPE_WHITE_LISTS = 2;
 export const TYPE_EXCLUSION_LISTS = 3;  
 
 export const types = [
     { title: 'Limits', id: TYPE_LIMITS },
-    { title: 'Allow-lists', id: TYPE_ALLOW_LISTS },
+    { title: 'Whitelist', id: TYPE_WHITE_LISTS },
     { title: 'Exclusion-lists', id: TYPE_EXCLUSION_LISTS }
 ]; 
 

@@ -5,7 +5,7 @@ import GroupDiv from "../common/GroupDiv";
 import axios from 'axios'; 
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
-import {TYPE_LIMITS,  TYPE_ALLOW_LISTS, TYPE_EXCLUSION_LISTS, types, 
+import {TYPE_LIMITS,  TYPE_WHITE_LISTS, TYPE_EXCLUSION_LISTS, types, 
    DESC_MIN,
    DESC_MAX, 
    minMaxs, 
@@ -22,8 +22,7 @@ import {TYPE_LIMITS,  TYPE_ALLOW_LISTS, TYPE_EXCLUSION_LISTS, types,
 } from './util';
 import {isEmail, isEmpty, isAddress} from "../../util/valid"
 
-function CreateAlert({open, dlgClose, clusters}) {    
-	// const classes = useStyles();
+function CreateAlert({open, dlgClose, clusters}) {     
 	const [type, set_Type] = useState(types[0].title);
 	const [desc, set_Desc] = useState('');
 	const [descs, set_Descs] = useState([]);   
@@ -44,7 +43,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 	const [perError, set_PerError] = useState('');
  
 	const isEmptyAlert = (alert) => {
-		console.log(alert)
+		 
 		const {clusterName, description, recipients} = alert;
 		if(isEmpty(clusterName))
 		{
@@ -58,22 +57,26 @@ function CreateAlert({open, dlgClose, clusters}) {
 		}
 		if(description)
 		{
-			const {minMax, amount, per} = description;
-			if(isEmpty(minMax)) 
+			if(description.id === TYPE_DESC_MINMAX_AMOUNT_PER || description.id === TPYE_DESC_4)
 			{
-				set_MinMaxError("Select min or max")
-				return false;
-			}
-			if(isEmpty(amount)) 
-			{
-				set_AmountError("Type amount value")
-				return false;
-			}
-			if(isEmpty(per)) 
-			{
-				set_PerError("Select case of per")
-				return false;
+				const {minMax, amount, per} = description;
+				if(isEmpty(minMax)) 
+				{
+					set_MinMaxError("Select min or max")
+					return false;
+				}
+				if(isEmpty(amount)) 
+				{
+					set_AmountError("Type amount value")
+					return false;
+				}
+				if(isEmpty(per)) 
+				{
+					set_PerError("Select case of per")
+					return false;
+				}
 			} 
+			else return true;
 		} 
 		return true;
 	}
@@ -102,32 +105,42 @@ function CreateAlert({open, dlgClose, clusters}) {
 			if(recipient === '@You') recipient = GET_USER_EMAIL(); 
 			recipients_.push(recipient);
 		}
+		let description = {};
 		if(descDetail)
 		{    
-			const alert = {
-				type: type,
-				description: {
-					id: descId,
-					minMax: minMax,
-					amount: amount,
-					per: per
-				},
-				clusterName: portFolio,
-				recipients: recipients_ 
-			}  
+			description = {
+				id: descId,
+				minMax: minMax,
+				amount: amount,
+				per: per
+			};	
+		}
+		else 
+			description = {
+				id: descId
+			};	
 
-			const ok = isEmptyAlert(alert);
-			if(!ok) return;
+		const alert = {
+			type: type,
+			description: description,
+			clusterName: portFolio,
+			recipients: recipients_ 
+		}  
 
-			const url = NODE_URL + "/api/alert/";
-			try { 
-				await axios.post(url, alert);   
-			}
-			catch(err) {
-				console.log(err) 
-			}  		
-			dlg_close(); 	
-		} 	
+		const ok = isEmptyAlert(alert);
+		 
+
+		if(!ok) return;
+
+		const url = NODE_URL + "/api/alert/";
+		try { 
+			await axios.post(url, alert);   
+		}
+		catch(err) {
+			console.log(err) 
+		}  		
+		dlg_close(); 
+
 	}  
   
 	const getEmails = async() => { 
@@ -192,7 +205,6 @@ function CreateAlert({open, dlgClose, clusters}) {
 			}
 		} 
 		set_DescId(id);
-
 		if(id === TYPE_DESC_MINMAX_AMOUNT_PER || id === TPYE_DESC_4)
 			set_DescDetail(true);
 		else set_DescDetail(false);
@@ -218,7 +230,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 			set_Descs(descs_);
 			setDesc(descs_[0].title);
 		}
-		else if(id === TYPE_ALLOW_LISTS)
+		else if(id === TYPE_WHITE_LISTS)
 		{
 			var descs_ = [
 				{ title: 'Approved counterparts and smart contracts', id: TPYE_DESC_3 }, 
@@ -425,9 +437,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 		<p className='mt-3 mb-0 text-red'>{recipientsError}</p>
 		</>
 	); 
-
-	 
-	 
+ 	 
 	return (
 		<> 
 			<Dialog  
