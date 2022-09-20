@@ -31,8 +31,7 @@ function CreateCluster({open, dlgClose}) {
 		set_AddressError('');
 		set_EmailError('');
 		set_Desc('');   
-		set_Email(null);
-
+		set_Email(null); 
 		dlgClose();
 	}
 
@@ -68,6 +67,17 @@ function CreateCluster({open, dlgClose}) {
 		return true;
 	}
 
+	const checkCluster = () => {    
+		if(nameError !== '')  
+			return false; 
+		if(descError !== '')  
+			return false; 
+		if(emailError !== '') 
+			return false;          
+		return true;
+	}
+
+
 	const create_Cluster = async () => {
 		const userAddress = GET_USER_ADDRESS();  
 		const cluster = {
@@ -77,7 +87,9 @@ function CreateCluster({open, dlgClose}) {
 			userAddress: userAddress,
 			email: email
 		}  
-		const ok = isEmptyCluster(cluster);
+		let ok = isEmptyCluster(cluster);
+		if(!ok) return;
+		ok = checkCluster();
 		if(!ok) return;
 		const url = NODE_URL + "/api/cluster/";
 		try { 
@@ -90,8 +102,8 @@ function CreateCluster({open, dlgClose}) {
 	}  
 
 	useEffect(() => {  
-		const email_ = GET_USER_EMAIL();
-		set_Email(email_);  
+		// const email_ = GET_USER_EMAIL();
+		// set_Email(email_);  
 		}, []); 
 
 	
@@ -112,6 +124,7 @@ function CreateCluster({open, dlgClose}) {
 				label="" 
 				variant="standard"  
 				onChange={(e) => { setName(e.target.value); }}	
+				value={name}
 			/>
 			<p className='mt-3 mb-0 text-red'>{nameError}</p> 
 		</>
@@ -134,6 +147,7 @@ function CreateCluster({open, dlgClose}) {
 				label="" 
 				variant="standard"  
 				onChange={ e => { setDesc(e.target.value); }}	
+				value={desc}
 			/>  
 			<p className='mt-3 mb-0 text-red'>{descError}</p> 
 		</>
@@ -236,7 +250,7 @@ function CreateCluster({open, dlgClose}) {
 				id="standard-basic" 
 				label="" 
 				variant="standard"
-				defaultValue={email}
+				value={email}
 				onChange={ e => { setEmail(e.target.value); }}	
 			/>  
 			<p className='mt-3 mb-0 text-red'>{emailError}</p> 

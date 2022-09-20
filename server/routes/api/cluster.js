@@ -78,11 +78,26 @@ router.get('/', async (req, res) => {
 // @route GET api/cluster/:id 
 router.get('/:id',  async (req, res) => {
   try {
-    const cluster = await Cluster.findById(req.params.id);
+    let cluster = await Cluster.findById(req.params.id);
     if (!cluster) {
       return res.status(404).json({ msg: 'Cluster not found' });
-    }
-    res.json(cluster);
+    } 
+    let user = await User.findOne({address: cluster.userAddress});
+     
+    if(!user)
+      return res.status(404).json({ msg: 'email not found' });
+     
+      res.json(
+        {
+          addresses: cluster.addresses,
+          _id: cluster._id,
+          name: cluster.name,
+          description: cluster.description,
+          userAddress: cluster.userAddress,
+          email: user.email
+        }
+      );
+     
   } catch (err) {
     // console.error(err.message);
     res.status(500).send('Server Error');

@@ -233,7 +233,7 @@ function Layout() {
 				<Table>
 				<thead>
 						<tr>
-							<th style={{ minWidth: '200px' }}>Cluser Name</th>
+							<th style={{ minWidth: '200px' }}>Cluster Name</th>
 							<th style={{ minWidth: '300px' }}>Cluster Description</th>
 							<th style={{ minWidth: '150px' }}>Wallets Count</th>
 							<th style={{ minWidth: '150px' }}>Alerts Count</th>

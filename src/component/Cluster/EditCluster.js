@@ -76,11 +76,23 @@ function EditCluster({open, dlgClose, id}) {
 		return true;
 	}
 	
+	const checkCluster = () => {    
+		if(nameError !== '')  
+			return false; 
+		if(descError !== '')  
+			return false; 
+		if(emailError !== '') 
+			return false;          
+		return true;
+	}
+
 	const getClusterById = async() => {
 		const url = NODE_URL + `/api/cluster/${id}`;  
 		try{ 
 			const res = await axios.get(url); 
-			const {name, description, addresses} = res.data; 
+			const {name, email, description, addresses} = res.data; 
+			console.log(res.data)
+			set_Email(email);  
 			set_Name(name);
 			set_Desc(description);
 			set_Addresses(addresses);
@@ -99,11 +111,7 @@ function EditCluster({open, dlgClose, id}) {
     	getClusterById();	
 	}
 	},[id, open]); 
-
-
-
-	
-
+ 
 	const save_Cluster = async () => {  
 		const userAddress = GET_USER_ADDRESS();
 		const cluster = {
@@ -114,9 +122,11 @@ function EditCluster({open, dlgClose, id}) {
 			userAddress: userAddress,
 			email: email
 		} 	
-		const ok = isEmptyCluster(cluster); 
+		let ok = isEmptyCluster(cluster); 
 		if(!ok) return;	
-		alert(2)
+		ok = checkCluster(); 
+		if(!ok) return;	
+		 
 		const url = NODE_URL + "/api/cluster/edit";
 		try{ 
 			const res = await axios.post(url, cluster);
@@ -129,8 +139,8 @@ function EditCluster({open, dlgClose, id}) {
 	}
   
 	useEffect(() => {  
-		const email_ = GET_USER_EMAIL();
-		set_Email(email_);  
+		// const email_ = GET_USER_EMAIL();
+		// set_Email(email_);  
 		}, []); 
 
 	const delete_Cluster = async () => {    
@@ -287,7 +297,7 @@ function EditCluster({open, dlgClose, id}) {
 				id="standard-basic" 
 				label="" 
 				variant="standard"
-				defaultValue={email}
+				value={email}
 				onChange={ e => { setEmail(e.target.value); }}	
 			/>  
 			<p className='mt-3 mb-0 text-red'>{emailError}</p> 

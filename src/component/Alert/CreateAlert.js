@@ -168,8 +168,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 	}  
  
 	let availableRecipients = [ "@You" ];
-	
-	console.log(emails)
+	 
 	if( emails ) 
 	{ 
 		const userAddress = GET_USER_ADDRESS();
