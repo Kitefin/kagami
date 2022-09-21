@@ -4,6 +4,8 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import GroupDiv from "../common/GroupDiv"; 
 import ErrorDiv from '../common/ErrorDiv';
+import ComboBox from '../common/ComboBox';
+import ComboList from '../common/ComboList';
 import axios from 'axios'; 
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
@@ -30,7 +32,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 	const [emails, set_Emails] = useState([]);   
 	const [minMax, set_MinMax] = useState(null);
 	const [per, set_Per] = useState(null);
-	const [amount, set_Amount] = useState(null);
+	const [amount, set_Amount] = useState('');
 	const [portFolio, set_PortFolio] = useState(null);
 	const [recipients, set_Recipients] = useState([]);	 	
 	const [amountError, set_AmountError] = useState('');
@@ -279,65 +281,53 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		} 
 	}
 	 
-		const ComboDescMinMax = (
-			<>
-				<Autocomplete
-					freeSolo	
-					options={minMaxs.map((option) => option.title)}	  
-					renderInput={(params) => <TextField {...params} label="Min or Max" variant="standard" />}
-					onChange=
-					{
-						(event, value) => 
-						{ 
-							if(value !== null) 
-							{
-								set_MinMaxError("");
-								set_MinMax(value) ;
-							}
-							else  
-								set_MinMaxError("Select min or max")
-						}
-					} 
+	const setMinMax = (val) => {
+		if(val !== null) 
+		{
+			set_MinMaxError("");
+			set_MinMax(val);
+		}
+		else  
+			set_MinMaxError("Select min or max")
+	}
+
+		const ComboDescMinMax = ( 
+				<ComboBox
+					label="min or max" 
+					options={minMaxs.map((option) => option.title)}
 					value={minMax}
-				/>
-				<ErrorDiv error={minMaxError}/>
-			</>
+					onChange={setMinMax}
+					error={minMaxError}
+				/>  
 		);
 
-		const ComboDescPer = (
-			<>
-				<Autocomplete
-					freeSolo 
+		const setPer = (val) => {
+			if(val !== null)
+			{
+				set_Per(val);
+				set_PerError('');
+			}
+			else set_PerError("Select case of per")
+		}
+
+		const ComboDescPer = ( 
+				<ComboBox
+					label="per"
 					options={pers.map((option) => option.title)}
-					renderInput={(params) => <TextField {...params} label="Per" variant="standard" />}			
-					onChange=
-					{
-						(event, value) => 
-						{
-							if(value !== null)
-							{
-								set_Per(value)
-								set_PerError('');
-							}
-							else set_PerError("Select case of per")
-						}
-					} 
 					value={per}
-				/>
-				<ErrorDiv error={perError}/>
-			</>
+					onChange={setPer}
+					error={perError}
+				/>  
 		);
 
-		const InputAmount = ( 
-			<>
+		const InputAmount = (  
 			<TextField  
 				label="Amount" 
 				variant="standard"  
-				onChange={(e) => setAmount(e.target.value) }
 				value={amount}
-			/>
-			<ErrorDiv error={amountError}/>
-			</>
+				onChange={(e) => setAmount(e.target.value) } 
+				error={amountError}
+			/> 
 		);
 
 		const add_Address = () => {
@@ -426,15 +416,12 @@ function EditAlert({open, dlgClose, clusters, id}) {
 			{descId === 0 && null }
 			{descId === LIMIT_AMOUNT_PER && (
 				<>
-					<Autocomplete
-						freeSolo
-						id="combo-box-demo" 
+					<ComboBox
 						options={descs.map((option) => option.title)} 
 						value={desc}
-						renderInput={(params) => <TextField {...params} label="" variant="standard" />}
-						onChange={(event, value) => setDesc(value)}
+						onChange={setDesc}
 						style={{width: '80%', marginLeft: '10%'}}
-					/> 
+					/>
 					<div className="p-3">
 						<GroupDiv title="Detail Setting" comp={
 							<div className="px-1 pr-1">
@@ -456,18 +443,12 @@ function EditAlert({open, dlgClose, clusters, id}) {
 			) }
 			{descId === LIMIT_TOTAL_ASSETS && (
 				<>
-					<Autocomplete
-						freeSolo
-						id="combo-box-demo" 
+					<ComboBox
 						options={descs.map((option) => option.title)} 
 						value={desc}
-						renderInput={(params) => <TextField {...params} label="" variant="standard" />}
-						onChange={(event, value) => setDesc(value)}
+						onChange={setDesc}
 						style={{width: '80%', marginLeft: '10%'}}
-					/> 
-					<div className="p-3">
-						 
-					</div>
+					/>
 				</>
 			) }
 			{descId === WHITELIST_APPROVE && (
@@ -514,22 +495,14 @@ function EditAlert({open, dlgClose, clusters, id}) {
 
 	const ComboType = ( 
 		<>
-		<Autocomplete
-			freeSolo 
-			options={TYPES.map((option) => option.title)}
-			id="controlled-demo"
-			defaultValue={TYPES[0].title}
-			value={type} 
-			onChange={(event, newValue) => { setType(newValue); }}
-			renderInput={(params) => (
-			  <TextField {...params} label="" variant="standard" />
-			)}
-			style={{width: '80%', marginLeft: '10%'}}
-		/>
+			<ComboBox
+				options={TYPES.map((option) => option.title)}
+				value={type} 
+				onChange={setType}
+				style={{width: '80%', marginLeft: '10%'}}
+			/> 
 		</>  
-	);
-
-	 
+	); 
 
 	const ComboType_Desc = (
 		<>
@@ -545,66 +518,43 @@ function EditAlert({open, dlgClose, clusters, id}) {
 	)
 
  
-	const ComboCluster = (
-		<>
-		<Autocomplete
-			freeSolo
-			id="combo-box-demo" 
+	const setClusterName = (val) => {
+		if(val !== null) 
+		{
+			set_PortFolio(val);
+			set_ClusterNameError("");
+		}
+		else set_ClusterNameError("cluster name is empty!")
+	}
+
+	const ComboCluster = ( 
+		<ComboBox 
 			options={portfolios.map((option) => option.title)}
-			renderInput={(params) => <TextField {...params} label="" variant="standard" />}
 			style={{width: '80%', marginLeft: '10%'}}
 			value={portFolio}			 
-			onChange=
-			{
-				(event, value) => 
-				{ 
-					if(value !== null) 
-					{
-						set_PortFolio(value);
-						set_ClusterNameError("");
-					}
-					else set_ClusterNameError("cluster name is empty!")
-				}
-			}
-		/>
-		<ErrorDiv error={clusterNameError}/>
-		</>
+			onChange={setClusterName}
+			error={clusterNameError}
+		/>  
 	);
     
-	const HookRecipients = (
-		<>
-		<Autocomplete
-		  	multiple
-		  	id="tags-filled"
+	const setRecipients = (val) => {
+		if(val.length > 0)
+		{
+			set_Recipients(val);
+			set_RecipientsError("");
+		}
+	}
+
+	const HookRecipients = ( 
+		<ComboList 
+			label=""
 			options={availableRecipients}
-			getOptionLabel={(option) => option}
-		   	defaultValue={[availableRecipients[0]]}
-			value={recipients}
-		  	freeSolo  
-			renderTags={(value, getTagProps) =>
-			value.map((option, index) => (
-			  	<Chip variant="outlined" label={option} {...getTagProps({ index })} />
-				))
-		  	}
-		  	renderInput={(params) => (
-				<TextField {...params} variant="filled" label="" placeholder="" />
-		  	)}
-		  	style={{width: '80%', marginLeft: '10%'}}
-			  onChange=
-			  {
-				  (e, val) => 
-				  {
-					  if(val.length > 0)
-					  {
-						  set_Recipients(val);
-						  set_RecipientsError("");
-					  }
-					//   else set_RecipientsError("Recipients is empty!")
-				  }
-			  }		
-		/>
-		<ErrorDiv error={recipientsError}/>
-		</>
+			getOptionLabel={(option) => option} 
+			value={recipients} 
+			onChange={setRecipients}
+			style={{width: '80%', marginLeft: '10%'}}
+			error={recipientsError}
+		/>  
 	); 
 	 
 	return (

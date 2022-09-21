@@ -5,6 +5,8 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import GroupDiv from "../common/GroupDiv"; 
 import ErrorDiv from '../common/ErrorDiv';
+import ComboBox from '../common/ComboBox';
+import ComboList from '../common/ComboList';
 import axios from 'axios'; 
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
@@ -232,83 +234,63 @@ function CreateAlert({open, dlgClose, clusters}) {
 	}
 
     const ComboType = (  
-		<Autocomplete
-			freeSolo 
+		<ComboBox 
 			options={TYPES.map((option) => option.title)} 
 			value={type}
-			onChange={(event, newValue) => { setType(newValue); }}
-			renderInput={(params) => (
-				<TextField {...params} 
-					label="" 
-					variant="standard" 
-				/>
-        	)}
+			onChange={setType}
 			style={{width: '80%', marginLeft: '10%'}}
-      /> 
+		/> 
    	); 
 	 
-	const ComboDescMinMax = (
-		<>
-		<Autocomplete
-			freeSolo
-			id="combo-box-demo" 	
-			options={minMaxs.map((option) => option.title)}	  
-			renderInput={(params) => <TextField {...params} label="Min or Max" variant="standard" />}
+	const setMinMax = (val) => {
+		if(val !== null) 
+		{
+			set_MinMaxError("");
+			set_MinMax(val) ;
+		}
+		else  
+			set_MinMaxError("Select min or max")
+	}
+
+	const ComboDescMinMax = ( 
+		<ComboBox 
+			label="min or max"
+			options={minMaxs.map((option) => option.title)}
 			value={minMax}
-			onChange=
-			{
-				(event, value) => 
-				{ 
-					if(value !== null) 
-					{
-						set_MinMaxError("");
-						set_MinMax(value) ;
-					}
-					else  
-						set_MinMaxError("Select min or max")
-				}
-			} 
-		/> 
-		<ErrorDiv error={minMaxError}/>
-		</>
+			onChange={setMinMax}
+			style={null}
+			error={minMaxError}
+		/>   
 	);
 
-	const ComboDescPer = (
-		<>
-		<Autocomplete
-			freeSolo
-			id="combo-box-demo" 
+	const setPer = (val) => {
+		if(val !== null)
+		{
+			set_Per(val)
+			set_PerError('');
+		}
+		else set_PerError("Select case of per")
+	}
+
+	const ComboDescPer = ( 
+		<ComboBox 
+			label="per"
 			options={pers.map((option) => option.title)}
-			renderInput={(params) => <TextField {...params} label="Per" variant="standard" />}
 			value={per}
-			onChange=
-			{
-				(event, value) => 
-				{
-					if(value !== null)
-					{
-						set_Per(value)
-						set_PerError('');
-					}
-					else set_PerError("Select case of per")
-				}
-			} 
-		/>
-		<ErrorDiv error={perError} /> 
-		</>
+			onChange={setPer}
+			style={null}
+			error={perError}
+		/>  
 	);
 
-	const InputAmount = ( 
-		<>
+	const InputAmount = (  
 			<TextField  
 				label="Amount" 
 				variant="standard"  
 				value={amount}
 				onChange={(e) => setAmount(e.target.value) }
+				error={amountError}
 			/>
-			 
-			<ErrorDiv error={amountError} /> 
-		</>
 	);
  
 
@@ -398,15 +380,13 @@ function CreateAlert({open, dlgClose, clusters}) {
 			{descId === 0 && null }
 			{descId === LIMIT_AMOUNT_PER && (
 				<>
-					<Autocomplete
-						freeSolo
-						id="combo-box-demo" 
+					<ComboBox 
 						options={descs.map((option) => option.title)} 
 						value={desc}
-						renderInput={(params) => <TextField {...params} label="" variant="standard" />}
-						onChange={(event, value) => setDesc(value)}
+						onChange={setDesc}
 						style={{width: '80%', marginLeft: '10%'}}
-					/> 
+					/>
+					
 					<div className="p-3">
 						<GroupDiv title="Detail Setting" comp={
 							<div className="px-1 pr-1">
@@ -428,18 +408,12 @@ function CreateAlert({open, dlgClose, clusters}) {
 			) }
 			{descId === LIMIT_TOTAL_ASSETS && (
 				<>
-					<Autocomplete
-						freeSolo
-						id="combo-box-demo" 
+					<ComboBox 
 						options={descs.map((option) => option.title)} 
 						value={desc}
-						renderInput={(params) => <TextField {...params} label="" variant="standard" />}
-						onChange={(event, value) => setDesc(value)}
+						onChange={setDesc}
 						style={{width: '80%', marginLeft: '10%'}}
-					/> 
-					<div className="p-3">
-						 
-					</div>
+					/>  
 				</>
 			) }
 			{descId === WHITELIST_APPROVE && (
@@ -496,76 +470,42 @@ function CreateAlert({open, dlgClose, clusters}) {
 		</>
 	)
  
-	const ComboCluster = (
-		<>
-			<Autocomplete
-				freeSolo
-				id="combo-box-demo" 
+	const setClusterName = (val) => {
+		if(val !== null) 
+		{
+			set_PortFolio(val);
+			set_ClusterNameError("");
+		}
+		else set_ClusterNameError("cluster name is empty!")
+	}
+
+	const ComboCluster = ( 
+			<ComboBox 
 				options={portfolios.map((option) => option.title)}
-				renderInput={(params) => 
-					<TextField 
-						{...params} 
-						label="" 
-						variant="standard" 
-						// sx={{color: 'white', textAlign: 'center'}}  
-						// inputProps={{ style: { fontFamily: 'Arial', color: 'white'}}}
-						// style={{ flex: 1, margin: '0 20px 0 0', color: 'white'}}
-						// type="text"
-					/>
-				} 
-				sx={{color: 'white', textAlign: 'center'}} 
-				value={portFolio}	 
-				onChange=
-				{
-					(event, value) => 
-					{ 
-						if(value !== null) 
-						{
-							set_PortFolio(value);
-							set_ClusterNameError("");
-						}
-						else set_ClusterNameError("cluster name is empty!")
-					}
-				}
-			/> 
-			<ErrorDiv error={clusterNameError} />
-		</>
+				value={portFolio}
+				onChange={setClusterName}
+				error={clusterNameError}
+			/>   
 	);
+
+	const setRecipients = (val) => {
+		if(val.length > 0)
+		{
+			set_Recipients(val);
+			set_RecipientsError("");
+		}
+	}
     
-	const HookRecipients = (
-		<>
-		<Autocomplete
-		  	multiple
-		  	id="tags-filled"
+	const HookRecipients = ( 
+		<ComboList 
+			label=""
 			options={availableRecipients}
-			getOptionLabel={(option) => option}
-		  	// options={availableRecipients.map((option) => option.title)}
-		   	defaultValue={[]} //availableRecipients[0]
-		  	freeSolo  
-			renderTags={(value, getTagProps) =>
-			value.map((option, index) => (
-			  	<Chip variant="outlined" label={option} {...getTagProps({ index })} />
-				))
-		  	}
-		  	renderInput={(params) => (
-				<TextField {...params} variant="filled" label="" placeholder="" />
-		  	)}
-		  	style={{width: '80%', marginLeft: '10%'}}
-			onChange=
-			{
-				(e, val) => 
-				{
-					if(val.length > 0)
-					{
-						set_Recipients(val);
-						set_RecipientsError("");
-					}
-					// else set_RecipientsError("Recipients is empty!")
-				}
-			}
-		/>
-		<ErrorDiv error={recipientsError}/>
-		</>
+			getOptionLabel={(option) => option} 
+			value={recipients} 
+			onChange={setRecipients}
+			style={{width: '80%', marginLeft: '10%'}}
+			error={recipientsError}
+		/>   
 	); 
  	 
 	return (
