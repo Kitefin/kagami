@@ -3,6 +3,7 @@ import {Button,Grid,Chip,TextField,Dialog,DialogContent,DialogTitle,Autocomplete
 import AddIcon from '@mui/icons-material/Add'; 
 import CloseIcon from '@mui/icons-material/Close';
 import GroupDiv from "../common/GroupDiv"; 
+import ErrorDiv from '../common/ErrorDiv';
 import axios from 'axios'; 
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
@@ -12,10 +13,10 @@ import {
    	pers,
    	GET_DESC_TITLE_BY_ID,
    	GET_DESC_ID_BY_TITLE,
-	   TYPE_DESC_LIMIT_AMOUNT_PER ,
-	   TYPE_DESC_LIMIT_TOTAL_ASSETS ,
-	 TYPE_DESC_WHITELIST_APPROVE ,
-	 TYPE_DESC_EXCLUSION_LIST,
+	   LIMIT_AMOUNT_PER ,
+	   LIMIT_TOTAL_ASSETS ,
+	 WHITELIST_APPROVE ,
+	 EXCLUSION_LIST,
 	GET_DESCS_BY_TYPE_ID
  } from './util';
  
@@ -25,22 +26,19 @@ function EditAlert({open, dlgClose, clusters, id}) {
 	const [type, set_Type] = useState('');
 	const [desc, set_Desc] = useState('');
 	const [descs, set_Descs] = useState([]);   
-	const [descId, set_DescId] = useState(0);   
-
+	const [descId, set_DescId] = useState(0);
 	const [emails, set_Emails] = useState([]);   
 	const [minMax, set_MinMax] = useState(null);
 	const [per, set_Per] = useState(null);
 	const [amount, set_Amount] = useState(null);
 	const [portFolio, set_PortFolio] = useState(null);
-	const [recipients, set_Recipients] = useState([]);
-	 	
+	const [recipients, set_Recipients] = useState([]);	 	
 	const [amountError, set_AmountError] = useState('');
 	const [clusterNameError, set_ClusterNameError] = useState('');
 	const [recipientsError, set_RecipientsError] = useState('');	
 	const [minMaxError, set_MinMaxError] = useState('');
 	const [perError, set_PerError] = useState('');
 	const [error, set_Error] = useState('');
-
 	const [addressError, set_AddressError] = useState('');
 	const [address, set_Address] = useState('');   
 	const [addresses, set_Addresses] = useState([]);   
@@ -49,7 +47,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 	const dlg_Close = () => {
 		set_Address('');   
 		set_Addresses([]);   
-		set_Address_Display(null) ;
+		set_Address_Display(null);
 		set_Type ('');
 		set_Desc('');
 		set_Descs([]);   
@@ -71,8 +69,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 
 	const isEmptyAlert = (alert) => {
 		let ok = true;
-	   const {clusterName, description, recipients} = alert;
-	   
+	   const {clusterName, description, recipients} = alert;	   
 	   const isAddressesEmpty = addresses.length === 0;
 	   if(isAddressesEmpty) {
 		   set_AddressError("Wallet Addresses is empty!"); 
@@ -90,7 +87,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 	   }
 	   if(description)
 	   {
-		   if(  description.id === TYPE_DESC_LIMIT_AMOUNT_PER ||  description.id === TYPE_DESC_EXCLUSION_LIST )
+		   if(  description.id === LIMIT_AMOUNT_PER ||  description.id === EXCLUSION_LIST )
 		   {
 			   const {minMax, amount, per} = description;
 			   if(isEmpty(minMax)) 
@@ -116,7 +113,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 	const getAlertById = async() => {
 		if(id === undefined || id === '') return;
 		const url = NODE_URL + `/api/alert/${id}`;  
-		try{ 
+		try { 
 			const res = await axios.get(url);
 			const { type, description, clusterName, recipients } = res.data; 		 
 			setType(type);
@@ -132,15 +129,14 @@ function EditAlert({open, dlgClose, clusters, id}) {
 			}
 			set_Recipients(recipients_);
 			const desc_Id = description.id;
-			set_Desc( GET_DESC_TITLE_BY_ID(desc_Id) ); 
-			
-			if( description.id === TYPE_DESC_LIMIT_AMOUNT_PER ||  description.id === TYPE_DESC_EXCLUSION_LIST )
+			set_Desc( GET_DESC_TITLE_BY_ID(desc_Id) ); 			
+			if( description.id === LIMIT_AMOUNT_PER ||  description.id === EXCLUSION_LIST )
 			{
 				set_MinMax(description.minMax);
 				set_Amount(description.amount);
 				set_Per(description.per);
 			}
-			else if(description.id === TYPE_DESC_WHITELIST_APPROVE)
+			else if(description.id === WHITELIST_APPROVE)
 			{
 				set_Addresses(description.addresses)				 
 				const addresses_display = get_addresses_display(description.addresses);
@@ -152,7 +148,6 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				set_Per(null);
 			} 
 			set_DescId( desc_Id );
-
 		}
 		catch(err) {
 			console.log(err)  
@@ -173,12 +168,11 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		for(var i in recipients)
 		{
 			let recipient = recipients[i];
-			if(recipient === '@You') 
-				recipient = GET_USER_EMAIL(); 
+			if(recipient === '@You') recipient = GET_USER_EMAIL(); 
 			recipients_.push(recipient);
 		}
 		let description = {};		
-		if(descId === TYPE_DESC_LIMIT_AMOUNT_PER || descId === TYPE_DESC_EXCLUSION_LIST)
+		if(descId === LIMIT_AMOUNT_PER || descId === EXCLUSION_LIST)
 		{    
 			description = {
 				id: descId,
@@ -187,7 +181,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				per: per
 			};	
 		}
-		else if(descId === TYPE_DESC_WHITELIST_APPROVE)
+		else if(descId === WHITELIST_APPROVE)
 			description = {
 				id: descId, 
 				addresses: addresses
@@ -216,10 +210,8 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		} 	
 	}
 	
-	const delete_Alert = async () => { 
-		
-		if( !confirm(`Really Delete ${id}'s Policy?`) ) return;
-		 
+	const delete_Alert = async () => {		
+		if( !confirm(`Really Delete ${id}'s Policy?`) ) return;		 
 		const url = NODE_URL + `/api/alert/${id}`;
 		try{ 
 			await axios.delete(url, id);		  
@@ -230,7 +222,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 
 	const getEmails = async() => { 
 		const url = NODE_URL + "/api/email/"; 
-		try{ 
+		try {  
 			const res = await axios.get(url); 
 			set_Emails(res.data);
 		}
@@ -259,18 +251,15 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		for(var i in emails)
 		{
 			const email = emails[i];
-			if(email.address !== userAddress){
-				 
+			if(email.address !== userAddress)				 
 				availableRecipients.push(email.email);
-			}
 		}
 	} 
 	
 	const setDesc = (desc_) => {   
 		set_Desc(desc_);  
 		const id = GET_DESC_ID_BY_TITLE(desc_);
-		set_DescId(id);  
-		 
+		set_DescId(id);		 
 	}
 
 	const setType = (type_) => {  
@@ -289,57 +278,53 @@ function EditAlert({open, dlgClose, clusters, id}) {
 			set_Amount(val);
 		} 
 	}
-
-    
 	 
 		const ComboDescMinMax = (
 			<>
-			<Autocomplete
-				freeSolo
-				id="combo-box-demo" 	
-				options={minMaxs.map((option) => option.title)}	  
-				renderInput={(params) => <TextField {...params} label="Min or Max" variant="standard" />}
-				onChange=
-				{
-					(event, value) => 
-					{ 
-						if(value !== null) 
-						{
-							set_MinMaxError("");
-							set_MinMax(value) ;
+				<Autocomplete
+					freeSolo	
+					options={minMaxs.map((option) => option.title)}	  
+					renderInput={(params) => <TextField {...params} label="Min or Max" variant="standard" />}
+					onChange=
+					{
+						(event, value) => 
+						{ 
+							if(value !== null) 
+							{
+								set_MinMaxError("");
+								set_MinMax(value) ;
+							}
+							else  
+								set_MinMaxError("Select min or max")
 						}
-						else  
-							set_MinMaxError("Select min or max")
-					}
-				} 
-				value={minMax}
-			/>
-			<p className='mt-3 mb-0 text-red'>{minMaxError}</p>
+					} 
+					value={minMax}
+				/>
+				<ErrorDiv error={minMaxError}/>
 			</>
 		);
 
 		const ComboDescPer = (
 			<>
-			<Autocomplete
-				freeSolo
-				id="combo-box-demo" 
-				options={pers.map((option) => option.title)}
-				renderInput={(params) => <TextField {...params} label="Per" variant="standard" />}			
-				onChange=
-				{
-					(event, value) => 
+				<Autocomplete
+					freeSolo 
+					options={pers.map((option) => option.title)}
+					renderInput={(params) => <TextField {...params} label="Per" variant="standard" />}			
+					onChange=
 					{
-						if(value !== null)
+						(event, value) => 
 						{
-							set_Per(value)
-							set_PerError('');
+							if(value !== null)
+							{
+								set_Per(value)
+								set_PerError('');
+							}
+							else set_PerError("Select case of per")
 						}
-						else set_PerError("Select case of per")
-					}
-				} 
-				value={per}
-			/>
-			<p className='mt-3 mb-0 text-red'>{perError}</p>
+					} 
+					value={per}
+				/>
+				<ErrorDiv error={perError}/>
 			</>
 		);
 
@@ -351,7 +336,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				onChange={(e) => setAmount(e.target.value) }
 				value={amount}
 			/>
-			<p className='mt-3 mb-0 text-red'>{amountError}</p>
+			<ErrorDiv error={amountError}/>
 			</>
 		);
 
@@ -431,7 +416,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				<IconButton aria-label="add" size="medium" onClick={() => { add_Address() }}>
 					<AddIcon />
 				</IconButton>	 
-				<p className='mt-3 mb-0 text-red'>{addressError}</p> 
+				<ErrorDiv error={addressError}/> 
 				
 			</div>
 		);
@@ -439,7 +424,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		const ComboDesc = (
 		<>
 			{descId === 0 && null }
-			{descId === TYPE_DESC_LIMIT_AMOUNT_PER && (
+			{descId === LIMIT_AMOUNT_PER && (
 				<>
 					<Autocomplete
 						freeSolo
@@ -469,7 +454,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 					</div>
 				</>
 			) }
-			{descId === TYPE_DESC_LIMIT_TOTAL_ASSETS && (
+			{descId === LIMIT_TOTAL_ASSETS && (
 				<>
 					<Autocomplete
 						freeSolo
@@ -485,7 +470,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 					</div>
 				</>
 			) }
-			{descId === TYPE_DESC_WHITELIST_APPROVE && (
+			{descId === WHITELIST_APPROVE && (
 				<>
 					<p className='px-5 pr-5'>{desc}</p> 
 					<div className="p-3">
@@ -500,7 +485,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 					</div>
 				</>
 			) }
-			{descId === TYPE_DESC_EXCLUSION_LIST && (
+			{descId === EXCLUSION_LIST && (
 				<>
 					<p className='px-5 pr-5'>{desc}</p> 
 					<div className="p-3">
@@ -582,7 +567,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				}
 			}
 		/>
-		<p className='mt-3 mb-0 text-red'>{clusterNameError}</p>
+		<ErrorDiv error={clusterNameError}/>
 		</>
 	);
     
@@ -618,7 +603,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				  }
 			  }		
 		/>
-		<p className='mt-3 mb-0 text-red'>{recipientsError}</p>
+		<ErrorDiv error={recipientsError}/>
 		</>
 	); 
 	 
@@ -641,7 +626,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 					<span>Cluster</span>
 				</Grid>
 			</Grid>
-			<p className='mt-3 mb-0 text-red'>{error}</p>
+			<ErrorDiv error={error}/>
 		</DialogTitle>
 
 				<DialogContent dividers={true}> 

@@ -3,6 +3,7 @@ import { Button, TextField, Dialog, DialogContent, DialogTitle, IconButton, Grid
 import AddIcon from '@mui/icons-material/Add'; 
 import CloseIcon from '@mui/icons-material/Close';
 import GroupDiv from "../common/GroupDiv";
+import ErrorDiv from '../common/ErrorDiv';
 import axios from 'axios';   
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
@@ -130,7 +131,7 @@ function CreateCluster({open, dlgClose}) {
 				onChange={(e) => { setName(e.target.value); }}	
 				value={name}
 			/>
-			<p className='mt-3 mb-0 text-red'>{nameError}</p> 
+			<ErrorDiv error={nameError}/> 
 		</>
 	);  
   
@@ -153,7 +154,7 @@ function CreateCluster({open, dlgClose}) {
 				onChange={ e => { setDesc(e.target.value); }}	
 				value={desc}
 			/>  
-			<p className='mt-3 mb-0 text-red'>{descError}</p> 
+			<ErrorDiv error={descError}/> 
 		</>
 	);
 
@@ -234,7 +235,7 @@ function CreateCluster({open, dlgClose}) {
 			<IconButton aria-label="add" size="medium" onClick={() => { add_Address() }}>
 				<AddIcon />
 			</IconButton>	 
-			<p className='mt-3 mb-0 text-red'>{addressError}</p> 
+			<ErrorDiv error={addressError}/> 
 			
 		</div>
 	);
@@ -258,7 +259,7 @@ function CreateCluster({open, dlgClose}) {
 				value={email}
 				onChange={ e => { setEmail(e.target.value); }}	
 			/>  
-			<p className='mt-3 mb-0 text-red'>{emailError}</p> 
+			<ErrorDiv error={emailError}/> 
 		</>
 	);
 

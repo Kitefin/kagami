@@ -5,6 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios'; 
 import GroupDiv from "../common/GroupDiv";
+import ErrorDiv from '../common/ErrorDiv';
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
 import {isEmpty, isAddress, isEmail} from "../../util/valid";
@@ -175,7 +176,7 @@ function EditCluster({open, dlgClose, id}) {
 		  	value={name}
 		  	onChange={(e) => { setName(e.target.value); }}	
 		  /> 
-		  <p className='mt-3 mb-0 text-red'>{nameError}</p> 
+		  <ErrorDiv error={nameError}/> 
 		  </>
 	);  
   
@@ -197,7 +198,7 @@ function EditCluster({open, dlgClose, id}) {
 			value={desc}
 			onChange={ e => { setDesc(e.target.value); }}	
 		/>  
-		<p className='mt-3 mb-0 text-red'>{descError}</p> 
+		<ErrorDiv error={descError}/> 
 		</>
 	);
 	
@@ -280,7 +281,7 @@ function EditCluster({open, dlgClose, id}) {
 			<IconButton aria-label="add" size="medium" onClick={() => { addAddress() }}>
 				<AddIcon />
 			</IconButton>		
-			<p className='mt-3 mb-0 text-red'>{addressError}</p> 
+			<ErrorDiv error={addressError}/> 
 					
 		</div>
 	);
@@ -304,7 +305,7 @@ function EditCluster({open, dlgClose, id}) {
 				value={email}
 				onChange={ e => { setEmail(e.target.value); }}	
 			/>  
-			<p className='mt-3 mb-0 text-red'>{emailError}</p> 
+			<ErrorDiv error={emailError}/> 
 		</>
 	);
 

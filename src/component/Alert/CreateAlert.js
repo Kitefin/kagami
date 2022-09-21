@@ -4,6 +4,7 @@ import {Button,Grid,Chip,TextField,Dialog,DialogContent,DialogTitle,Autocomplete
 import AddIcon from '@mui/icons-material/Add'; 
 import CloseIcon from '@mui/icons-material/Close';
 import GroupDiv from "../common/GroupDiv"; 
+import ErrorDiv from '../common/ErrorDiv';
 import axios from 'axios'; 
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
@@ -12,10 +13,10 @@ import {
    minMaxs,  
   	pers,  
 	GET_DESC_ID_BY_TITLE, 
-	TYPE_DESC_LIMIT_AMOUNT_PER ,
-	TYPE_DESC_LIMIT_TOTAL_ASSETS ,
-	 TYPE_DESC_WHITELIST_APPROVE ,
-	 TYPE_DESC_EXCLUSION_LIST,
+	LIMIT_AMOUNT_PER ,
+	LIMIT_TOTAL_ASSETS ,
+	 WHITELIST_APPROVE ,
+	 EXCLUSION_LIST,
 	GET_DESCS_BY_TYPE_ID 
 } from './util'; 
 
@@ -90,7 +91,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 		}
 		if(description)
 		{
-			if(  description.id === TYPE_DESC_LIMIT_AMOUNT_PER ||  description.id === TYPE_DESC_EXCLUSION_LIST )
+			if(  description.id === LIMIT_AMOUNT_PER ||  description.id === EXCLUSION_LIST )
 			{
 				const {minMax, amount, per} = description;
 				if(isEmpty(minMax)) 
@@ -121,7 +122,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 			recipients_.push(recipient);
 		}
 		let description = {};
-		if(descId === TYPE_DESC_LIMIT_AMOUNT_PER || descId === TYPE_DESC_EXCLUSION_LIST)
+		if(descId === LIMIT_AMOUNT_PER || descId === EXCLUSION_LIST)
 		{    
 			description = {
 				id: descId,
@@ -130,7 +131,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 				per: per
 			};	
 		}
-		else if(descId === TYPE_DESC_WHITELIST_APPROVE)
+		else if(descId === WHITELIST_APPROVE)
 			description = {
 				id: descId, 
 				addresses: addresses
@@ -267,8 +268,8 @@ function CreateAlert({open, dlgClose, clusters}) {
 						set_MinMaxError("Select min or max")
 				}
 			} 
-		/>
-		<p className='mt-3 mb-0 text-red'>{minMaxError}</p>
+		/> 
+		<ErrorDiv error={minMaxError}/>
 		</>
 	);
 
@@ -293,7 +294,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 				}
 			} 
 		/>
-		<p className='mt-3 mb-0 text-red'>{perError}</p>
+		<ErrorDiv error={perError} /> 
 		</>
 	);
 
@@ -305,7 +306,8 @@ function CreateAlert({open, dlgClose, clusters}) {
 				value={amount}
 				onChange={(e) => setAmount(e.target.value) }
 			/>
-			<p className='mt-3 mb-0 text-red'>{amountError}</p>
+			 
+			<ErrorDiv error={amountError} /> 
 		</>
 	);
  
@@ -385,8 +387,8 @@ function CreateAlert({open, dlgClose, clusters}) {
 			/>	
 			<IconButton aria-label="add" size="medium" onClick={() => { add_Address() }}>
 				<AddIcon />
-			</IconButton>	 
-			<p className='mt-3 mb-0 text-red'>{addressError}</p> 
+			</IconButton>	  
+			<ErrorDiv error={addressError} /> 
 			
 		</div>
 	);
@@ -394,7 +396,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 	const ComboDesc = (
 		<>
 			{descId === 0 && null }
-			{descId === TYPE_DESC_LIMIT_AMOUNT_PER && (
+			{descId === LIMIT_AMOUNT_PER && (
 				<>
 					<Autocomplete
 						freeSolo
@@ -424,7 +426,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 					</div>
 				</>
 			) }
-			{descId === TYPE_DESC_LIMIT_TOTAL_ASSETS && (
+			{descId === LIMIT_TOTAL_ASSETS && (
 				<>
 					<Autocomplete
 						freeSolo
@@ -440,7 +442,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 					</div>
 				</>
 			) }
-			{descId === TYPE_DESC_WHITELIST_APPROVE && (
+			{descId === WHITELIST_APPROVE && (
 				<>
 					<p className='px-5 pr-5'>{desc}</p> 
 					<div className="p-3">
@@ -455,7 +457,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 					</div>
 				</>
 			) }
-			{descId === TYPE_DESC_EXCLUSION_LIST && (
+			{descId === EXCLUSION_LIST && (
 				<>
 					<p className='px-5 pr-5'>{desc}</p> 
 					<div className="p-3">
@@ -525,8 +527,8 @@ function CreateAlert({open, dlgClose, clusters}) {
 						else set_ClusterNameError("cluster name is empty!")
 					}
 				}
-			/>
-			<p className='mt-3 mb-0 text-red'>{clusterNameError}</p>
+			/> 
+			<ErrorDiv error={clusterNameError} />
 		</>
 	);
     
@@ -562,7 +564,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 				}
 			}
 		/>
-		<p className='mt-3 mb-0 text-red'>{recipientsError}</p>
+		<ErrorDiv error={recipientsError}/>
 		</>
 	); 
  	 
@@ -585,7 +587,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 					<span>Cluster</span>
 				</Grid>
 			</Grid>
-			<p className='mt-3 mb-0 text-red'>{error}</p>
+			<ErrorDiv error={error}/>
 		</DialogTitle>
 		
 		<DialogContent dividers={true}> 
