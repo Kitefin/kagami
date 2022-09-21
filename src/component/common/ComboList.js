@@ -1,7 +1,7 @@
 import { TextField, Autocomplete, Chip } from '@mui/material';
 import ErrorDiv from './ErrorDiv';
 
-const ComboList = ({label = '', getOptionLabel, options, value, onChange, style = null, error = '' }) => {
+const ComboList = ({getOptionLabel, options, value, onChange, style = null, error = '' }) => {
     return (<> 
         <Autocomplete
             multiple 
@@ -17,7 +17,7 @@ const ComboList = ({label = '', getOptionLabel, options, value, onChange, style 
                   }
             renderInput={(params) => (
                 <TextField {...params} 
-                    label={label}
+                    // label={label}
                     variant="standard" 
                 />
             )} 

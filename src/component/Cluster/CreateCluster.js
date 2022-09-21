@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'; 
-import { Button, TextField, Dialog, DialogContent, DialogTitle, IconButton, Grid } from '@mui/material';
+import { Button, Dialog, DialogContent, DialogTitle, IconButton, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add'; 
 import CloseIcon from '@mui/icons-material/Close';
 import GroupDiv from "../common/GroupDiv";
 import ErrorDiv from '../common/ErrorDiv';
+import TextBox from '../common/TextBox';
 import axios from 'axios';   
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
@@ -122,17 +123,13 @@ function CreateCluster({open, dlgClose}) {
 		}
 	} 
 
-	const ClusterName = (   
-		<>
-			<TextField 
-				id="standard-basic" 
-				label="" 
-				variant="standard"  
-				onChange={(e) => { setName(e.target.value); }}	
+	const ClusterName = (
+			<TextBox 
+				label=""  
+				onChange={ setName }	
 				value={name}
-			/>
-			<ErrorDiv error={nameError}/> 
-		</>
+				error={nameError}
+			/>  
 	);  
   
 	const setDesc = (val) => {
@@ -145,17 +142,13 @@ function CreateCluster({open, dlgClose}) {
 		}
 	}
  
-	const ClusterDesc = (   
-		<>
-			<TextField 
-				id="standard-basic" 
-				label="" 
-				variant="standard"  
-				onChange={ e => { setDesc(e.target.value); }}	
+	const ClusterDesc = (
+			<TextBox 
+				label=""  
+				onChange={ setDesc }	
 				value={desc}
-			/>  
-			<ErrorDiv error={descError}/> 
-		</>
+				error={descError}
+			/>   
 	);
 
 	
@@ -224,13 +217,11 @@ function CreateCluster({open, dlgClose}) {
 			<div>  
 				{ address_Display  }
 			</div> 
-			<TextField 
-				id="standard-basic" 
-				label="" 
-				variant="standard"  
-				onChange={ e => { setAddress(e.target.value) }}	
+			<TextBox 
+				label=""  
+				onChange={ setAddress }	
 				className='px-2'
-				value={address}
+				value={address} 
 			/>	
 			<IconButton aria-label="add" size="medium" onClick={() => { add_Address() }}>
 				<AddIcon />
@@ -252,12 +243,11 @@ function CreateCluster({open, dlgClose}) {
 
 	const YourEmail = (   
 		<>
-			<TextField 
-				id="standard-basic" 
+			<TextBox 
 				label="" 
 				variant="standard"
 				value={email}
-				onChange={ e => { setEmail(e.target.value); }}	
+				onChange={ setEmail }	
 			/>  
 			<ErrorDiv error={emailError}/> 
 		</>

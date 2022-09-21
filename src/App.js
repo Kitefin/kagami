@@ -5,6 +5,7 @@ import Dashboard from './component/Dashboard/Dashboard';
 import Header from './component/Layout/Header';
 import Welcome from './component/Layout/Welcome';
 import LayoutOld from './component/Layout/LayoutOld';
+import Temp from './Temp';
 
 export default function App() {
 	const { isAuthenticated } = useMoralis(); 
@@ -16,6 +17,7 @@ export default function App() {
 				<Routes>
 					<Route path="/" element={!isAuthenticated ? <Dashboard /> : <Welcome />} />
 					<Route path="layoutold" element={<LayoutOld />} />
+					<Route path="temp" element={<Temp />} />
 				
 				</Routes>
 			</Router>

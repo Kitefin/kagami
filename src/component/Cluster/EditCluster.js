@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';  
-import { Button, TextField, Dialog, DialogContent, DialogTitle, IconButton, Grid } from '@mui/material'; 
+import { Button, Dialog, DialogContent, DialogTitle, IconButton, Grid } from '@mui/material'; 
 import { makeStyles } from '@mui/styles'; 
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios'; 
 import GroupDiv from "../common/GroupDiv";
 import ErrorDiv from '../common/ErrorDiv';
-import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
+import TextBox from '../common/TextBox';
+import {GET_USER_ADDRESS} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
 import {isEmpty, isAddress, isEmail} from "../../util/valid";
 
@@ -142,10 +143,10 @@ function EditCluster({open, dlgClose, id}) {
 		} 
 	}
   
-	useEffect(() => {  
-		// const email_ = GET_USER_EMAIL();
-		// set_Email(email_);  
-		}, []); 
+	// useEffect(() => {  
+	// 	// const email_ = GET_USER_EMAIL();
+	// 	// set_Email(email_);  
+	// 	}, []); 
 
 	const delete_Cluster = async () => {   
 		if( !confirm(`Really Delete ${id}'s Cluster?`) ) return; 
@@ -169,12 +170,10 @@ function EditCluster({open, dlgClose, id}) {
 
 	const ClusterName = (
 		<>
-		<TextField 
-			id="standard-basic" 
-			label="" 
-		  	variant="standard"
+		<TextBox 
+			label=""  
 		  	value={name}
-		  	onChange={(e) => { setName(e.target.value); }}	
+		  	onChange={ setName }	
 		  /> 
 		  <ErrorDiv error={nameError}/> 
 		  </>
@@ -191,18 +190,13 @@ function EditCluster({open, dlgClose, id}) {
 	}
 
 	const ClusterDesc = (   
-		<><TextField 
-			id="standard-basic" 
-			label="" 
-			variant="standard"
+		<TextBox 
+			label=""  
 			value={desc}
-			onChange={ e => { setDesc(e.target.value); }}	
-		/>  
-		<ErrorDiv error={descError}/> 
-		</>
-	);
-	
-	
+			onChange={ setDesc }
+			error={descError}
+		/>    
+	); 
 
     const addAddress = () => {
 		const ok = isAddress(address);
@@ -270,11 +264,9 @@ function EditCluster({open, dlgClose, id}) {
 			<div> 
 				{ address_Display }
 			</div>
-			<TextField 
-				id="standard-basic" 
-				label="" 
-				variant="standard"  
-				onChange={ e => {setAddress(e.target.value); }}	
+			<TextBox 
+				label=""  
+				onChange={ setAddress }	
 				className='px-2'
 				value={address}
 			/>	
@@ -298,12 +290,10 @@ function EditCluster({open, dlgClose, id}) {
 
 	const YourEmail = (   
 		<>
-			<TextField 
-				id="standard-basic" 
-				label="" 
-				variant="standard"
+			<TextBox 
+				label=""  
 				value={email}
-				onChange={ e => { setEmail(e.target.value); }}	
+				onChange={ setEmail }	
 			/>  
 			<ErrorDiv error={emailError}/> 
 		</>
@@ -352,9 +342,7 @@ function EditCluster({open, dlgClose, id}) {
 					<Grid item> 
 						<Button variant="contained" className="create_alert_btn" onClick={() => save_Cluster()}>
 							<b className="text-white">Save</b>
-						</Button> 
-
-						
+						</Button>
 					</Grid>
 					<Grid item xs={2}></Grid>
 				</Grid>

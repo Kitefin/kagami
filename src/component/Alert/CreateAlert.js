@@ -1,12 +1,13 @@
 
 import React, {useEffect, useState} from 'react';   
-import {Button,Grid,Chip,TextField,Dialog,DialogContent,DialogTitle,Autocomplete,IconButton} from '@mui/material';
+import {Button,Grid,Dialog,DialogContent,DialogTitle,IconButton} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add'; 
 import CloseIcon from '@mui/icons-material/Close';
 import GroupDiv from "../common/GroupDiv"; 
 import ErrorDiv from '../common/ErrorDiv';
 import ComboBox from '../common/ComboBox';
 import ComboList from '../common/ComboList';
+import TextBox from '../common/TextBox';
 import axios from 'axios'; 
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
@@ -284,15 +285,13 @@ function CreateAlert({open, dlgClose, clusters}) {
 	);
 
 	const InputAmount = (  
-			<TextField  
-				label="Amount" 
-				variant="standard"  
-				value={amount}
-				onChange={(e) => setAmount(e.target.value) }
-				error={amountError}
-			/>
-	);
- 
+		<TextBox 
+			label="Amount" 
+			value={amount}
+			onChange={setAmount}
+			error={amountError}
+		/> 
+	); 
 
     const add_Address = () => {
 		const ok = isAddress(address);
@@ -323,8 +322,8 @@ function CreateAlert({open, dlgClose, clusters}) {
 		set_Address_Display(addresses_display);
 	}
         
-	const get_addresses_display = (addresses_) => { 
-		let ps = [];	 
+	const get_addresses_display = (addresses_) => {  
+		let ps = [];
 		for(let i in addresses_)
 		{
 			const address_ = addresses_[i];
@@ -353,19 +352,17 @@ function CreateAlert({open, dlgClose, clusters}) {
 		}
 	}
 
-
 	const AddWalletAddress = ( 
 		<div className='px-4'>	
 			<div>  
 				{ address_Display  }
 			</div> 
-			<TextField 
-				id="standard-basic" 
-				label="" 
-				variant="standard"  
-				onChange={ e => { setAddress(e.target.value) }}	
+			
+			<TextBox 
+				label=""  
+				onChange={setAddress}	
 				className='px-2'
-				value={address}
+				value={address} 
 			/>	
 			<IconButton aria-label="add" size="medium" onClick={() => { add_Address() }}>
 				<AddIcon />
@@ -497,8 +494,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 	}
     
 	const HookRecipients = ( 
-		<ComboList 
-			label=""
+		<ComboList  
 			options={availableRecipients}
 			getOptionLabel={(option) => option} 
 			value={recipients} 
@@ -515,53 +511,53 @@ function CreateAlert({open, dlgClose, clusters}) {
 				onClose={dlg_close}
 				scroll={'paper'}  
 			> 
-		<DialogTitle className="alert_title"> 
-			<Grid container spacing={2}>
-				<Grid item xs={5}>
-					<span>Set Policies for</span>
-				</Grid>
-				<Grid item xs={5} style={{marginLeft: '-3%'}}>
-					{ComboCluster} 
-				</Grid>
-				<Grid item xs={2}>
-					<span>Cluster</span>
-				</Grid>
-			</Grid>
-			<ErrorDiv error={error}/>
-		</DialogTitle>
+				<DialogTitle className="alert_title"> 
+					<Grid container spacing={2}>
+						<Grid item xs={5}>
+							<span>Set Policies for</span>
+						</Grid>
+						<Grid item xs={5} style={{marginLeft: '-3%'}}>
+							{ComboCluster} 
+						</Grid>
+						<Grid item xs={2}>
+							<span>Cluster</span>
+						</Grid>
+					</Grid>
+					<ErrorDiv error={error}/>
+				</DialogTitle>
 		
-		<DialogContent dividers={true}> 
-			<div className="text-center px-5 pr-5">    
-				<div className="px-3 pr-3">
-					{ComboType_Desc}
-					<div className="mt-4">
-						<GroupDiv title='Select Notification Recipients' comp={HookRecipients} /> 
-					</div> 
-				</div>
-			</div>
-		</DialogContent> 
+				<DialogContent dividers={true}> 
+					<div className="text-center px-5 pr-5">    
+						<div className="px-3 pr-3">
+							{ComboType_Desc}
+							<div className="mt-4">
+								<GroupDiv title='Select Notification Recipients' comp={HookRecipients} /> 
+							</div> 
+						</div>
+					</div>
+				</DialogContent> 
+
 			<div className="text-center p-2">
-			<Grid justifyContent="space-between"  
-				container
-				spacing={0}>
+				<Grid justifyContent="space-between"  
+					container
+					spacing={0}>
 					<Grid item xs={2}></Grid>
 					<Grid item>
-				<Button variant="contained" className="create_alert_btn" onClick={ dlg_close }>
-					<b className="text-white">Cancel</b>
-				</Button>
-				</Grid>
-				<Grid item xs={2}>
-				<Button variant="contained" className="create_alert_btn" onClick={() => create_Alert()}>
-					<b className="text-white">Create</b>
-				</Button> 
-				</Grid>
-				<Grid item xs={2}></Grid>
+						<Button variant="contained" className="create_alert_btn" onClick={ dlg_close }>
+							<b className="text-white">Cancel</b>
+						</Button>
+					</Grid>
+					<Grid item xs={2}>
+						<Button variant="contained" className="create_alert_btn" onClick={() => create_Alert()}>
+							<b className="text-white">Create</b>
+						</Button> 
+					</Grid>
+					<Grid item xs={2}></Grid>
 				</Grid>
 			</div>   
-			</Dialog> 
-		</>
-	);
-}
+		</Dialog> 
+	</>
+);}
 
 export default CreateAlert;
 

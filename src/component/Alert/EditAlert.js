@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';   
-import {Button,Grid,Chip,TextField,Dialog,DialogContent,DialogTitle,Autocomplete,IconButton} from '@mui/material';
+import {Button,Grid,Dialog,DialogContent,DialogTitle,IconButton} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add'; 
 import CloseIcon from '@mui/icons-material/Close';
 import GroupDiv from "../common/GroupDiv"; 
 import ErrorDiv from '../common/ErrorDiv';
 import ComboBox from '../common/ComboBox';
 import ComboList from '../common/ComboList';
+import TextBox from '../common/TextBox';
 import axios from 'axios'; 
 import {GET_USER_ADDRESS, GET_USER_EMAIL} from "../../util/localStore"; 
 import {NODE_URL} from "../../config";
@@ -321,11 +322,10 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		);
 
 		const InputAmount = (  
-			<TextField  
-				label="Amount" 
-				variant="standard"  
+			<TextBox
+				label="Amount"  
 				value={amount}
-				onChange={(e) => setAmount(e.target.value) } 
+				onChange={ setAmount } 
 				error={amountError}
 			/> 
 		);
@@ -395,13 +395,11 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				<div>  
 					{ address_Display  }
 				</div> 
-				<TextField 
-					id="standard-basic" 
-					label="" 
-					variant="standard"  
-					onChange={ e => { setAddress(e.target.value) }}	
+				<TextBox 
+					label=""  
+					onChange={ setAddress }	
 					className='px-2'
-					value={address}
+					value={address} 
 				/>	
 				<IconButton aria-label="add" size="medium" onClick={() => { add_Address() }}>
 					<AddIcon />
@@ -546,8 +544,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 	}
 
 	const HookRecipients = ( 
-		<ComboList 
-			label=""
+		<ComboList  
 			options={availableRecipients}
 			getOptionLabel={(option) => option} 
 			value={recipients} 
@@ -564,20 +561,20 @@ function EditAlert({open, dlgClose, clusters, id}) {
 				onClose={dlg_Close}
 				scroll={'paper'}  
 			>
-				<DialogTitle className="alert_title"> 
-			<Grid container spacing={2}>
-				<Grid item xs={5}>
-					<span>Set Policies for</span>
+			<DialogTitle className="alert_title"> 
+				<Grid container spacing={2}>
+					<Grid item xs={5}>
+						<span>Set Policies for</span>
+					</Grid>
+					<Grid item xs={5} style={{marginLeft: '-3%'}}>
+						{ComboCluster} 
+					</Grid>
+					<Grid item xs={2}>
+						<span>Cluster</span>
+					</Grid>
 				</Grid>
-				<Grid item xs={5} style={{marginLeft: '-3%'}}>
-					{ComboCluster} 
-				</Grid>
-				<Grid item xs={2}>
-					<span>Cluster</span>
-				</Grid>
-			</Grid>
-			<ErrorDiv error={error}/>
-		</DialogTitle>
+				<ErrorDiv error={error}/>
+			</DialogTitle>
 
 				<DialogContent dividers={true}> 
 					<div className="text-center  px-5 pr-5">    
