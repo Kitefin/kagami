@@ -9,7 +9,8 @@ const AlertSchema = new Schema({
     id: {type: Number},
     minMax: {type: String},
     amount: {type: Number},
-    per: {type: String} 
+    per: {type: String},
+    addresses: [ { type: String } ]
   },
   clusterName: {type: String},
   recipients: [

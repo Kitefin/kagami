@@ -97,8 +97,8 @@ function EditCluster({open, dlgClose, id}) {
 			set_Email(email);  
 			set_Name(name);
 			set_Desc(description);
+			// set_Address(address);
 			set_Addresses(addresses);
-			set_Address(address);
 			const addresses_display = get_addresses_display(addresses);
 			set_Address_Display(addresses_display); 
 		}

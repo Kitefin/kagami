@@ -46,10 +46,10 @@ router.post( '/', async(req, res) => {
 router.post( '/edit', async(req, res) => {
     const {name, desc, addresses, userAddress, id, email} = req.body;
     
-    let cluster = await Cluster.findOne({ name: name });
-      if (cluster) {
-        return res.status(400).json( { msg: 'Cluster name already exists' });
-      }
+    // let cluster = await Cluster.findOne({ name: name });
+    //   if (cluster) {
+    //     return res.status(400).json( { msg: 'Cluster name already exists' });
+    //   }
 
     await Cluster.findByIdAndUpdate(id, { name: name, description: desc, addresses: addresses, userAddress: userAddress }, function (err, docs) {
     if (err) { 

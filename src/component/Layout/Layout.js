@@ -15,7 +15,10 @@ import {NODE_URL} from "../../config";
 
 import {   
 	GET_DESC_TITLE_BY_ID,
-	NEED_DESC_DETAIL
+	TYPE_DESC_MINMAX_AMOUNT_PER ,
+ 	TYPE_DESC_2 ,
+	 TYPE_DESC_WHITELIST_APPROVE ,
+  	TYPE_DESC_4
  } from '../Alert/util';
 
 function Layout() {  
@@ -169,7 +172,7 @@ function Layout() {
 			// console.log(alert)
 			const {type, description, clusterName, recipients, _id} = alert;
 			let desc;
-			if( NEED_DESC_DETAIL( description.id ))
+			if( description.id === TYPE_DESC_MINMAX_AMOUNT_PER ||  description.id === TYPE_DESC_4 )
 				desc = description.minMax + " of " + description.amount + " ETH per " + description.per;
 			else { 
 					desc = GET_DESC_TITLE_BY_ID(description.id);

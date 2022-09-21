@@ -3,7 +3,7 @@ const TYPE_WHITE_LISTS = 1;
 const TYPE_LIMITS = 2;
 const TYPE_EXCLUSION_LISTS = 3;  
 
-export const TYPES = [
+export const TYPES = [ 
     { title: 'Whitelist', id: TYPE_WHITE_LISTS }, 
     { title: 'Limits', id: TYPE_LIMITS },
     { title: 'Exclusion-lists', id: TYPE_EXCLUSION_LISTS }
@@ -29,15 +29,15 @@ export const pers = [
     { title: 'Month', id: DESC_PER_MONTH },
 ]; 
 
-const TYPE_DESC_MINMAX_AMOUNT_PER = 1;
-const TYPE_DESC_2 = 2;
-const TYPE_DESC_3 = 3;
-const TYPE_DESC_4 = 4;
+export const TYPE_DESC_MINMAX_AMOUNT_PER = 1;
+export const TYPE_DESC_2 = 2;
+export const TYPE_DESC_WHITELIST_APPROVE = 3;
+export const TYPE_DESC_4 = 4;
 
 export const DESCS = [ 
 	{ title: '<Min/Max> of <Amount> ETH per <transaction/time>', id: TYPE_DESC_MINMAX_AMOUNT_PER }, 
 	{ title: 'Notifications if value of total assets in wallets exceeds a threshold', id: TYPE_DESC_2 },		
-	{ title: 'Approved counterparts and smart contracts', id: TYPE_DESC_3 },		
+	{ title: 'Approved counterparts and smart contracts', id: TYPE_DESC_WHITELIST_APPROVE },		
 	{ title: 'Minimum of 20 ETH per month (team wages)', id: TYPE_DESC_4 }
 ];
 
@@ -71,9 +71,15 @@ export const GET_TYPE_ID_BY_TITLE = (title) => {
     }
 }
 
-export const NEED_DESC_DETAIL = (id) => {
-    return id === TYPE_DESC_MINMAX_AMOUNT_PER || id === TYPE_DESC_4; 
-}
+// export const NEED_DESC_DETAIL = (id) => {
+//     console.log(id)
+//     if( id === TYPE_DESC_MINMAX_AMOUNT_PER || id === TYPE_DESC_4 )
+//         return 1;
+//     else if(id === TYPE_DESC_3)
+//         return 2;
+//     else if(id === TYPE_DESC_2)
+//         return 3;
+// }
 
 export const GET_DESCS_BY_TYPE_ID = (type) => {
     const id = GET_TYPE_ID_BY_TITLE(type); 
