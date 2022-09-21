@@ -146,7 +146,8 @@ function EditCluster({open, dlgClose, id}) {
 		// set_Email(email_);  
 		}, []); 
 
-	const delete_Cluster = async () => {    
+	const delete_Cluster = async () => {   
+		if( !confirm(`Really Delete ${id}'s Cluster?`) ) return; 
 		const url = NODE_URL + `/api/cluster/${id}`;
 		try{ 
 			await axios.delete(url, id);		  

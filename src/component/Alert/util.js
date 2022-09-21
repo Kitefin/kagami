@@ -29,16 +29,16 @@ export const pers = [
     { title: 'Month', id: DESC_PER_MONTH },
 ]; 
 
-export const TYPE_DESC_MINMAX_AMOUNT_PER = 1;
-export const TYPE_DESC_2 = 2;
+export const TYPE_DESC_LIMIT_AMOUNT_PER = 1;
+export const TYPE_DESC_LIMIT_TOTAL_ASSETS = 2;
 export const TYPE_DESC_WHITELIST_APPROVE = 3;
-export const TYPE_DESC_4 = 4;
+export const TYPE_DESC_EXCLUSION_LIST = 4;
 
 export const DESCS = [ 
-	{ title: '<Min/Max> of <Amount> ETH per <transaction/time>', id: TYPE_DESC_MINMAX_AMOUNT_PER }, 
-	{ title: 'Notifications if value of total assets in wallets exceeds a threshold', id: TYPE_DESC_2 },		
+	{ title: '<Min/Max> of <Amount> ETH per <transaction/time>', id: TYPE_DESC_LIMIT_AMOUNT_PER }, 
+	{ title: 'Notifications if value of total assets in wallets exceeds a threshold', id: TYPE_DESC_LIMIT_TOTAL_ASSETS },		
 	{ title: 'Approved counterparts and smart contracts', id: TYPE_DESC_WHITELIST_APPROVE },		
-	{ title: 'Minimum of 20 ETH per month (team wages)', id: TYPE_DESC_4 }
+	{ title: 'Minimum of 20 ETH per month (team wages)', id: TYPE_DESC_EXCLUSION_LIST }
 ];
 
 export const GET_DESC_TITLE_BY_ID = (id) => {
@@ -73,11 +73,11 @@ export const GET_TYPE_ID_BY_TITLE = (title) => {
 
 // export const NEED_DESC_DETAIL = (id) => {
 //     console.log(id)
-//     if( id === TYPE_DESC_MINMAX_AMOUNT_PER || id === TYPE_DESC_4 )
+//     if( id === TYPE_DESC_LIMIT_AMOUNT_PER || id === TYPE_DESC_EXCLUSION_LIST )
 //         return 1;
 //     else if(id === TYPE_DESC_3)
 //         return 2;
-//     else if(id === TYPE_DESC_2)
+//     else if(id === TYPE_DESC_LIMIT_TOTAL_ASSETS)
 //         return 3;
 // }
 

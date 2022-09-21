@@ -12,10 +12,10 @@ import {
    	pers,
    	GET_DESC_TITLE_BY_ID,
    	GET_DESC_ID_BY_TITLE,
-	   TYPE_DESC_MINMAX_AMOUNT_PER ,
- 	TYPE_DESC_2 ,
+	   TYPE_DESC_LIMIT_AMOUNT_PER ,
+	   TYPE_DESC_LIMIT_TOTAL_ASSETS ,
 	 TYPE_DESC_WHITELIST_APPROVE ,
-  	TYPE_DESC_4,
+	 TYPE_DESC_EXCLUSION_LIST,
 	GET_DESCS_BY_TYPE_ID
  } from './util';
  
@@ -90,7 +90,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 	   }
 	   if(description)
 	   {
-		   if(  description.id === TYPE_DESC_MINMAX_AMOUNT_PER ||  description.id === TYPE_DESC_4 )
+		   if(  description.id === TYPE_DESC_LIMIT_AMOUNT_PER ||  description.id === TYPE_DESC_EXCLUSION_LIST )
 		   {
 			   const {minMax, amount, per} = description;
 			   if(isEmpty(minMax)) 
@@ -134,7 +134,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 			const desc_Id = description.id;
 			set_Desc( GET_DESC_TITLE_BY_ID(desc_Id) ); 
 			
-			if( description.id === TYPE_DESC_MINMAX_AMOUNT_PER ||  description.id === TYPE_DESC_4 )
+			if( description.id === TYPE_DESC_LIMIT_AMOUNT_PER ||  description.id === TYPE_DESC_EXCLUSION_LIST )
 			{
 				set_MinMax(description.minMax);
 				set_Amount(description.amount);
@@ -142,8 +142,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 			}
 			else if(description.id === TYPE_DESC_WHITELIST_APPROVE)
 			{
-				set_Addresses(description.addresses)
-				 
+				set_Addresses(description.addresses)				 
 				const addresses_display = get_addresses_display(description.addresses);
 				set_Address_Display(addresses_display); 
 			}
@@ -179,7 +178,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 			recipients_.push(recipient);
 		}
 		let description = {};		
-		if(descId === TYPE_DESC_MINMAX_AMOUNT_PER || descId === TYPE_DESC_4)
+		if(descId === TYPE_DESC_LIMIT_AMOUNT_PER || descId === TYPE_DESC_EXCLUSION_LIST)
 		{    
 			description = {
 				id: descId,
@@ -217,7 +216,10 @@ function EditAlert({open, dlgClose, clusters, id}) {
 		} 	
 	}
 	
-	const delete_Alert = async () => {    
+	const delete_Alert = async () => { 
+		
+		if( !confirm(`Really Delete ${id}'s Policy?`) ) return;
+		 
 		const url = NODE_URL + `/api/alert/${id}`;
 		try{ 
 			await axios.delete(url, id);		  
@@ -436,8 +438,8 @@ function EditAlert({open, dlgClose, clusters, id}) {
 
 		const ComboDesc = (
 		<>
-			{descId === 0 && (<></>) }
-			{descId === 1 && (
+			{descId === 0 && null }
+			{descId === TYPE_DESC_LIMIT_AMOUNT_PER && (
 				<>
 					<Autocomplete
 						freeSolo
@@ -467,7 +469,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 					</div>
 				</>
 			) }
-			{descId === 2 && (
+			{descId === TYPE_DESC_LIMIT_TOTAL_ASSETS && (
 				<>
 					<Autocomplete
 						freeSolo
@@ -479,17 +481,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 						style={{width: '80%', marginLeft: '10%'}}
 					/> 
 					<div className="p-3">
-						<GroupDiv title="Detail Setting" comp={
-							<div className="px-1 pr-1">
-							<Grid
-								justifyContent="space-between"
-								container
-								spacing={0}
-							>
-								 
-							</Grid> 
-							</div>
-						} /> 
+						 
 					</div>
 				</>
 			) }
@@ -508,7 +500,7 @@ function EditAlert({open, dlgClose, clusters, id}) {
 					</div>
 				</>
 			) }
-			{descId === 4 && (
+			{descId === TYPE_DESC_EXCLUSION_LIST && (
 				<>
 					<p className='px-5 pr-5'>{desc}</p> 
 					<div className="p-3">

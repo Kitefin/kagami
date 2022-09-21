@@ -12,10 +12,10 @@ import {
    minMaxs,  
   	pers,  
 	GET_DESC_ID_BY_TITLE, 
-	TYPE_DESC_MINMAX_AMOUNT_PER ,
- 	TYPE_DESC_2 ,
+	TYPE_DESC_LIMIT_AMOUNT_PER ,
+	TYPE_DESC_LIMIT_TOTAL_ASSETS ,
 	 TYPE_DESC_WHITELIST_APPROVE ,
-  	TYPE_DESC_4,
+	 TYPE_DESC_EXCLUSION_LIST,
 	GET_DESCS_BY_TYPE_ID 
 } from './util'; 
 
@@ -90,7 +90,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 		}
 		if(description)
 		{
-			if(  description.id === TYPE_DESC_MINMAX_AMOUNT_PER ||  description.id === TYPE_DESC_4 )
+			if(  description.id === TYPE_DESC_LIMIT_AMOUNT_PER ||  description.id === TYPE_DESC_EXCLUSION_LIST )
 			{
 				const {minMax, amount, per} = description;
 				if(isEmpty(minMax)) 
@@ -121,7 +121,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 			recipients_.push(recipient);
 		}
 		let description = {};
-		if(descId === TYPE_DESC_MINMAX_AMOUNT_PER || descId === TYPE_DESC_4)
+		if(descId === TYPE_DESC_LIMIT_AMOUNT_PER || descId === TYPE_DESC_EXCLUSION_LIST)
 		{    
 			description = {
 				id: descId,
@@ -393,8 +393,8 @@ function CreateAlert({open, dlgClose, clusters}) {
 
 	const ComboDesc = (
 		<>
-			{descId === 0 && (<></>) }
-			{descId === 1 && (
+			{descId === 0 && null }
+			{descId === TYPE_DESC_LIMIT_AMOUNT_PER && (
 				<>
 					<Autocomplete
 						freeSolo
@@ -424,7 +424,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 					</div>
 				</>
 			) }
-			{descId === 2 && (
+			{descId === TYPE_DESC_LIMIT_TOTAL_ASSETS && (
 				<>
 					<Autocomplete
 						freeSolo
@@ -436,17 +436,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 						style={{width: '80%', marginLeft: '10%'}}
 					/> 
 					<div className="p-3">
-						<GroupDiv title="Detail Setting" comp={
-							<div className="px-1 pr-1">
-							<Grid
-								justifyContent="space-between"
-								container
-								spacing={0}
-							>
-								 
-							</Grid> 
-							</div>
-						} /> 
+						 
 					</div>
 				</>
 			) }
@@ -465,7 +455,7 @@ function CreateAlert({open, dlgClose, clusters}) {
 					</div>
 				</>
 			) }
-			{descId === 4 && (
+			{descId === TYPE_DESC_EXCLUSION_LIST && (
 				<>
 					<p className='px-5 pr-5'>{desc}</p> 
 					<div className="p-3">

@@ -15,10 +15,10 @@ import {NODE_URL} from "../../config";
 
 import {   
 	GET_DESC_TITLE_BY_ID,
-	TYPE_DESC_MINMAX_AMOUNT_PER ,
- 	TYPE_DESC_2 ,
+	TYPE_DESC_LIMIT_AMOUNT_PER ,
+	TYPE_DESC_LIMIT_TOTAL_ASSETS ,
 	 TYPE_DESC_WHITELIST_APPROVE ,
-  	TYPE_DESC_4
+	 TYPE_DESC_EXCLUSION_LIST
  } from '../Alert/util';
 
 function Layout() {  
@@ -143,7 +143,7 @@ function Layout() {
 			const {name, description, addresses, _id} = cluster;
 			const alertsCnt = await get_alert_count(name);
 			const tr = (
-			<tr key={Number(i)}>
+			<tr key={Number(i)} onClick={() => onEditCluster(_id)}>
 				<td>{name}</td>
 				<td>{description}</td>
 				<td>{addresses.length}</td>
@@ -172,7 +172,7 @@ function Layout() {
 			// console.log(alert)
 			const {type, description, clusterName, recipients, _id} = alert;
 			let desc;
-			if( description.id === TYPE_DESC_MINMAX_AMOUNT_PER ||  description.id === TYPE_DESC_4 )
+			if( description.id === TYPE_DESC_LIMIT_AMOUNT_PER ||  description.id === TYPE_DESC_EXCLUSION_LIST )
 				desc = description.minMax + " of " + description.amount + " ETH per " + description.per;
 			else { 
 					desc = GET_DESC_TITLE_BY_ID(description.id);
@@ -187,7 +187,7 @@ function Layout() {
 					recipientsStr +=  ", ";
 			}
 			const tr = (
-			<tr key={Number(i)}>
+			<tr key={Number(i)} onClick={() => onEditAlert(_id)}>
 				<td>{type}</td>
 				<td>{ desc }</td>
 				<td>{clusterName}</td>
